@@ -1,11 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
 
 namespace MonoMatch3;
 
-public class Game1() : Core("Mono Match 3", new Vector2(800, 800), false)
+public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
 {
+    private Texture2D gameLogo;
+
     protected override void Initialize()
     {
         base.Initialize();
@@ -13,6 +16,8 @@ public class Game1() : Core("Mono Match 3", new Vector2(800, 800), false)
 
     protected override void LoadContent()
     {
+        gameLogo = Content.Load<Texture2D>(ContentStructure.images.logo);
+
         base.LoadContent();
     }
 
@@ -27,6 +32,10 @@ public class Game1() : Core("Mono Match 3", new Vector2(800, 800), false)
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.LightSeaGreen);
+
+        SpriteBatch.Begin();
+        SpriteBatch.Draw(gameLogo, Vector2.Zero, Color.White);
+        SpriteBatch.End();
 
         base.Draw(gameTime);
     }
