@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMatch3", "MonoMatch3\MonoMatch3.csproj", "{59D686D8-816F-47EB-AF35-4C1E476821F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame Game Library", "MonoGame Game Library\MonoGame Game Library.csproj", "{907705AB-613A-4FED-B953-40BD7B6F907F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGameLibrary", "MonoGameLibrary\MonoGameLibrary.csproj", "{907705AB-613A-4FED-B953-40BD7B6F907F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
