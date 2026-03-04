@@ -67,7 +67,7 @@ public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
         logoTransform.scale = Vector2.One * logoScale;
         logoTransform.layerDepth = (int)RenderLayers.MainMenuLogo;
 
-        gameLogo.Draw(SpriteBatch, ref logoTransform);
+        gameLogo.Draw(SpriteBatch, logoTransform, gameTime);
 
         Sprite.Transform gemTransform = Sprite.Transform.Default;
         gemTransform.layerDepth = (int)RenderLayers.Elements;
@@ -81,7 +81,7 @@ public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
 
             gemTransform.position = new Vector2(windowRect.Width, windowRect.Height) * 0.5f + new Vector2(offsetX, offsetY) * 300f;
 
-            gemsAtlas.GetSprite(gemSpriteNames[i]).Draw(SpriteBatch, ref gemTransform);
+            gemsAtlas.GetSprite(gemSpriteNames[i]).Draw(SpriteBatch, gemTransform, gameTime);
         }
 
         SpriteBatch.End();
