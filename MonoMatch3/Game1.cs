@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
@@ -11,36 +10,39 @@ namespace MonoMatch3;
 
 public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
 {
-    private Sprite gameLogo;
-
-    private TextureAtlas gemsAtlas;
-    private readonly List<string> gemSpriteNames = new List<string>();
-
-    protected override void Initialize()
-    {
-        base.Initialize();
-    }
-
     protected override void LoadContent()
     {
+        Rectangle windowRect = Window.ClientBounds;
+        Vector2 screenCenter = new Vector2(windowRect.Width, windowRect.Height) * 0.5f;
+
         TextureAtlas logoAtlas = TextureAtlas.FromFile(Content, ContentStructure.images.logo);
         foreach (string logoSpriteName in logoAtlas.AllSpriteNames)
         {
-            gameLogo = logoAtlas.GetSprite(logoSpriteName);
-            gameLogo.AddAnimation(new PingPongColorChannels(0.5f, 1f, 0.20f, 0.25f, 0.33f));
-            gameLogo.AddAnimation(new PingPongScale(1.0f, 1.1f, 0.16f));
+            Sprite sprite = logoAtlas.GetSprite(logoSpriteName);
+            sprite.AddAnimation(new PingPongColorChannels(0.5f, 1f, 0.20f, 0.25f, 0.33f));
+            sprite.AddAnimation(new PingPongScale(1.0f, 1.1f, 0.16f));
+
+            Sprite.Transform transform = Sprite.Transform.Default;
+            transform.position = screenCenter;
+            transform.layerDepth = (int)RenderLayers.MainMenuLogo;
+
+            spriteRenderer.Add(sprite, transform);
             break;
         }
 
-        gemsAtlas = TextureAtlas.FromFile(Content, ContentStructure.images.gems);
-        gemSpriteNames.AddRange(gemsAtlas.AllSpriteNames);
-
+        TextureAtlas gemsAtlas = TextureAtlas.FromFile(Content, ContentStructure.images.gems);
+        List<string> gemSpriteNames = new List<string>(gemsAtlas.AllSpriteNames);
         float initialRotationStep = MathF.PI * 2.0f / (float)gemSpriteNames.Count;
         for (int i = 0; i < gemSpriteNames.Count; i++)
         {
-            string gemSpriteName = gemSpriteNames[i];
-            Sprite gemSprite = gemsAtlas.GetSprite(gemSpriteName);
-            gemSprite.AddAnimation(new RotateAround(i * initialRotationStep, 0.45f, 300f));
+            Sprite sprite = gemsAtlas.GetSprite(gemSpriteNames[i]);
+            sprite.AddAnimation(new RotateAround(i * initialRotationStep, 0.45f, 300f));
+
+            Sprite.Transform transform = Sprite.Transform.Default;
+            transform.position = screenCenter;
+            transform.layerDepth = (int)RenderLayers.Elements;
+
+            spriteRenderer.Add(sprite, transform);
         }
 
         base.LoadContent();
@@ -56,30 +58,5 @@ public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
         }
 
         base.Update(gameTime);
-    }
-
-    protected override void Draw(GameTime gameTime)
-    {
-        Rectangle windowRect = Window.ClientBounds;
-
-        GraphicsDevice.Clear(Color.LightSeaGreen);
-
-        SpriteBatch.Begin(sortMode: SpriteSortMode.BackToFront);
-
-        Sprite.Transform defaultTransform = Sprite.Transform.Default;
-        defaultTransform.position = new Vector2(windowRect.Width, windowRect.Height) * 0.5f;
-
-        defaultTransform.layerDepth = (int)RenderLayers.MainMenuLogo;
-        gameLogo.Draw(SpriteBatch, defaultTransform, gameTime);
-
-        defaultTransform.layerDepth = (int)RenderLayers.Elements;
-        foreach (string spriteName in gemSpriteNames)
-        {
-            gemsAtlas.GetSprite(spriteName).Draw(SpriteBatch, defaultTransform, gameTime);
-        }
-
-        SpriteBatch.End();
-
-        base.Draw(gameTime);
     }
 }

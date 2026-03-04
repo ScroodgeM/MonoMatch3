@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameLibrary.Graphics;
 
 namespace MonoGameLibrary;
 
@@ -14,6 +15,8 @@ public class Core : Game
     public new GraphicsDevice GraphicsDevice => graphicsDevice;
     public SpriteBatch SpriteBatch => spriteBatch;
     public new ContentManager Content => contentManager;
+
+    protected readonly SpriteRenderer spriteRenderer;
 
     private readonly GraphicsDeviceManager graphicsDeviceManager;
     private GraphicsDevice graphicsDevice;
@@ -40,6 +43,8 @@ public class Core : Game
         contentManager = base.Content;
         contentManager.RootDirectory = "Content";
 
+        spriteRenderer = new SpriteRenderer();
+
         IsMouseVisible = true;
     }
 
@@ -49,5 +54,14 @@ public class Core : Game
 
         graphicsDevice = base.GraphicsDevice;
         spriteBatch = new SpriteBatch(graphicsDevice);
+
+        spriteRenderer.Init(spriteBatch);
+    }
+
+    protected override void Draw(GameTime gameTime)
+    {
+        GraphicsDevice.Clear(Color.LightSeaGreen);
+        spriteRenderer.Draw(gameTime);
+        base.Draw(gameTime);
     }
 }
