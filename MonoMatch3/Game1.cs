@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
+using MonoGameLibrary.Graphics.SpriteAnimations;
 
 namespace MonoMatch3;
 
@@ -31,6 +32,15 @@ public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
 
         gemsAtlas = TextureAtlas.FromFile(Content, ContentStructure.images.gems);
         gemSpriteNames.AddRange(gemsAtlas.AllSpriteNames);
+
+        float initialRotationStep = MathF.PI * 2.0f / (float)gemSpriteNames.Count;
+        for (int i = 0; i < gemSpriteNames.Count; i++)
+        {
+            string gemSpriteName = gemSpriteNames[i];
+            Sprite gemSprite = gemsAtlas.GetSprite(gemSpriteName);
+            RotateAround animation = new RotateAround(i * initialRotationStep, 0.45f, 300f);
+            gemSprite.AddAnimation(animation);
+        }
 
         base.LoadContent();
     }
@@ -71,17 +81,11 @@ public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
 
         Sprite.Transform gemTransform = Sprite.Transform.Default;
         gemTransform.layerDepth = (int)RenderLayers.Elements;
+        gemTransform.position = new Vector2(windowRect.Width, windowRect.Height) * 0.5f;
 
-        float elementsRotation = (float)((gameTime.TotalGameTime.TotalSeconds * 0.45) % (Math.PI * 2.0));
-        float rotationStepInRadians = MathF.PI * 2.0f / (float)gemSpriteNames.Count;
-        for (var i = 0; i < gemSpriteNames.Count; i++)
+        foreach (string spriteName in gemSpriteNames)
         {
-            float offsetX = MathF.Sin(elementsRotation + i * rotationStepInRadians);
-            float offsetY = MathF.Cos(elementsRotation + i * rotationStepInRadians);
-
-            gemTransform.position = new Vector2(windowRect.Width, windowRect.Height) * 0.5f + new Vector2(offsetX, offsetY) * 300f;
-
-            gemsAtlas.GetSprite(gemSpriteNames[i]).Draw(SpriteBatch, gemTransform, gameTime);
+            gemsAtlas.GetSprite(spriteName).Draw(SpriteBatch, gemTransform, gameTime);
         }
 
         SpriteBatch.End();
