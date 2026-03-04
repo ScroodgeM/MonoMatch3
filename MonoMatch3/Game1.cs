@@ -27,6 +27,7 @@ public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
         foreach (string logoSpriteName in logoAtlas.AllSpriteNames)
         {
             gameLogo = logoAtlas.GetSprite(logoSpriteName);
+            gameLogo.AddAnimation(new ShiftColorBySin(0.5f, 1f, 0.20f, 0.25f, 0.33f));
             break;
         }
 
@@ -38,8 +39,7 @@ public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
         {
             string gemSpriteName = gemSpriteNames[i];
             Sprite gemSprite = gemsAtlas.GetSprite(gemSpriteName);
-            RotateAround animation = new RotateAround(i * initialRotationStep, 0.45f, 300f);
-            gemSprite.AddAnimation(animation);
+            gemSprite.AddAnimation(new RotateAround(i * initialRotationStep, 0.45f, 300f));
         }
 
         base.LoadContent();
@@ -61,10 +61,6 @@ public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
     {
         float logoScale = 1.05f + 0.05f * (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds);
 
-        float r = 0.75f + 0.25f * (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds * 1.2);
-        float g = 0.75f + 0.25f * (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds * 1.6);
-        float b = 0.75f + 0.25f * (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds * 2.1);
-
         Rectangle windowRect = Window.ClientBounds;
 
         GraphicsDevice.Clear(Color.LightSeaGreen);
@@ -73,7 +69,7 @@ public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
 
         Sprite.Transform logoTransform = Sprite.Transform.Default;
         logoTransform.position = new Vector2(windowRect.Width, windowRect.Height) * 0.5f;
-        logoTransform.color = new Color(r, g, b, 1f);
+
         logoTransform.scale = Vector2.One * logoScale;
         logoTransform.layerDepth = (int)RenderLayers.MainMenuLogo;
 
