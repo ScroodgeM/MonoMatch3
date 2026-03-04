@@ -3,13 +3,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
+using MonoGameLibrary.Graphics;
 
 namespace MonoMatch3;
 
 public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
 {
     private Texture2D gameLogo;
-    private Texture2D[] elements;
+    private TextureRegion[] elements;
 
     protected override void Initialize()
     {
@@ -20,13 +21,16 @@ public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
     {
         gameLogo = Content.Load<Texture2D>(ContentStructure.images.logo);
 
-        elements = new Texture2D[]
+        TextureAtlas gemAtlas = TextureAtlas.FromFile(Content, ContentStructure.images.gem_atlas_definition);
+
+        elements = new TextureRegion[]
         {
-            Content.Load<Texture2D>(ContentStructure.images.element1),
-            Content.Load<Texture2D>(ContentStructure.images.element2),
-            Content.Load<Texture2D>(ContentStructure.images.element3),
-            Content.Load<Texture2D>(ContentStructure.images.element4),
-            Content.Load<Texture2D>(ContentStructure.images.element5),
+            gemAtlas.GetRegion("gem1"),
+            gemAtlas.GetRegion("gem2"),
+            gemAtlas.GetRegion("gem3"),
+            gemAtlas.GetRegion("gem4"),
+            gemAtlas.GetRegion("gem5"),
+            gemAtlas.GetRegion("gem6"),
         };
 
         base.LoadContent();
@@ -52,7 +56,7 @@ public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
         Rectangle windowRect = Window.ClientBounds;
         Vector2 windowCenter = new Vector2(windowRect.Width, windowRect.Height) * 0.5f;
 
-        float elementsRotation = (float)((gameTime.TotalGameTime.TotalSeconds * 1.45) % (Math.PI * 2.0));
+        float elementsRotation = (float)((gameTime.TotalGameTime.TotalSeconds * 0.45) % (Math.PI * 2.0));
 
         GraphicsDevice.Clear(Color.LightSeaGreen);
 
@@ -72,19 +76,16 @@ public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
 
         for (var i = 0; i < elements.Length; i++)
         {
-            Texture2D element = elements[i];
-
             float offsetX = MathF.Sin(elementsRotation + MathF.PI * 2.0f * (float)i / (float)elements.Length);
             float offsetY = MathF.Cos(elementsRotation + MathF.PI * 2.0f * (float)i / (float)elements.Length);
 
-            SpriteBatch.Draw(
-                element,
+            elements[i].Draw(
+                SpriteBatch,
                 windowCenter + new Vector2(offsetX, offsetY) * 300f,
-                null,
                 Color.White,
                 0f,
-                new Vector2(element.Width, element.Height) * 0.5f,
-                0.3f,
+                new Vector2(elements[i].Width, elements[i].Height) * 0.5f,
+                1f,
                 SpriteEffects.None,
                 (float)RenderLayers.Elements
             );

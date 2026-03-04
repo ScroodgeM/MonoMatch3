@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas>
+  <Texture>images/gem_atlas</Texture>
+  <Regions>
+    <Region name="gem1" x="0" y="0" width="334" height="324" />
+    <Region name="gem2" x="334" y="0" width="334" height="324" />
+    <Region name="gem3" x="0" y="324" width="334" height="324" />
+    <Region name="gem4" x="334" y="324" width="334" height="324" />
+    <Region name="gem5" x="0" y="648" width="334" height="324" />
+    <Region name="gem6" x="334" y="648" width="334" height="324" />
+  </Regions>
+</TextureAtlas>
