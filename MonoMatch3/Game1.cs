@@ -27,7 +27,8 @@ public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
         foreach (string logoSpriteName in logoAtlas.AllSpriteNames)
         {
             gameLogo = logoAtlas.GetSprite(logoSpriteName);
-            gameLogo.AddAnimation(new ShiftColorBySin(0.5f, 1f, 0.20f, 0.25f, 0.33f));
+            gameLogo.AddAnimation(new PingPongColorChannels(0.5f, 1f, 0.20f, 0.25f, 0.33f));
+            gameLogo.AddAnimation(new PingPongScale(1.0f, 1.1f, 0.16f));
             break;
         }
 
@@ -59,29 +60,22 @@ public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
 
     protected override void Draw(GameTime gameTime)
     {
-        float logoScale = 1.05f + 0.05f * (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds);
-
         Rectangle windowRect = Window.ClientBounds;
 
         GraphicsDevice.Clear(Color.LightSeaGreen);
 
         SpriteBatch.Begin(sortMode: SpriteSortMode.BackToFront);
 
-        Sprite.Transform logoTransform = Sprite.Transform.Default;
-        logoTransform.position = new Vector2(windowRect.Width, windowRect.Height) * 0.5f;
+        Sprite.Transform defaultTransform = Sprite.Transform.Default;
+        defaultTransform.position = new Vector2(windowRect.Width, windowRect.Height) * 0.5f;
 
-        logoTransform.scale = Vector2.One * logoScale;
-        logoTransform.layerDepth = (int)RenderLayers.MainMenuLogo;
+        defaultTransform.layerDepth = (int)RenderLayers.MainMenuLogo;
+        gameLogo.Draw(SpriteBatch, defaultTransform, gameTime);
 
-        gameLogo.Draw(SpriteBatch, logoTransform, gameTime);
-
-        Sprite.Transform gemTransform = Sprite.Transform.Default;
-        gemTransform.layerDepth = (int)RenderLayers.Elements;
-        gemTransform.position = new Vector2(windowRect.Width, windowRect.Height) * 0.5f;
-
+        defaultTransform.layerDepth = (int)RenderLayers.Elements;
         foreach (string spriteName in gemSpriteNames)
         {
-            gemsAtlas.GetSprite(spriteName).Draw(SpriteBatch, gemTransform, gameTime);
+            gemsAtlas.GetSprite(spriteName).Draw(SpriteBatch, defaultTransform, gameTime);
         }
 
         SpriteBatch.End();
