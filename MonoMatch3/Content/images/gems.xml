@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas>
+    <Texture>images/gems</Texture>
+    <Regions>
+        <Region name="gem1"
+                x="0" y="0"
+                width="334" height="324"
+                pivotX="167" pivotY="162"
+                flipVertically="false" flipHorizontally="false"
+        />
+        <Region name="gem2"
+                x="334" y="0"
+                width="334" height="324"
+                pivotX="167" pivotY="162"
+                flipVertically="false" flipHorizontally="false"
+        />
+        <Region name="gem3"
+                x="0" y="324"
+                width="334" height="324"
+                pivotX="167" pivotY="162"
+                flipVertically="false" flipHorizontally="false"
+        />
+        <Region name="gem4"
+                x="334" y="324"
+                width="334" height="324"
+                pivotX="167" pivotY="162"
+                flipVertically="false" flipHorizontally="false"
+        />
+        <Region name="gem5"
+                x="0" y="648"
+                width="334" height="324"
+                pivotX="167" pivotY="162"
+                flipVertically="false" flipHorizontally="false"
+        />
+        <Region name="gem6"
+                x="334" y="648"
+                width="334" height="324"
+                pivotX="167" pivotY="162"
+                flipVertically="false" flipHorizontally="false"
+        />
+    </Regions>
+</TextureAtlas>

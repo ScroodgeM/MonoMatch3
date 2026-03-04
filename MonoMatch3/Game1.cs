@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,8 +10,10 @@ namespace MonoMatch3;
 
 public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
 {
-    private Texture2D gameLogo;
-    private TextureRegion[] elements;
+    private Sprite gameLogo;
+
+    private TextureAtlas gemsAtlas;
+    private readonly List<string> gemSpriteNames = new List<string>();
 
     protected override void Initialize()
     {
@@ -19,27 +22,27 @@ public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
 
     protected override void LoadContent()
     {
-        gameLogo = Content.Load<Texture2D>(ContentStructure.images.logo);
-
-        TextureAtlas gemAtlas = TextureAtlas.FromFile(Content, ContentStructure.images.gem_atlas_definition);
-
-        elements = new TextureRegion[]
+        TextureAtlas logoAtlas = TextureAtlas.FromFile(Content, ContentStructure.images.logo);
+        foreach (string logoSpriteName in logoAtlas.AllSpriteNames)
         {
-            gemAtlas.GetRegion("gem1"),
-            gemAtlas.GetRegion("gem2"),
-            gemAtlas.GetRegion("gem3"),
-            gemAtlas.GetRegion("gem4"),
-            gemAtlas.GetRegion("gem5"),
-            gemAtlas.GetRegion("gem6"),
-        };
+            gameLogo = logoAtlas.GetSprite(logoSpriteName);
+            break;
+        }
+
+        gemsAtlas = TextureAtlas.FromFile(Content, ContentStructure.images.gems);
+        gemSpriteNames.AddRange(gemsAtlas.AllSpriteNames);
 
         base.LoadContent();
     }
 
     protected override void Update(GameTime gameTime)
     {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
+            ||
+            Keyboard.GetState().IsKeyDown(Keys.Escape))
+        {
             Exit();
+        }
 
         base.Update(gameTime);
     }
@@ -51,44 +54,34 @@ public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
         float r = 0.75f + 0.25f * (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds * 1.2);
         float g = 0.75f + 0.25f * (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds * 1.6);
         float b = 0.75f + 0.25f * (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds * 2.1);
-        Color logoTintColor = new Color(r, g, b, 1f);
 
         Rectangle windowRect = Window.ClientBounds;
-        Vector2 windowCenter = new Vector2(windowRect.Width, windowRect.Height) * 0.5f;
-
-        float elementsRotation = (float)((gameTime.TotalGameTime.TotalSeconds * 0.45) % (Math.PI * 2.0));
 
         GraphicsDevice.Clear(Color.LightSeaGreen);
 
         SpriteBatch.Begin(sortMode: SpriteSortMode.BackToFront);
 
-        SpriteBatch.Draw(
-            gameLogo,
-            windowCenter,
-            null,
-            logoTintColor,
-            0f,
-            new Vector2(gameLogo.Width, gameLogo.Height) * 0.5f,
-            logoScale,
-            SpriteEffects.None,
-            (float)RenderLayers.MainMenuLogo
-        );
+        Sprite.Transform logoTransform = Sprite.Transform.Default;
+        logoTransform.position = new Vector2(windowRect.Width, windowRect.Height) * 0.5f;
+        logoTransform.color = new Color(r, g, b, 1f);
+        logoTransform.scale = Vector2.One * logoScale;
+        logoTransform.layerDepth = (int)RenderLayers.MainMenuLogo;
 
-        for (var i = 0; i < elements.Length; i++)
+        gameLogo.Draw(SpriteBatch, ref logoTransform);
+
+        Sprite.Transform gemTransform = Sprite.Transform.Default;
+        gemTransform.layerDepth = (int)RenderLayers.Elements;
+
+        float elementsRotation = (float)((gameTime.TotalGameTime.TotalSeconds * 0.45) % (Math.PI * 2.0));
+        float rotationStepInRadians = MathF.PI * 2.0f / (float)gemSpriteNames.Count;
+        for (var i = 0; i < gemSpriteNames.Count; i++)
         {
-            float offsetX = MathF.Sin(elementsRotation + MathF.PI * 2.0f * (float)i / (float)elements.Length);
-            float offsetY = MathF.Cos(elementsRotation + MathF.PI * 2.0f * (float)i / (float)elements.Length);
+            float offsetX = MathF.Sin(elementsRotation + i * rotationStepInRadians);
+            float offsetY = MathF.Cos(elementsRotation + i * rotationStepInRadians);
 
-            elements[i].Draw(
-                SpriteBatch,
-                windowCenter + new Vector2(offsetX, offsetY) * 300f,
-                Color.White,
-                0f,
-                new Vector2(elements[i].Width, elements[i].Height) * 0.5f,
-                1f,
-                SpriteEffects.None,
-                (float)RenderLayers.Elements
-            );
+            gemTransform.position = new Vector2(windowRect.Width, windowRect.Height) * 0.5f + new Vector2(offsetX, offsetY) * 300f;
+
+            gemsAtlas.GetSprite(gemSpriteNames[i]).Draw(SpriteBatch, ref gemTransform);
         }
 
         SpriteBatch.End();

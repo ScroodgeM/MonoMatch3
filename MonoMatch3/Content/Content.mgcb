@@ -13,10 +13,10 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin images/gem_atlas_definition.xml
-/copy:images/gem_atlas_definition.xml
+#begin images/gems.xml
+/copy:images/gems.xml
 
-#begin images/gem_atlas.png
+#begin images/gems.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -26,7 +26,10 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/gem_atlas.png
+/build:images/gems.png
+
+#begin images/logo.xml
+/copy:images/logo.xml
 
 #begin images/logo.jpg
 /importer:TextureImporter
@@ -39,4 +42,3 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:images/logo.jpg
-
