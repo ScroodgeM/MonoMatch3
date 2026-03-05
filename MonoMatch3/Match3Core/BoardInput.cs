@@ -29,17 +29,11 @@ public class BoardInput
 
     private void OnUpdate(GameTime gameTime)
     {
-        if (inputManager.Mouse.WasButtonJustPressed(MouseButton.Left) == true)
+        if (inputManager.Mouse.WasButtonJustPressed(MouseButton.Left) == true
+            &&
+            gameSettings.TryScreenToBoard(inputManager.Mouse.Position, out TilePosition tilePosition) == true)
         {
-            Point mousePosition = inputManager.Mouse.Position;
-
-            int tilePositionX = (int)MathF.Floor(mousePosition.X / gameSettings.view.cellSize);
-            int tilePositionY = (int)MathF.Floor(mousePosition.Y / gameSettings.view.cellSize);
-
-            if (Helpers.IsPositionValid(tilePositionX, tilePositionY, gameSettings.board.width, gameSettings.board.height) == true)
-            {
-                OnTileClick(new TilePosition((byte)tilePositionX, (byte)tilePositionY));
-            }
+            OnTileClick(tilePosition);
         }
     }
 }

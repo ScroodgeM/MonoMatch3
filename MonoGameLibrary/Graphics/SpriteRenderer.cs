@@ -13,6 +13,9 @@ public class SpriteRenderer
         public Sprite.Transform transform;
     }
 
+    public SpriteBank Bank => spriteBank;
+
+    private readonly SpriteBank spriteBank = new SpriteBank();
     private SpriteBatch spriteBatch;
     private ushort animationsIncrementalId = 0;
     private readonly Dictionary<ushort, SpriteData> allSprites = new Dictionary<ushort, SpriteData>();
@@ -22,8 +25,13 @@ public class SpriteRenderer
         this.spriteBatch = spriteBatch;
     }
 
-    public ushort Add(Sprite sprite, Sprite.Transform transform)
+    public ushort Add(string spriteId, Sprite.Transform transform)
     {
+        if (spriteBank.TryGet(spriteId, out Sprite sprite) == false)
+        {
+            throw new KeyNotFoundException($"Sprite {spriteId} not found in bank");
+        }
+
         if (allSprites.Count >= ushort.MaxValue)
         {
             throw new NotSupportedException($"Sorry, you reached the maximum number of simultaneous sprite: {ushort.MaxValue}.");

@@ -27,7 +27,8 @@ public class GameStarter() : Core("Mono Match 3", new Vector2(1024, 1024), false
             transform.position = screenCenter;
             transform.layerDepth = (int)RenderLayers.MainMenuLogo;
 
-            spriteRenderer.Add(sprite, transform);
+            spriteRenderer.Bank.Add(logoSpriteName, sprite);
+            spriteRenderer.Add(logoSpriteName, transform);
             break;
         }
 
@@ -36,14 +37,16 @@ public class GameStarter() : Core("Mono Match 3", new Vector2(1024, 1024), false
         float initialRotationStep = MathF.PI * 2.0f / (float)gemSpriteNames.Count;
         for (int i = 0; i < gemSpriteNames.Count; i++)
         {
-            Sprite sprite = gemsAtlas.GetSprite(gemSpriteNames[i]);
+            string spriteName = gemSpriteNames[i];
+            Sprite sprite = gemsAtlas.GetSprite(spriteName);
             sprite.AddAnimation(new RotateAround(i * initialRotationStep, 0.45f, 300f));
 
             Sprite.Transform transform = Sprite.Transform.Default;
             transform.position = screenCenter;
             transform.layerDepth = (int)RenderLayers.Elements;
 
-            spriteRenderer.Add(sprite, transform);
+            spriteRenderer.Bank.Add(spriteName, sprite);
+            spriteRenderer.Add(spriteName, transform);
         }
 
         base.LoadContent();
@@ -70,5 +73,6 @@ public class GameStarter() : Core("Mono Match 3", new Vector2(1024, 1024), false
         GameSettings gameSettings = GameSettings.FromFile(Content);
         BoardInput boardInput = new BoardInput(this, Input, gameSettings);
         Board board = new Board(this, boardInput, gameSettings);
+        View.Board boardView = new View.Board(spriteRenderer, gameSettings, board);
     }
 }

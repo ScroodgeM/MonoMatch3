@@ -7,6 +7,8 @@ namespace MonoMatch3.Match3Core;
 
 public class Board
 {
+    public event Action<TileBase> OnTileCreated = tile => { };
+
     private readonly IGameEvents gameEvents;
     private readonly GameSettings gameSettings;
     private readonly TilesFactory tilesFactory;
@@ -41,5 +43,6 @@ public class Board
     private void RegisterTile(TileBase tile)
     {
         tiles.Add(tile.Position, tile);
+        OnTileCreated(tile);
     }
 }

@@ -1,7 +1,11 @@
-﻿namespace MonoMatch3.Match3Core.Tiles;
+﻿using System;
+
+namespace MonoMatch3.Match3Core.Tiles;
 
 public abstract class TileBase
 {
+    public event Action OnRemoved = () => { };
+
     public abstract TileType TileType { get; }
     public TilePosition Position => position;
 
@@ -10,5 +14,10 @@ public abstract class TileBase
     public TileBase(TilePosition position)
     {
         this.position = position;
+    }
+
+    public void Die()
+    {
+        OnRemoved();
     }
 }

@@ -15,17 +15,19 @@ public class GameSettings(XElement rootElement)
     {
         public readonly byte width = XMLHelpers.GetByteOrDefault(element, nameof(width));
         public readonly byte height = XMLHelpers.GetByteOrDefault(element, nameof(height));
-        public readonly TileType[] generatorPool =
-            new List<TileType>(
-                XMLHelpers.GetEnumsValues<TileType>(
-                    element.Element("GeneratorPool").Elements("Tile"), "type"
-                )
-            ).ToArray();
+        public readonly TileType[] generatorPool = XMLHelpers.GetEnumsValues<TileType>(element.Element("GeneratorPool").Elements("Tile"), "type");
     }
 
     public readonly struct View(XElement element)
     {
+        public readonly struct Tile(XElement element)
+        {
+            public readonly TileType type = XMLHelpers.GetEnumOrDefault<TileType>(element, nameof(type));
+            public readonly string spriteId = XMLHelpers.GetStringOrDefault(element, nameof(spriteId));
+        }
+
         public readonly float cellSize = XMLHelpers.GetFloatOrDefault(element, nameof(cellSize));
+        public readonly Tile[] tiles = XMLHelpers.GetCustoms(element.Element("Tiles").Elements(nameof(Tile)), x => new Tile(x));
     }
 
     public readonly Board board = new(rootElement.Element(nameof(Board)));

@@ -36,17 +36,31 @@ public static class XMLHelpers
         return xAttribute != null && bool.TryParse(xAttribute.Value, out bool parsedValue) == true ? parsedValue : defaultValue;
     }
 
-    public static IEnumerable<T> GetEnumsValues<T>(IEnumerable<XElement> elements, string attributeName) where T : struct, Enum
+    public static T[] GetEnumsValues<T>(IEnumerable<XElement> elements, string attributeName) where T : struct, Enum
     {
+        List<T> result = new List<T>();
         foreach (XElement element in elements)
         {
-            yield return GetEnumValueOrDefault<T>(element, attributeName);
+            result.Add(GetEnumOrDefault<T>(element, attributeName));
         }
+
+        return result.ToArray();
     }
 
-    public static T GetEnumValueOrDefault<T>(XElement container, string attributeName, T defaultValue = default) where T : struct, Enum
+    public static T GetEnumOrDefault<T>(XElement container, string attributeName, T defaultValue = default) where T : struct, Enum
     {
         XAttribute xAttribute = container.Attribute(attributeName);
         return xAttribute != null && Enum.TryParse(xAttribute.Value, out T parsedValue) == true ? parsedValue : defaultValue;
+    }
+
+    public static T[] GetCustoms<T>(IEnumerable<XElement> elements, Func<XElement, T> constructor)
+    {
+        List<T> result = new List<T>();
+        foreach (XElement element in elements)
+        {
+            result.Add(constructor(element));
+        }
+
+        return result.ToArray();
     }
 }
