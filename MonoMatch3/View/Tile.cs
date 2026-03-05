@@ -20,7 +20,7 @@ public class Tile
         this.mySpriteTransform.position = gameSettings.BoardToScreen(tileCore.Position).ToVector2();
 
         string spriteId = gameSettings.GetSpriteId(tileCore.TileType);
-        this.mySpriteId = this.spriteRenderer.Add(spriteId, mySpriteTransform);
+        this.mySpriteId = this.spriteRenderer.AddSprite(spriteId, mySpriteTransform);
 
         tileCore.OnRemoved += OnRemoved;
     }
@@ -32,6 +32,6 @@ public class Tile
 
     private void OnRemoved()
     {
-        this.spriteRenderer.Remove(mySpriteId);
+        this.spriteRenderer.RemoveSprite(mySpriteId);
     }
 }

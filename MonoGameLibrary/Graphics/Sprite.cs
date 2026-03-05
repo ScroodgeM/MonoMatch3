@@ -31,33 +31,45 @@ public class Sprite(Texture2D texture, Rectangle sourceRectangle, Vector2 pivot,
         }
     }
 
-    private byte animationsIncrementalId = 0;
-    private readonly Dictionary<byte, SpriteAnimationBase> spriteAnimations = new Dictionary<byte, SpriteAnimationBase>();
-
-    public void AddAnimation(SpriteAnimationBase animation)
+    public class Animator
     {
-        if (spriteAnimations.Count >= byte.MaxValue)
+        private byte animationsIncrementalId = 0;
+
+        private readonly Dictionary<byte, SpriteAnimationBase> animations = new Dictionary<byte, SpriteAnimationBase>();
+
+        public void Add(SpriteAnimationBase animation)
         {
-            throw new NotSupportedException($"Sorry, you reached the maximum number of simultaneous animations: {byte.MaxValue}.");
+            if (animations.Count >= byte.MaxValue)
+            {
+                throw new NotSupportedException($"Sorry, you reached the maximum number of simultaneous animations: {byte.MaxValue}.");
+            }
+
+            while (animations.TryAdd(animationsIncrementalId, animation) == false)
+            {
+                unchecked
+                {
+                    animationsIncrementalId++;
+                }
+            }
+
+            byte thisAnimationId = animationsIncrementalId;
+            animation.OnCompleted += () => animations.Remove(thisAnimationId);
         }
 
-        while (spriteAnimations.TryAdd(animationsIncrementalId, animation) == false)
+        public void Process(ref Transform transform, GameTime gameTime)
         {
-            unchecked
+            foreach (SpriteAnimationBase spriteAnimation in animations.Values)
             {
-                animationsIncrementalId++;
+                spriteAnimation.ApplyState(ref transform, gameTime);
             }
         }
-
-        byte thisAnimationId = animationsIncrementalId;
-        animation.OnCompleted += () => spriteAnimations.Remove(thisAnimationId);
     }
 
-    public void Draw(SpriteBatch spriteBatch, Transform transform, GameTime gameTime)
+    public void Draw(SpriteBatch spriteBatch, Transform transform, Animator animator, GameTime gameTime)
     {
-        foreach (SpriteAnimationBase spriteAnimation in spriteAnimations.Values)
+        if (animator != null)
         {
-            spriteAnimation.ApplyState(ref transform, gameTime);
+            animator.Process(ref transform, gameTime);
         }
 
         spriteBatch.Draw(

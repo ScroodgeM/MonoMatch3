@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameLibrary.Graphics.SpriteAnimations;
 
 namespace MonoGameLibrary.Graphics;
 
@@ -11,11 +12,12 @@ public class SpriteRenderer
     {
         public Sprite sprite;
         public Sprite.Transform transform;
+        public Sprite.Animator animator;
     }
 
-    public SpriteBank Bank => spriteBank;
+    public SpritesPool Pool => spritesPool;
 
-    private readonly SpriteBank spriteBank = new SpriteBank();
+    private readonly SpritesPool spritesPool = new SpritesPool();
     private SpriteBatch spriteBatch;
     private ushort animationsIncrementalId = 0;
     private readonly Dictionary<ushort, SpriteData> allSprites = new Dictionary<ushort, SpriteData>();
@@ -25,21 +27,17 @@ public class SpriteRenderer
         this.spriteBatch = spriteBatch;
     }
 
-    public ushort Add(string spriteId, Sprite.Transform transform)
+    public ushort AddSprite(string spriteId, Sprite.Transform transform)
     {
-        if (spriteBank.TryGet(spriteId, out Sprite sprite) == false)
-        {
-            throw new KeyNotFoundException($"Sprite {spriteId} not found in bank");
-        }
-
         if (allSprites.Count >= ushort.MaxValue)
         {
             throw new NotSupportedException($"Sorry, you reached the maximum number of simultaneous sprite: {ushort.MaxValue}.");
         }
 
         SpriteData newData;
-        newData.sprite = sprite;
+        newData.sprite = spritesPool.Get(spriteId);
         newData.transform = transform;
+        newData.animator = null;
 
         while (allSprites.TryAdd(animationsIncrementalId, newData) == false)
         {
@@ -52,7 +50,7 @@ public class SpriteRenderer
         return animationsIncrementalId;
     }
 
-    public void Update(ushort spriteId, Sprite.Transform transform)
+    public void UpdateTransform(ushort spriteId, Sprite.Transform transform)
     {
         if (allSprites.TryGetValue(spriteId, out SpriteData data) == true)
         {
@@ -61,7 +59,18 @@ public class SpriteRenderer
         }
     }
 
-    public void Remove(ushort spriteId)
+    public void AddAnimation(ushort spriteId, SpriteAnimationBase animation)
+    {
+        if (allSprites.TryGetValue(spriteId, out SpriteData data) == true)
+        {
+            Sprite.Animator animator = data.animator == null ? new Sprite.Animator() : data.animator;
+            animator.Add(animation);
+            data.animator = animator;
+            allSprites[spriteId] = data;
+        }
+    }
+
+    public void RemoveSprite(ushort spriteId)
     {
         allSprites.Remove(spriteId);
     }
@@ -77,7 +86,7 @@ public class SpriteRenderer
 
         foreach (SpriteData spriteData in allSprites.Values)
         {
-            spriteData.sprite.Draw(spriteBatch, spriteData.transform, gameTime);
+            spriteData.sprite.Draw(spriteBatch, spriteData.transform, spriteData.animator, gameTime);
         }
 
         spriteBatch.End();

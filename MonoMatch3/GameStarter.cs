@@ -17,36 +17,35 @@ public class GameStarter() : Core("Mono Match 3", new Vector2(1024, 1024), false
         Vector2 screenCenter = new Vector2(windowRect.Width, windowRect.Height) * 0.5f;
 
         TextureAtlas logoAtlas = TextureAtlas.FromFile(Content, ContentStructure.images.logo);
+        spriteRenderer.Pool.Add(logoAtlas);
+
         foreach (string logoSpriteName in logoAtlas.AllSpriteNames)
         {
-            Sprite sprite = logoAtlas.GetSprite(logoSpriteName);
-            sprite.AddAnimation(new PingPongColorChannels(0.5f, 1f, 0.20f, 0.25f, 0.33f));
-            sprite.AddAnimation(new PingPongScale(1.0f, 1.1f, 0.16f));
-
             Sprite.Transform transform = Sprite.Transform.Default;
             transform.position = screenCenter;
             transform.layerDepth = (int)RenderLayers.MainMenuLogo;
 
-            spriteRenderer.Bank.Add(logoSpriteName, sprite);
-            spriteRenderer.Add(logoSpriteName, transform);
+            ushort spriteId = spriteRenderer.AddSprite(logoSpriteName, transform);
+
+            spriteRenderer.AddAnimation(spriteId, new PingPongColorChannels(0.5f, 1f, 0.20f, 0.25f, 0.33f));
+            spriteRenderer.AddAnimation(spriteId, new PingPongScale(1.0f, 1.1f, 0.16f));
+
             break;
         }
 
         TextureAtlas gemsAtlas = TextureAtlas.FromFile(Content, ContentStructure.images.gems);
+        spriteRenderer.Pool.Add(gemsAtlas);
         List<string> gemSpriteNames = new List<string>(gemsAtlas.AllSpriteNames);
         float initialRotationStep = MathF.PI * 2.0f / (float)gemSpriteNames.Count;
         for (int i = 0; i < gemSpriteNames.Count; i++)
         {
-            string spriteName = gemSpriteNames[i];
-            Sprite sprite = gemsAtlas.GetSprite(spriteName);
-            sprite.AddAnimation(new RotateAround(i * initialRotationStep, 0.45f, 300f));
-
             Sprite.Transform transform = Sprite.Transform.Default;
             transform.position = screenCenter;
             transform.layerDepth = (int)RenderLayers.Elements;
 
-            spriteRenderer.Bank.Add(spriteName, sprite);
-            spriteRenderer.Add(spriteName, transform);
+            ushort spriteId = spriteRenderer.AddSprite(gemSpriteNames[i], transform);
+
+            spriteRenderer.AddAnimation(spriteId, new RotateAround(i * initialRotationStep, 0.45f, 300f));
         }
 
         base.LoadContent();
