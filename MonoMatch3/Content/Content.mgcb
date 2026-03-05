@@ -13,8 +13,8 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin images/gems.xml
-/copy:images/gems.xml
+#begin game_settings.xml
+/copy:game_settings.xml
 
 #begin images/gems.png
 /importer:TextureImporter
@@ -28,8 +28,8 @@
 /processorParam:TextureFormat=Color
 /build:images/gems.png
 
-#begin images/logo.xml
-/copy:images/logo.xml
+#begin images/gems.xml
+/copy:images/gems.xml
 
 #begin images/logo.jpg
 /importer:TextureImporter
@@ -42,3 +42,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:images/logo.jpg
+
+#begin images/logo.xml
+/copy:images/logo.xml

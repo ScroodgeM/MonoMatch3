@@ -3,11 +3,15 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Graphics;
+using MonoGameLibrary.Input;
 
 namespace MonoGameLibrary;
 
-public class Core : Game
+public class Core : Game, IGameEvents
 {
+    public event Action<GameTime> OnUpdate = time => { };
+    public event Action<GameTime> OnDraw = time => { };
+
     public static Core Instance => instance;
     private static Core instance;
 
@@ -15,6 +19,7 @@ public class Core : Game
     public new GraphicsDevice GraphicsDevice => graphicsDevice;
     public SpriteBatch SpriteBatch => spriteBatch;
     public new ContentManager Content => contentManager;
+    public InputManager Input => inputManager;
 
     protected readonly SpriteRenderer spriteRenderer;
 
@@ -22,6 +27,7 @@ public class Core : Game
     private GraphicsDevice graphicsDevice;
     private SpriteBatch spriteBatch;
     private readonly ContentManager contentManager;
+    private InputManager inputManager;
 
     public Core(string title, Vector2 screenSize, bool isFullScreen)
     {
@@ -56,6 +62,15 @@ public class Core : Game
         spriteBatch = new SpriteBatch(graphicsDevice);
 
         spriteRenderer.Init(spriteBatch);
+
+        inputManager = new InputManager(this);
+    }
+
+    protected override void Update(GameTime gameTime)
+    {
+        base.Update(gameTime);
+
+        OnUpdate(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
@@ -63,5 +78,7 @@ public class Core : Game
         GraphicsDevice.Clear(Color.LightSeaGreen);
         spriteRenderer.Draw(gameTime);
         base.Draw(gameTime);
+
+        OnDraw(gameTime);
     }
 }

@@ -37,28 +37,28 @@ public class TextureAtlas(Texture2D texture)
         {
             foreach (XElement region in regionsRoot.Elements("Region"))
             {
-                string name = GetStringOrDefault(region, "name");
+                string name = XMLHelpers.GetStringOrDefault(region, "name");
                 if (string.IsNullOrEmpty(name) == false)
                 {
                     Rectangle sourceRectangle = new(
-                        x: GetIntOrDefault(region, "x"),
-                        y: GetIntOrDefault(region, "y"),
-                        width: GetIntOrDefault(region, "width"),
-                        height: GetIntOrDefault(region, "height")
+                        x: XMLHelpers.GetIntOrDefault(region, "x"),
+                        y: XMLHelpers.GetIntOrDefault(region, "y"),
+                        width: XMLHelpers.GetIntOrDefault(region, "width"),
+                        height: XMLHelpers.GetIntOrDefault(region, "height")
                     );
 
                     Vector2 pivot = new(
-                        x: GetFloatOrDefault(region, "pivotX"),
-                        y: GetFloatOrDefault(region, "pivotY")
+                        x: XMLHelpers.GetFloatOrDefault(region, "pivotX"),
+                        y: XMLHelpers.GetFloatOrDefault(region, "pivotY")
                     );
 
                     SpriteEffects effects = SpriteEffects.None;
-                    if (GetBooleanOrDefault(region, "flipVertically") == true)
+                    if (XMLHelpers.GetBooleanOrDefault(region, "flipVertically") == true)
                     {
                         effects |= SpriteEffects.FlipVertically;
                     }
 
-                    if (GetBooleanOrDefault(region, "flipHorizontally") == true)
+                    if (XMLHelpers.GetBooleanOrDefault(region, "flipHorizontally") == true)
                     {
                         effects |= SpriteEffects.FlipHorizontally;
                     }
@@ -76,29 +76,5 @@ public class TextureAtlas(Texture2D texture)
         }
 
         return atlas;
-    }
-
-    private static string GetStringOrDefault(XElement container, string attributeName, string defaultValue = null)
-    {
-        XAttribute xAttribute = container.Attribute(attributeName);
-        return xAttribute == null ? defaultValue : xAttribute.Value;
-    }
-
-    private static int GetIntOrDefault(XElement container, string attributeName, int defaultValue = 0)
-    {
-        XAttribute xAttribute = container.Attribute(attributeName);
-        return xAttribute == null ? defaultValue : int.Parse(xAttribute.Value);
-    }
-
-    private static float GetFloatOrDefault(XElement container, string attributeName, float defaultValue = 0f)
-    {
-        XAttribute xAttribute = container.Attribute(attributeName);
-        return xAttribute == null ? defaultValue : float.Parse(xAttribute.Value);
-    }
-
-    private static bool GetBooleanOrDefault(XElement container, string attributeName, bool defaultValue = false)
-    {
-        XAttribute xAttribute = container.Attribute(attributeName);
-        return xAttribute == null ? defaultValue : bool.Parse(xAttribute.Value);
     }
 }

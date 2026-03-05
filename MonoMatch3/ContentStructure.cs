@@ -7,4 +7,6 @@ public static class ContentStructure
         public const string gems = nameof(images) + "/" + nameof(gems) + ".xml";
         public const string logo = nameof(images) + "/" + nameof(logo) + ".xml";
     }
+
+    public const string game_settings = nameof(game_settings) + ".xml";
 }
