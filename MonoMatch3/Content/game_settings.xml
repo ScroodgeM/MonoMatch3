@@ -1,5 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GameSettings>
-    <Board width="8" height="8"/>
+    <Board width="8" height="8">
+        <GeneratorPool>
+            <Tile type="Simple1"/>
+            <Tile type="Simple2"/>
+            <Tile type="Simple3"/>
+            <Tile type="Simple4"/>
+            <Tile type="Simple5"/>
+        </GeneratorPool>
+    </Board>
+    <Tiles>
+        <Tile type="Simple1" spriteName="gem1"/>
+        <Tile type="Simple2" spriteName="gem2"/>
+        <Tile type="Simple3" spriteName="gem4"/>
+        <Tile type="Simple4" spriteName="gem5"/>
+        <Tile type="Simple5" spriteName="gem6"/>
+    </Tiles>
     <View cellSize="128"/>
 </GameSettings>

@@ -6,21 +6,11 @@ using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.SpriteAnimations;
 using MonoMatch3.Match3Core;
-using MonoMatch3.Match3Core.Tiles;
 
 namespace MonoMatch3;
 
-public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
+public class GameStarter() : Core("Mono Match 3", new Vector2(1024, 1024), false)
 {
-    private static TileType[] tilesGeneratorPool = new TileType[]
-    {
-        TileType.Simple1,
-        TileType.Simple2,
-        TileType.Simple3,
-        TileType.Simple4,
-        TileType.Simple5,
-    };
-
     protected override void LoadContent()
     {
         Rectangle windowRect = Window.ClientBounds;
@@ -79,6 +69,6 @@ public class Game1() : Core("Mono Match 3", new Vector2(1024, 1024), false)
     {
         GameSettings gameSettings = GameSettings.FromFile(Content);
         BoardInput boardInput = new BoardInput(this, Input, gameSettings);
-        Board board = new Board(this, boardInput, gameSettings, tilesGeneratorPool);
+        Board board = new Board(this, boardInput, gameSettings);
     }
 }

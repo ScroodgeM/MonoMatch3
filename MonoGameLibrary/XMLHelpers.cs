@@ -1,4 +1,6 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace MonoGameLibrary;
 
@@ -32,5 +34,19 @@ public static class XMLHelpers
     {
         XAttribute xAttribute = container.Attribute(attributeName);
         return xAttribute != null && bool.TryParse(xAttribute.Value, out bool parsedValue) == true ? parsedValue : defaultValue;
+    }
+
+    public static IEnumerable<T> GetEnumsValues<T>(IEnumerable<XElement> elements, string attributeName) where T : struct, Enum
+    {
+        foreach (XElement element in elements)
+        {
+            yield return GetEnumValueOrDefault<T>(element, attributeName);
+        }
+    }
+
+    public static T GetEnumValueOrDefault<T>(XElement container, string attributeName, T defaultValue = default) where T : struct, Enum
+    {
+        XAttribute xAttribute = container.Attribute(attributeName);
+        return xAttribute != null && Enum.TryParse(xAttribute.Value, out T parsedValue) == true ? parsedValue : defaultValue;
     }
 }

@@ -1,9 +1,11 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using MonoGameLibrary;
+using MonoMatch3.Match3Core.Tiles;
 
 namespace MonoMatch3;
 
@@ -13,6 +15,12 @@ public class GameSettings(XElement rootElement)
     {
         public readonly byte width = XMLHelpers.GetByteOrDefault(element, nameof(width));
         public readonly byte height = XMLHelpers.GetByteOrDefault(element, nameof(height));
+        public readonly TileType[] generatorPool =
+            new List<TileType>(
+                XMLHelpers.GetEnumsValues<TileType>(
+                    element.Element("GeneratorPool").Elements("Tile"), "type"
+                )
+            ).ToArray();
     }
 
     public readonly struct View(XElement element)

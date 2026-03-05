@@ -1,2 +1,2 @@
-﻿using var game = new MonoMatch3.Game1();
+﻿using var game = new MonoMatch3.GameStarter();
 game.Run();

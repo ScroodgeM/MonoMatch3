@@ -15,11 +15,11 @@ public class Board
     private readonly Random sessionRandom = new Random(Guid.NewGuid().GetHashCode());
     private readonly Dictionary<TilePosition, TileBase> tiles = new Dictionary<TilePosition, TileBase>();
 
-    public Board(IGameEvents gameEvents, BoardInput boardInput, GameSettings gameSettings, TileType[] generatorPool)
+    public Board(IGameEvents gameEvents, BoardInput boardInput, GameSettings gameSettings)
     {
         this.gameEvents = gameEvents;
         this.gameSettings = gameSettings;
-        this.tilesFactory = new TilesFactory(sessionRandom, generatorPool);
+        this.tilesFactory = new TilesFactory(sessionRandom, gameSettings.board.generatorPool);
         this.boardInput = boardInput;
 
         this.boardInput.OnTileClick += OnTileClick;
