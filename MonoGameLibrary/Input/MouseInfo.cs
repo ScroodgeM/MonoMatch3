@@ -20,7 +20,7 @@ public class MouseInfo
         this.gameEvents.OnUpdate += OnUpdate;
     }
 
-    ~MouseInfo()
+    public void Die()
     {
         this.gameEvents.OnUpdate -= OnUpdate;
     }

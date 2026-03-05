@@ -22,7 +22,7 @@ public class BoardInput
         this.gameEvents.OnUpdate += OnUpdate;
     }
 
-    ~BoardInput()
+    public void Die()
     {
         this.gameEvents.OnUpdate -= OnUpdate;
     }

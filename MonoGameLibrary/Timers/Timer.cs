@@ -20,7 +20,7 @@ namespace MonoGameLibrary.Timers
             this.gameEvents.OnUpdate += OnUpdate;
         }
 
-        ~Timer()
+        public void Die()
         {
             this.gameEvents.OnUpdate -= OnUpdate;
         }

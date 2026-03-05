@@ -47,6 +47,19 @@ public static class Helpers
             .ToPoint();
     }
 
+    public static Vector2 BoardToScreen(this GameSettings gameSettings, Direction direction)
+    {
+        float cellSize = gameSettings.view.cellSize;
+        return direction switch
+        {
+            Direction.Left => new Vector2(-cellSize, 0),
+            Direction.Right => new Vector2(+cellSize, 0),
+            Direction.Down => new Vector2(0, +cellSize),
+            Direction.Up => new Vector2(0, -cellSize),
+            _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
+        };
+    }
+
     public static string GetSpriteId(this GameSettings gameSettings, TileType tileType)
     {
         foreach (GameSettings.View.Tile tile in gameSettings.view.tiles)

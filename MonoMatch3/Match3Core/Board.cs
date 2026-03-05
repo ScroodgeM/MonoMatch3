@@ -9,6 +9,7 @@ namespace MonoMatch3.Match3Core;
 public class Board
 {
     public event Action<TileBase> OnTileCreated = tile => { };
+    public event Action<TileBase> OnTileRemoved = tile => { };
 
     private readonly IGameEvents gameEvents;
     private readonly ITimer timer;
@@ -24,7 +25,7 @@ public class Board
         this.gameEvents = gameEvents;
         this.timer = timer;
         this.gameSettings = gameSettings;
-        this.tilesFactory = new TilesFactory(sessionRandom, gameSettings.board.generatorPool);
+        this.tilesFactory = new TilesFactory(gameSettings, gameEvents, sessionRandom, gameSettings.board.generatorPool);
         this.boardInput = boardInput;
 
         this.boardInput.OnTileClick += OnTileClick;
@@ -35,7 +36,7 @@ public class Board
         FillBoard();
     }
 
-    ~Board()
+    public void Die()
     {
         this.boardInput.OnTileClick -= OnTileClick;
     }
@@ -50,8 +51,8 @@ public class Board
 
     private void SpawnNewTileOnTop(byte positionX)
     {
-        TilePosition position = new TilePosition(positionX, 0);
-        TileBase tile = tilesFactory.CreateRandom(position);
+        TileBase tile = tilesFactory.CreateRandom(new TilePosition(positionX, 0));
+        tile.StartMovementToPosition(Direction.Down, TimeSpan.FromSeconds(gameSettings.board.timings.fallDownDuration));
         RegisterTile(tile);
     }
 
@@ -68,7 +69,7 @@ public class Board
 
     private void RegisterTile(TileBase tile)
     {
-        tiles.Add(tile.Position, tile);
+        tiles.Add(tile.Position.Value, tile);
         OnTileCreated(tile);
     }
 }

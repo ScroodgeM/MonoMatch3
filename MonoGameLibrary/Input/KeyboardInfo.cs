@@ -20,7 +20,7 @@ public class KeyboardInfo
         this.gameEvents.OnUpdate += OnUpdate;
     }
 
-    ~KeyboardInfo()
+    public void Die()
     {
         this.gameEvents.OnUpdate -= OnUpdate;
     }

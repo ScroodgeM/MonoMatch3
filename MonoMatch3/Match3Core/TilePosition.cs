@@ -1,8 +1,9 @@
 ﻿using System;
+using MonoGameLibrary.StatefulEvent;
 
 namespace MonoMatch3.Match3Core;
 
-public readonly struct TilePosition(byte x, byte y) : IEquatable<TilePosition>
+public readonly struct TilePosition(byte x, byte y) : IEquatable<TilePosition>, IValue<TilePosition>
 {
     public byte X => x;
     public byte Y => y;
@@ -24,12 +25,12 @@ public readonly struct TilePosition(byte x, byte y) : IEquatable<TilePosition>
                     return new TilePosition(++newX, newY);
                 break;
 
-            case Direction.Up:
+            case Direction.Down:
                 if (newY < byte.MaxValue)
                     return new TilePosition(newX, ++newY);
                 break;
 
-            case Direction.Down:
+            case Direction.Up:
                 if (newY > byte.MinValue)
                     return new TilePosition(newX, --newY);
                 break;
@@ -40,6 +41,8 @@ public readonly struct TilePosition(byte x, byte y) : IEquatable<TilePosition>
 
         throw new OverflowException($"can't shift {ToString()} to {direction}");
     }
+
+    public static TilePosition Zero => new TilePosition(0, 0);
 
     public bool Equals(TilePosition other) => x == other.X && y == other.Y;
 
