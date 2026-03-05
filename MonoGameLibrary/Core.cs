@@ -4,11 +4,14 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Input;
+using MonoGameLibrary.StatefulEvent;
+using MonoGameLibrary.Timers;
 
 namespace MonoGameLibrary;
 
 public class Core : Game, IGameEvents
 {
+    public IStatefulEvent<TimeSpan> CurrentTime => currentTime;
     public event Action<GameTime> OnUpdate = time => { };
     public event Action<GameTime> OnDraw = time => { };
 
@@ -22,6 +25,9 @@ public class Core : Game, IGameEvents
     public InputManager Input => inputManager;
 
     protected readonly SpriteRenderer spriteRenderer;
+    protected readonly Timer timer;
+
+    private readonly StatefulEventInt<TimeSpan> currentTime = new(TimeSpan.Zero, (a, b) => a == b);
 
     private readonly GraphicsDeviceManager graphicsDeviceManager;
     private GraphicsDevice graphicsDevice;
@@ -51,6 +57,8 @@ public class Core : Game, IGameEvents
 
         spriteRenderer = new SpriteRenderer();
 
+        timer = new Timer(this);
+
         IsMouseVisible = true;
     }
 
@@ -69,6 +77,8 @@ public class Core : Game, IGameEvents
     protected override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
+
+        currentTime.Set(gameTime.TotalGameTime);
 
         OnUpdate(gameTime);
     }
