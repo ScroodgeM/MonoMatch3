@@ -10,18 +10,27 @@ public abstract class TileBase
     public IStatefulEvent<TilePosition> Position => position;
     public IStatefulEvent<TileState> State => state;
 
+    private byte bottomLinePositionY => (byte)(gameSettings.board.height - 1);
+
     private readonly GameSettings gameSettings;
     private readonly IGameEvents gameEvents;
+    private readonly Board board;
     private readonly StatefulEventInt<TilePosition> position = StatefulEventInt.CreateGenericStruct(TilePosition.Zero);
     private readonly StatefulEventInt<TileState> state = StatefulEventInt.CreateGenericStruct(TileState.Default);
 
-    public TileBase(GameSettings gameSettings, IGameEvents gameEvents, TilePosition position)
+    public TileBase(GameSettings gameSettings, IGameEvents gameEvents, Board board, TilePosition position)
     {
         this.gameSettings = gameSettings;
         this.gameEvents = gameEvents;
+        this.board = board;
         this.position.Set(position);
 
         this.gameEvents.CurrentTime.OnValueChanged += OnTimeChanged;
+    }
+
+    public void StartFallDownToPosition()
+    {
+        StartMovementToPosition(Direction.Down, TimeSpan.FromSeconds(gameSettings.board.timings.fallDownDuration));
     }
 
     public void StartMovementToPosition(Direction direction, TimeSpan duration)
@@ -52,6 +61,29 @@ public abstract class TileBase
         {
             tileState.movement = null;
             state.Set(tileState);
+            if (TryFallDown() == false)
+            {
+                // try merge
+            }
         }
+    }
+
+    private bool TryFallDown()
+    {
+        if (position.Value.Y == bottomLinePositionY)
+        {
+            return false;
+        }
+
+        TilePosition newPosition = position.Value.Shift(Direction.Down);
+
+        if (board.IsCellFree(newPosition) == false)
+        {
+            return false;
+        }
+
+        position.Set(newPosition);
+        StartFallDownToPosition();
+        return true;
     }
 }

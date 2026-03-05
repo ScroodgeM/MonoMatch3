@@ -11,6 +11,8 @@ public class Board
     public event Action<TileBase> OnTileCreated = tile => { };
     public event Action<TileBase> OnTileRemoved = tile => { };
 
+    private byte topLinePositionY => 0;
+
     private readonly IGameEvents gameEvents;
     private readonly ITimer timer;
     private readonly GameSettings gameSettings;
@@ -25,7 +27,7 @@ public class Board
         this.gameEvents = gameEvents;
         this.timer = timer;
         this.gameSettings = gameSettings;
-        this.tilesFactory = new TilesFactory(gameSettings, gameEvents, sessionRandom, gameSettings.board.generatorPool);
+        this.tilesFactory = new TilesFactory(gameSettings, gameEvents, this, sessionRandom, gameSettings.board.generatorPool);
         this.boardInput = boardInput;
 
         this.boardInput.OnTileClick += OnTileClick;
@@ -34,6 +36,11 @@ public class Board
     public void RunGame()
     {
         FillBoard();
+    }
+
+    public bool IsCellFree(TilePosition position)
+    {
+        return tiles.ContainsKey(position) == false;
     }
 
     public void Die()
@@ -51,8 +58,8 @@ public class Board
 
     private void SpawnNewTileOnTop(byte positionX)
     {
-        TileBase tile = tilesFactory.CreateRandom(new TilePosition(positionX, 0));
-        tile.StartMovementToPosition(Direction.Down, TimeSpan.FromSeconds(gameSettings.board.timings.fallDownDuration));
+        TileBase tile = tilesFactory.CreateRandom(new TilePosition(positionX, topLinePositionY));
+        tile.StartFallDownToPosition();
         RegisterTile(tile);
     }
 
@@ -70,6 +77,11 @@ public class Board
     private void RegisterTile(TileBase tile)
     {
         tiles.Add(tile.Position.Value, tile);
+        tile.Position.OnValueChangedFromTo += (oldPosition, newPosition) =>
+        {
+            tiles.Remove(oldPosition);
+            tiles.Add(newPosition, tile);
+        };
         OnTileCreated(tile);
     }
 }
