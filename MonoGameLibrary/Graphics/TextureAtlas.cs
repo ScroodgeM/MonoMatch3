@@ -47,6 +47,8 @@ public class TextureAtlas(Texture2D texture)
                         height: XMLHelpers.GetIntOrDefault(region, "height")
                     );
 
+                    float scale = XMLHelpers.GetFloatOrDefault(region, "scale", 1f);
+
                     Vector2 pivot = new(
                         x: XMLHelpers.GetFloatOrDefault(region, "pivotX"),
                         y: XMLHelpers.GetFloatOrDefault(region, "pivotY")
@@ -63,7 +65,7 @@ public class TextureAtlas(Texture2D texture)
                         effects |= SpriteEffects.FlipHorizontally;
                     }
 
-                    atlas.sprites.Add(name, new Sprite(texture, sourceRectangle, pivot, effects));
+                    atlas.sprites.Add(name, new Sprite(texture, sourceRectangle, pivot, scale, effects));
                 }
             }
         }
@@ -72,7 +74,7 @@ public class TextureAtlas(Texture2D texture)
         {
             Rectangle sourceRectangle = new(0, 0, texture.Width, texture.Height);
             Vector2 pivot = new Vector2(texture.Width, texture.Height) * 0.5f;
-            atlas.sprites.Add(DefaultSpriteName, new Sprite(texture, sourceRectangle, pivot, SpriteEffects.None));
+            atlas.sprites.Add(DefaultSpriteName, new Sprite(texture, sourceRectangle, pivot, 1f, SpriteEffects.None));
         }
 
         return atlas;

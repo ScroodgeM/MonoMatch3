@@ -6,7 +6,7 @@ using MonoGameLibrary.Graphics.SpriteAnimations;
 
 namespace MonoGameLibrary.Graphics;
 
-public class Sprite(Texture2D texture, Rectangle sourceRectangle, Vector2 pivot, SpriteEffects effects)
+public class Sprite(Texture2D texture, Rectangle sourceRectangle, Vector2 pivot, float scale, SpriteEffects effects)
 {
     public struct Transform
     {
@@ -79,7 +79,7 @@ public class Sprite(Texture2D texture, Rectangle sourceRectangle, Vector2 pivot,
             transform.color,
             transform.rotation,
             pivot,
-            transform.scale,
+            transform.scale * scale,
             effects,
             transform.layerDepth
         );
