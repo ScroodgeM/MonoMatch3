@@ -8,6 +8,10 @@
             <Tile type="Simple4"/>
             <Tile type="Simple5"/>
         </GeneratorPool>
+        <Timings
+                delayBeforeFallIntoEmptyCell="0.1"
+                fallDownDuration="0.3"
+        />
     </Board>
     <View cellSize="128">
         <Tiles>

@@ -73,5 +73,7 @@ public class GameStarter() : Core("Mono Match 3", new Vector2(1024, 1024), false
         BoardInput boardInput = new BoardInput(this, Input, gameSettings);
         Board board = new Board(this, timer, boardInput, gameSettings);
         View.Board boardView = new View.Board(spriteRenderer, gameSettings, board);
+
+        board.RunGame();
     }
 }

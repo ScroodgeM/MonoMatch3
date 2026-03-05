@@ -13,9 +13,16 @@ public class GameSettings(XElement rootElement)
 {
     public readonly struct Board(XElement element)
     {
+        public readonly struct Timings(XElement element)
+        {
+            public readonly float delayBeforeFallIntoEmptyCell = XMLHelpers.GetFloatOrDefault(element, nameof(delayBeforeFallIntoEmptyCell));
+            public readonly float fallDownDuration = XMLHelpers.GetFloatOrDefault(element, nameof(fallDownDuration));
+        }
+
         public readonly byte width = XMLHelpers.GetByteOrDefault(element, nameof(width));
         public readonly byte height = XMLHelpers.GetByteOrDefault(element, nameof(height));
         public readonly TileType[] generatorPool = XMLHelpers.GetEnumsValues<TileType>(element.Element("GeneratorPool").Elements("Tile"), "type");
+        public readonly Timings timings = new(element.Element(nameof(Timings)));
     }
 
     public readonly struct View(XElement element)

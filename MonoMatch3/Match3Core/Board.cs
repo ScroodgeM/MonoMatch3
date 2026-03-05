@@ -30,14 +30,34 @@ public class Board
         this.boardInput.OnTileClick += OnTileClick;
     }
 
+    public void RunGame()
+    {
+        FillBoard();
+    }
+
     ~Board()
     {
         this.boardInput.OnTileClick -= OnTileClick;
     }
 
+    private void FillBoard()
+    {
+        for (byte x = 0; x <= gameSettings.board.width; x++)
+        {
+            SpawnNewTileOnTop(x);
+        }
+    }
+
+    private void SpawnNewTileOnTop(byte positionX)
+    {
+        TilePosition position = new TilePosition(positionX, 0);
+        TileBase tile = tilesFactory.CreateRandom(position);
+        RegisterTile(tile);
+    }
+
     private void OnTileClick(TilePosition position)
     {
-        timer.Wait(TimeSpan.FromSeconds(1)).Done(() =>
+        timer.Wait(TimeSpan.FromSeconds(0.3)).Done(() =>
         {
             if (tiles.ContainsKey(position) == false)
             {
