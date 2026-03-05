@@ -15,7 +15,7 @@ public class GameSettings(XElement rootElement)
     {
         public readonly struct Timings(XElement element)
         {
-            public readonly float delayBeforeFallIntoEmptyCell = XMLHelpers.GetFloatOrDefault(element, nameof(delayBeforeFallIntoEmptyCell));
+            public readonly float delayBeforeFallIntoFreeCell = XMLHelpers.GetFloatOrDefault(element, nameof(delayBeforeFallIntoFreeCell));
             public readonly float fallDownDuration = XMLHelpers.GetFloatOrDefault(element, nameof(fallDownDuration));
         }
 

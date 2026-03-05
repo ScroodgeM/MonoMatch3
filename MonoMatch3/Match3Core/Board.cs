@@ -81,7 +81,37 @@ public class Board
         {
             tiles.Remove(oldPosition);
             tiles.Add(newPosition, tile);
+
+            timer.Wait(TimeSpan.FromSeconds(gameSettings.board.timings.delayBeforeFallIntoFreeCell)).Done(() => { ProcessFreeCell(oldPosition); }
+            );
         };
         OnTileCreated(tile);
+    }
+
+    private void ProcessFreeCell(TilePosition position)
+    {
+        if (IsCellFree(position) == false)
+        {
+            return;
+        }
+
+        if (position.Y == topLinePositionY)
+        {
+            SpawnNewTileOnTop(position.X);
+            return;
+        }
+
+        TilePosition positionJustAbove = position.Shift(Direction.Up);
+
+        if (IsCellFree(positionJustAbove) == true)
+        {
+            ProcessFreeCell(positionJustAbove);
+            return;
+        }
+
+        if (tiles[positionJustAbove].TryFallDown() == false)
+        {
+            throw new InvalidOperationException("we should not get here");
+        }
     }
 }

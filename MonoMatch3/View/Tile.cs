@@ -32,9 +32,12 @@ public class Tile
         this.mySpriteId = this.spriteRenderer.AddSprite(spriteId, mySpriteTransform);
 
         this.gameEvents.OnUpdate += OnUpdate;
+        RefreshMovement(gameEvents.CurrentTime.Value);
     }
 
-    private void OnUpdate(GameTime gameTime)
+    private void OnUpdate(GameTime gameTime) => RefreshMovement(gameTime.TotalGameTime);
+
+    private void RefreshMovement(TimeSpan time)
     {
         TileState tileState = tileCore.State.Value;
 
@@ -43,7 +46,7 @@ public class Tile
             TileState.Movement movement = tileState.movement.Value;
             Vector2 moveTo = gameSettings.BoardToScreen(tileCore.Position.Value).ToVector2();
             Vector2 moveFrom = moveTo - gameSettings.BoardToScreen(movement.direction);
-            TimeSpan timeElapsed = gameTime.TotalGameTime - movement.startTime;
+            TimeSpan timeElapsed = time - movement.startTime;
             TimeSpan duration = movement.finishTime - movement.startTime;
             double normalizedTime = Math.Clamp(timeElapsed / duration, 0, 1);
             mySpriteTransform.position = Vector2.Lerp(moveFrom, moveTo, (float)normalizedTime);

@@ -68,7 +68,7 @@ public abstract class TileBase
         }
     }
 
-    private bool TryFallDown()
+    internal bool TryFallDown()
     {
         if (position.Value.Y == bottomLinePositionY)
         {
