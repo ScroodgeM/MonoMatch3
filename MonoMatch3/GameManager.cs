@@ -8,7 +8,7 @@ using MonoMatch3Core.Data;
 
 namespace MonoMatch3;
 
-public class GameStarter() : Core("Mono Match 3", new Vector2(1024, 1024), false)
+public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false)
 {
     private Settings settings;
 
