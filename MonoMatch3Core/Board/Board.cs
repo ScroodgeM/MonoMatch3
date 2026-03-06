@@ -59,9 +59,16 @@ public class Board
         return tiles.ContainsKey(position) == false;
     }
 
-    internal void Die()
+    private void Die()
     {
         this.boardInput.OnTileClick -= OnTileClick;
+
+        foreach (TileBase tile in tiles.Values)
+        {
+            tile.Die();
+        }
+
+        tiles.Clear();
     }
 
     internal bool TryProcessMatch(TilePosition position)

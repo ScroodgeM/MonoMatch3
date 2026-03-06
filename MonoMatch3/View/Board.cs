@@ -34,6 +34,13 @@ public class Board
     {
         this.boardCore.OnTileCreated -= OnTileCreated;
         this.boardCore.OnTileRemoved -= OnTileRemoved;
+
+        foreach (Tile tileView in tileViews.Values)
+        {
+            tileView.Die();
+        }
+
+        tileViews.Clear();
     }
 
     private void OnTileCreated(TileBase tile)
@@ -44,6 +51,6 @@ public class Board
     private void OnTileRemoved(TileBase tile, TileRemoveReason removeReason)
     {
         tileViews.Remove(tile, out Tile tileView);
-        tileView.Die(removeReason);
+        tileView.Remove(removeReason);
     }
 }

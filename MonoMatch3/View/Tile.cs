@@ -77,7 +77,7 @@ public class Tile
         }
     }
 
-    public void Die(TileRemoveReason removeReason)
+    internal void Remove(TileRemoveReason removeReason)
     {
         this.gameEvents.OnUpdate -= OnUpdate;
 
@@ -89,11 +89,17 @@ public class Tile
                 this.spriteRenderer.AddAnimation(mySpriteId, new RotateSelf(0f, 10f));
                 this.spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0f, now, now + disappearDuration));
                 this.spriteRenderer.AddAnimation(mySpriteId, new ChangeScale(1f, 2f, now, now + disappearDuration));
-                timer.Wait(disappearDuration).Done(() => { this.spriteRenderer.RemoveSprite(mySpriteId); });
+                timer.Wait(disappearDuration).Done(Die);
                 break;
             default:
-                this.spriteRenderer.RemoveSprite(mySpriteId);
+                Die();
                 break;
         }
+    }
+
+    internal void Die()
+    {
+        this.gameEvents.OnUpdate -= OnUpdate;
+        this.spriteRenderer.RemoveSprite(mySpriteId);
     }
 }
