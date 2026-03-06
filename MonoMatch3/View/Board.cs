@@ -28,12 +28,14 @@ public class Board
 
         this.boardCore.OnTileCreated += OnTileCreated;
         this.boardCore.OnTileRemoved += OnTileRemoved;
+        this.boardCore.SelectedTile.OnValueChanged += OnSelectedValueChanged;
     }
 
     public void Die()
     {
         this.boardCore.OnTileCreated -= OnTileCreated;
         this.boardCore.OnTileRemoved -= OnTileRemoved;
+        this.boardCore.SelectedTile.OnValueChanged -= OnSelectedValueChanged;
 
         foreach (Tile tileView in tileViews.Values)
         {
@@ -52,5 +54,14 @@ public class Board
     {
         tileViews.Remove(tile, out Tile tileView);
         tileView.Remove(removeReason);
+    }
+
+    private void OnSelectedValueChanged(bool isSelected, TilePosition position)
+    {
+        foreach (KeyValuePair<TileBase, Tile> tile in tileViews)
+        {
+            bool tileIsSelected = isSelected == true && tile.Key.Position.Value == position;
+            tile.Value.SetSelected(tileIsSelected);
+        }
     }
 }

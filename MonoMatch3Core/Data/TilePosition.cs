@@ -52,4 +52,8 @@ public readonly struct TilePosition(byte x, byte y) : IEquatable<TilePosition>, 
     public override int GetHashCode() => (int)x << 8 | (int)y;
 
     public override string ToString() => $"{nameof(TilePosition)} (x={x} ,y={y})";
+
+    public static bool operator ==(TilePosition a, TilePosition b) => a.X == b.X && a.Y == b.Y;
+
+    public static bool operator !=(TilePosition a, TilePosition b) => (a == b) == false;
 }

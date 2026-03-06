@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MonoGameLibrary;
 using MonoGameLibrary.Input;
+using MonoGameLibrary.StatefulEvent;
 using MonoGameLibrary.Timers;
 using MonoMatch3Core.Data;
 using MonoMatch3Core.Enums;
@@ -12,6 +13,7 @@ namespace MonoMatch3Core.Board;
 
 public class Board
 {
+    public IStatefulEvent<bool, TilePosition> SelectedTile => selectedTile;
     public event Action<TileBase> OnTileCreated = tile => { };
     public event Action<TileBase, TileRemoveReason> OnTileRemoved = (tile, reason) => { };
 
@@ -24,6 +26,7 @@ public class Board
     private readonly BoardInput boardInput;
     private readonly Aggregator matchChecker;
 
+    private StatefulEventInt<bool, TilePosition> selectedTile = StatefulEventInt.Create(false).Add(StatefulEventInt.CreateGenericStruct(TilePosition.Zero));
     private readonly Random sessionRandom = new Random(Guid.NewGuid().GetHashCode());
     private readonly Dictionary<TilePosition, TileBase> tiles = new Dictionary<TilePosition, TileBase>();
 
@@ -109,9 +112,16 @@ public class Board
 
     private void OnTileClick(TilePosition position)
     {
-        if (tiles.TryGetValue(position, out TileBase tile) == true && tile.State.Value.movement.HasValue == false)
+        if (selectedTile.Value1 == true && selectedTile.Value2 == position)
         {
-            RemoveTile(position, TileRemoveReason.None);
+            if (tiles.TryGetValue(position, out TileBase tile) == true && tile.State.Value.movement.HasValue == false)
+            {
+                RemoveTile(position, TileRemoveReason.None);
+            }
+        }
+        else
+        {
+            selectedTile.SetValues(true, position);
         }
     }
 
