@@ -4,7 +4,7 @@ using MonoGameLibrary;
 using MonoGameLibrary.Input;
 using MonoMatch3Core.Data;
 
-namespace MonoMatch3.Match3Core;
+namespace MonoMatch3Core;
 
 public class BoardInput
 {

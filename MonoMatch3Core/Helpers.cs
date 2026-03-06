@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using MonoMatch3.Match3Core.Tiles;
 using MonoMatch3Core.Data;
 using MonoMatch3Core.Enums;
 
-namespace MonoMatch3.Match3Core;
+namespace MonoMatch3Core;
 
 public static class Helpers
 {
