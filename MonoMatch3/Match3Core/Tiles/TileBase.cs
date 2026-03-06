@@ -63,7 +63,7 @@ public abstract class TileBase
             state.Set(tileState);
             if (TryFallDown() == false)
             {
-                // try merge
+                board.TryProcessMatch(position.Value);
             }
         }
     }

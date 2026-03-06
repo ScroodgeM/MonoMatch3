@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MonoGameLibrary;
 using MonoGameLibrary.Timers;
+using MonoMatch3.Match3Core.MatchChecker;
 using MonoMatch3.Match3Core.Tiles;
 
 namespace MonoMatch3.Match3Core;
@@ -18,6 +19,7 @@ public class Board
     private readonly Settings settings;
     private readonly TilesFactory tilesFactory;
     private readonly BoardInput boardInput;
+    private readonly Aggregator matchChecker;
 
     private readonly Random sessionRandom = new Random(Guid.NewGuid().GetHashCode());
     private readonly Dictionary<TilePosition, TileBase> tiles = new Dictionary<TilePosition, TileBase>();
@@ -29,6 +31,7 @@ public class Board
         this.settings = settings;
         this.tilesFactory = new TilesFactory(settings, gameEvents, this, sessionRandom);
         this.boardInput = boardInput;
+        this.matchChecker = new Aggregator(this);
 
         this.boardInput.OnTileClick += OnTileClick;
     }
@@ -46,6 +49,11 @@ public class Board
     public void Die()
     {
         this.boardInput.OnTileClick -= OnTileClick;
+    }
+
+    public bool TryProcessMatch(TilePosition position)
+    {
+        return matchChecker.TryProcessMatch(position);
     }
 
     private void FillBoard()
@@ -87,6 +95,7 @@ public class Board
     {
         tiles.Remove(position, out TileBase removedTile);
         OnTileRemoved(removedTile);
+        removedTile.Die();
         WaitAndProcessFreeCell(position);
     }
 
