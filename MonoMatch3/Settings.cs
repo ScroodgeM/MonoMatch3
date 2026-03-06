@@ -19,6 +19,7 @@ public class Settings
         {
             public float delayBeforeFallIntoFreeCell { get; set; }
             public float fallDownDuration { get; set; }
+            public float successMatchDisappearDuration { get; set; }
         }
 
         public byte width { get; set; }

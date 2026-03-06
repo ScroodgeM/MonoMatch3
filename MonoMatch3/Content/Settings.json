@@ -17,7 +17,8 @@
     ],
     "timings": {
       "delayBeforeFallIntoFreeCell": 0.1,
-      "fallDownDuration": 0.2
+      "fallDownDuration": 0.2,
+      "successMatchDisappearDuration": 1.0
     }
   },
   "view": {

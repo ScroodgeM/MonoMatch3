@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
+using MonoGameLibrary.Graphics.SpriteAnimations;
+using MonoGameLibrary.Timers;
 using MonoMatch3.Match3Core;
 using MonoMatch3.Match3Core.Tiles;
 
@@ -12,17 +14,19 @@ public class Tile
     private readonly SpriteRenderer spriteRenderer;
     private readonly Settings settings;
     private readonly IGameEvents gameEvents;
+    private readonly ITimer timer;
     private readonly TileBase tileCore;
     private readonly ushort mySpriteId;
     private Sprite.Transform mySpriteTransform;
 
     private bool isMoving = false;
 
-    public Tile(SpriteRenderer spriteRenderer, Settings settings, IGameEvents gameEvents, TileBase tileCore)
+    public Tile(SpriteRenderer spriteRenderer, Settings settings, IGameEvents gameEvents, ITimer timer, TileBase tileCore)
     {
         this.spriteRenderer = spriteRenderer;
         this.settings = settings;
         this.gameEvents = gameEvents;
+        this.timer = timer;
         this.tileCore = tileCore;
 
         this.mySpriteTransform = Sprite.Transform.Default;
@@ -61,10 +65,23 @@ public class Tile
         }
     }
 
-    public void Die()
+    public void Die(TileRemoveReason removeReason)
     {
         this.gameEvents.OnUpdate -= OnUpdate;
 
-        this.spriteRenderer.RemoveSprite(mySpriteId);
+        switch (removeReason)
+        {
+            case TileRemoveReason.SuccessMatch:
+                TimeSpan disappearDuration = TimeSpan.FromSeconds(settings.board.timings.successMatchDisappearDuration);
+                TimeSpan now = gameEvents.CurrentTime.Value;
+                this.spriteRenderer.AddAnimation(mySpriteId, new RotateSelf(0f, 10f));
+                this.spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0f, now, now + disappearDuration));
+                this.spriteRenderer.AddAnimation(mySpriteId, new ChangeScale(1f, 2f, now, now + disappearDuration));
+                timer.Wait(disappearDuration).Done(() => { this.spriteRenderer.RemoveSprite(mySpriteId); });
+                break;
+            default:
+                this.spriteRenderer.RemoveSprite(mySpriteId);
+                break;
+        }
     }
 }

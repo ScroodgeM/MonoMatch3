@@ -10,7 +10,7 @@ namespace MonoMatch3.Match3Core;
 public class Board
 {
     public event Action<TileBase> OnTileCreated = tile => { };
-    public event Action<TileBase> OnTileRemoved = tile => { };
+    public event Action<TileBase, TileRemoveReason> OnTileRemoved = (tile, reason) => { };
 
     private byte topLinePositionY => 0;
 
@@ -75,7 +75,7 @@ public class Board
     {
         if (tiles.TryGetValue(position, out TileBase tile) == true && tile.State.Value.movement.HasValue == false)
         {
-            RemoveTile(position);
+            RemoveTile(position, TileRemoveReason.None);
         }
     }
 
@@ -91,10 +91,10 @@ public class Board
         OnTileCreated(tile);
     }
 
-    internal void RemoveTile(TilePosition position)
+    internal void RemoveTile(TilePosition position, TileRemoveReason reason)
     {
         tiles.Remove(position, out TileBase removedTile);
-        OnTileRemoved(removedTile);
+        OnTileRemoved(removedTile, reason);
         removedTile.Die();
         WaitAndProcessFreeCell(position);
     }
