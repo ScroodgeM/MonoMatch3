@@ -6,6 +6,7 @@ using MonoGameLibrary.Graphics.SpriteAnimations;
 using MonoGameLibrary.Timers;
 using MonoMatch3.Match3Core;
 using MonoMatch3.Match3Core.Tiles;
+using MonoMatch3Core.Enums;
 
 namespace MonoMatch3.View;
 

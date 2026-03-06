@@ -28,5 +28,6 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\MonoGameLibrary\MonoGameLibrary.csproj" />
+      <ProjectReference Include="..\MonoMatch3Core\MonoMatch3Core.csproj" />
     </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@ using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using MonoMatch3.Match3Core.Tiles;
+using MonoMatch3Core.Enums;
 
 namespace MonoMatch3;
 

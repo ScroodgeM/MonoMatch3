@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MonoMatch3.Match3Core.Tiles;
+namespace MonoMatch3Core.Enums;
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum TileType : byte

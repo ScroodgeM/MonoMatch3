@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMatch3", "MonoMatch3\Mo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGameLibrary", "MonoGameLibrary\MonoGameLibrary.csproj", "{907705AB-613A-4FED-B953-40BD7B6F907F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMatch3Core", "MonoMatch3Core\MonoMatch3Core.csproj", "{3BFC9405-1C89-45E0-A061-0D43CE9E9497}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{907705AB-613A-4FED-B953-40BD7B6F907F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{907705AB-613A-4FED-B953-40BD7B6F907F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{907705AB-613A-4FED-B953-40BD7B6F907F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BFC9405-1C89-45E0-A061-0D43CE9E9497}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BFC9405-1C89-45E0-A061-0D43CE9E9497}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BFC9405-1C89-45E0-A061-0D43CE9E9497}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BFC9405-1C89-45E0-A061-0D43CE9E9497}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,5 +1,6 @@
 ﻿using System;
 using MonoGameLibrary.StatefulEvent;
+using MonoMatch3Core.Enums;
 
 namespace MonoMatch3.Match3Core;
 

@@ -1,4 +1,4 @@
-﻿namespace MonoMatch3.Match3Core;
+﻿namespace MonoMatch3Core.Enums;
 
 public enum Direction : byte
 {

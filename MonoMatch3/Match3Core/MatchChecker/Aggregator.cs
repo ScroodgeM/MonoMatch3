@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MonoMatch3.Match3Core.Tiles;
+using MonoMatch3Core.Enums;
 
 namespace MonoMatch3.Match3Core.MatchChecker;
 
