@@ -13,9 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin game_settings.xml
-/copy:game_settings.xml
-
 #begin images/gems.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -45,3 +42,7 @@
 
 #begin images/logo.xml
 /copy:images/logo.xml
+
+#begin Settings.json
+/copy:Settings.json
+

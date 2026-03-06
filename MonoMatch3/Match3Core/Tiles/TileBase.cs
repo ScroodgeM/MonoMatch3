@@ -10,17 +10,17 @@ public abstract class TileBase
     public IStatefulEvent<TilePosition> Position => position;
     public IStatefulEvent<TileState> State => state;
 
-    private byte bottomLinePositionY => (byte)(gameSettings.board.height - 1);
+    private byte bottomLinePositionY => (byte)(settings.board.height - 1);
 
-    private readonly GameSettings gameSettings;
+    private readonly Settings settings;
     private readonly IGameEvents gameEvents;
     private readonly Board board;
     private readonly StatefulEventInt<TilePosition> position = StatefulEventInt.CreateGenericStruct(TilePosition.Zero);
     private readonly StatefulEventInt<TileState> state = StatefulEventInt.CreateGenericStruct(TileState.Default);
 
-    public TileBase(GameSettings gameSettings, IGameEvents gameEvents, Board board, TilePosition position)
+    public TileBase(Settings settings, IGameEvents gameEvents, Board board, TilePosition position)
     {
-        this.gameSettings = gameSettings;
+        this.settings = settings;
         this.gameEvents = gameEvents;
         this.board = board;
         this.position.Set(position);
@@ -30,7 +30,7 @@ public abstract class TileBase
 
     public void StartFallDownToPosition()
     {
-        StartMovementToPosition(Direction.Down, TimeSpan.FromSeconds(gameSettings.board.timings.fallDownDuration));
+        StartMovementToPosition(Direction.Down, TimeSpan.FromSeconds(settings.board.timings.fallDownDuration));
     }
 
     public void StartMovementToPosition(Direction direction, TimeSpan duration)

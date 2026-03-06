@@ -15,19 +15,19 @@ public class Board
 
     private readonly IGameEvents gameEvents;
     private readonly ITimer timer;
-    private readonly GameSettings gameSettings;
+    private readonly Settings settings;
     private readonly TilesFactory tilesFactory;
     private readonly BoardInput boardInput;
 
     private readonly Random sessionRandom = new Random(Guid.NewGuid().GetHashCode());
     private readonly Dictionary<TilePosition, TileBase> tiles = new Dictionary<TilePosition, TileBase>();
 
-    public Board(IGameEvents gameEvents, ITimer timer, BoardInput boardInput, GameSettings gameSettings)
+    public Board(IGameEvents gameEvents, ITimer timer, BoardInput boardInput, Settings settings)
     {
         this.gameEvents = gameEvents;
         this.timer = timer;
-        this.gameSettings = gameSettings;
-        this.tilesFactory = new TilesFactory(gameSettings, gameEvents, this, sessionRandom, gameSettings.board.generatorPool);
+        this.settings = settings;
+        this.tilesFactory = new TilesFactory(settings, gameEvents, this, sessionRandom);
         this.boardInput = boardInput;
 
         this.boardInput.OnTileClick += OnTileClick;
@@ -50,7 +50,7 @@ public class Board
 
     private void FillBoard()
     {
-        for (byte x = 0; x <= gameSettings.board.width; x++)
+        for (byte x = 0; x <= settings.board.width; x++)
         {
             SpawnNewTileOnTop(x);
         }
@@ -92,7 +92,7 @@ public class Board
 
     private void WaitAndProcessFreeCell(TilePosition position)
     {
-        timer.Wait(TimeSpan.FromSeconds(gameSettings.board.timings.delayBeforeFallIntoFreeCell)).Done(() => { ProcessFreeCell(position); });
+        timer.Wait(TimeSpan.FromSeconds(settings.board.timings.delayBeforeFallIntoFreeCell)).Done(() => { ProcessFreeCell(position); });
     }
 
     private void ProcessFreeCell(TilePosition position)

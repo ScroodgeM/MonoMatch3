@@ -1,9 +1,10 @@
-﻿namespace MonoMatch3.Match3Core.Tiles;
+﻿using System.Text.Json.Serialization;
 
+namespace MonoMatch3.Match3Core.Tiles;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum TileType : byte
 {
-    None,
-
     Simple1,
     Simple2,
     Simple3,

@@ -7,7 +7,7 @@ namespace MonoMatch3.Match3Core;
 
 public static class Helpers
 {
-    public static bool IsPositionValid(int positionX, int positionY, GameSettings.Board boardSettings)
+    public static bool IsPositionValid(int positionX, int positionY, Settings.Board boardSettings)
     {
         return
             positionX >= 0
@@ -19,12 +19,12 @@ public static class Helpers
             positionY < boardSettings.height;
     }
 
-    public static bool TryScreenToBoard(this GameSettings gameSettings, Point screenPoint, out TilePosition tilePosition)
+    public static bool TryScreenToBoard(this Settings settings, Point screenPoint, out TilePosition tilePosition)
     {
-        int tilePositionX = (int)MathF.Floor(screenPoint.X / gameSettings.view.cellSize);
-        int tilePositionY = (int)MathF.Floor(screenPoint.Y / gameSettings.view.cellSize);
+        int tilePositionX = (int)MathF.Floor(screenPoint.X / settings.view.cellSize);
+        int tilePositionY = (int)MathF.Floor(screenPoint.Y / settings.view.cellSize);
 
-        if (IsPositionValid(tilePositionX, tilePositionY, gameSettings.board) == true)
+        if (IsPositionValid(tilePositionX, tilePositionY, settings.board) == true)
         {
             tilePosition = new TilePosition((byte)tilePositionX, (byte)tilePositionY);
             return true;
@@ -34,7 +34,7 @@ public static class Helpers
         return false;
     }
 
-    public static Point BoardToScreen(this GameSettings gameSettings, TilePosition tilePosition)
+    public static Point BoardToScreen(this Settings settings, TilePosition tilePosition)
     {
         return (
                 new Vector2(
@@ -42,14 +42,14 @@ public static class Helpers
                     0.5f + tilePosition.Y
                 )
                 *
-                gameSettings.view.cellSize
+                settings.view.cellSize
             )
             .ToPoint();
     }
 
-    public static Vector2 BoardToScreen(this GameSettings gameSettings, Direction direction)
+    public static Vector2 BoardToScreen(this Settings settings, Direction direction)
     {
-        float cellSize = gameSettings.view.cellSize;
+        float cellSize = settings.view.cellSize;
         return direction switch
         {
             Direction.Left => new Vector2(-cellSize, 0),
@@ -60,9 +60,9 @@ public static class Helpers
         };
     }
 
-    public static string GetSpriteId(this GameSettings gameSettings, TileType tileType)
+    public static string GetSpriteId(this Settings settings, TileType tileType)
     {
-        foreach (GameSettings.View.Tile tile in gameSettings.view.tiles)
+        foreach (Settings.View.Tile tile in settings.view.tiles)
         {
             if (tile.type == tileType)
             {

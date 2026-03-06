@@ -10,7 +10,7 @@ namespace MonoMatch3.View;
 public class Tile
 {
     private readonly SpriteRenderer spriteRenderer;
-    private readonly GameSettings gameSettings;
+    private readonly Settings settings;
     private readonly IGameEvents gameEvents;
     private readonly TileBase tileCore;
     private readonly ushort mySpriteId;
@@ -18,17 +18,17 @@ public class Tile
 
     private bool isMoving = false;
 
-    public Tile(SpriteRenderer spriteRenderer, GameSettings gameSettings, IGameEvents gameEvents, TileBase tileCore)
+    public Tile(SpriteRenderer spriteRenderer, Settings settings, IGameEvents gameEvents, TileBase tileCore)
     {
         this.spriteRenderer = spriteRenderer;
-        this.gameSettings = gameSettings;
+        this.settings = settings;
         this.gameEvents = gameEvents;
         this.tileCore = tileCore;
 
         this.mySpriteTransform = Sprite.Transform.Default;
-        this.mySpriteTransform.position = gameSettings.BoardToScreen(tileCore.Position.Value).ToVector2();
+        this.mySpriteTransform.position = settings.BoardToScreen(tileCore.Position.Value).ToVector2();
 
-        string spriteId = gameSettings.GetSpriteId(tileCore.TileType);
+        string spriteId = settings.GetSpriteId(tileCore.TileType);
         this.mySpriteId = this.spriteRenderer.AddSprite(spriteId, mySpriteTransform);
 
         this.gameEvents.OnUpdate += OnUpdate;
@@ -44,8 +44,8 @@ public class Tile
         if (tileState.movement.HasValue == true)
         {
             TileState.Movement movement = tileState.movement.Value;
-            Vector2 moveTo = gameSettings.BoardToScreen(tileCore.Position.Value).ToVector2();
-            Vector2 moveFrom = moveTo - gameSettings.BoardToScreen(movement.direction);
+            Vector2 moveTo = settings.BoardToScreen(tileCore.Position.Value).ToVector2();
+            Vector2 moveFrom = moveTo - settings.BoardToScreen(movement.direction);
             TimeSpan timeElapsed = time - movement.startTime;
             TimeSpan duration = movement.finishTime - movement.startTime;
             double normalizedTime = Math.Clamp(timeElapsed / duration, 0, 1);
@@ -55,7 +55,7 @@ public class Tile
         }
         else if (isMoving == true)
         {
-            mySpriteTransform.position = gameSettings.BoardToScreen(tileCore.Position.Value).ToVector2();
+            mySpriteTransform.position = settings.BoardToScreen(tileCore.Position.Value).ToVector2();
             spriteRenderer.UpdateTransform(mySpriteId, mySpriteTransform);
             isMoving = false;
         }

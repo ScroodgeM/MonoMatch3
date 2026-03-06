@@ -11,13 +11,13 @@ public class BoardInput
 
     private readonly IGameEvents gameEvents;
     private readonly InputManager inputManager;
-    private readonly GameSettings gameSettings;
+    private readonly Settings settings;
 
-    public BoardInput(IGameEvents gameEvents, InputManager inputManager, GameSettings gameSettings)
+    public BoardInput(IGameEvents gameEvents, InputManager inputManager, Settings settings)
     {
         this.gameEvents = gameEvents;
         this.inputManager = inputManager;
-        this.gameSettings = gameSettings;
+        this.settings = settings;
 
         this.gameEvents.OnUpdate += OnUpdate;
     }
@@ -31,7 +31,7 @@ public class BoardInput
     {
         if (inputManager.Mouse.WasButtonJustPressed(MouseButton.Left) == true
             &&
-            gameSettings.TryScreenToBoard(inputManager.Mouse.Position, out TilePosition tilePosition) == true)
+            settings.TryScreenToBoard(inputManager.Mouse.Position, out TilePosition tilePosition) == true)
         {
             OnTileClick(tilePosition);
         }

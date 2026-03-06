@@ -9,20 +9,20 @@ namespace MonoMatch3;
 
 public class GameStarter() : Core("Mono Match 3", new Vector2(1024, 1024), false)
 {
-    private GameSettings gameSettings;
+    private Settings settings;
 
     protected override void LoadContent()
     {
-        gameSettings = GameSettings.FromFile(Content);
+        settings = Settings.Load(Content);
 
-        TextureAtlas.Load(Content, gameSettings.system.textureAtlasDefinitions, spriteRenderer.Pool);
+        TextureAtlas.Load(Content, settings.system.textureAtlases, spriteRenderer.Pool);
 
         Sprite.Transform transform = Sprite.Transform.Default;
         Rectangle windowRect = Window.ClientBounds;
         transform.position = new Vector2(windowRect.Width, windowRect.Height) * 0.5f;
         transform.layerDepth = (int)RenderLayers.MainMenuLogo;
 
-        ushort spriteId = spriteRenderer.AddSprite(gameSettings.view.mainMenu.logoSpriteId, transform);
+        ushort spriteId = spriteRenderer.AddSprite(settings.view.mainMenuLogoSpriteId, transform);
 
         spriteRenderer.AddAnimation(spriteId, new PingPongColorChannels(0.5f, 1f, 0.20f, 0.25f, 0.33f));
         spriteRenderer.AddAnimation(spriteId, new PingPongScale(1.0f, 1.1f, 0.16f));
@@ -48,9 +48,9 @@ public class GameStarter() : Core("Mono Match 3", new Vector2(1024, 1024), false
 
     private void StartGame()
     {
-        BoardInput boardInput = new BoardInput(this, Input, gameSettings);
-        Board board = new Board(this, timer, boardInput, gameSettings);
-        View.Board boardView = new View.Board(spriteRenderer, gameSettings, this, board);
+        BoardInput boardInput = new BoardInput(this, Input, settings);
+        Board board = new Board(this, timer, boardInput, settings);
+        View.Board boardView = new View.Board(spriteRenderer, settings, this, board);
 
         board.RunGame();
     }

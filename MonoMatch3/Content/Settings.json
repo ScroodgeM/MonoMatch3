@@ -1,0 +1,49 @@
+﻿{
+  "system": {
+    "textureAtlases": [
+      "images/gems.xml",
+      "images/logo.xml"
+    ]
+  },
+  "board": {
+    "width": 8,
+    "height": 8,
+    "generatorPool": [
+      "Simple1",
+      "Simple2",
+      "Simple3",
+      "Simple4",
+      "Simple5"
+    ],
+    "timings": {
+      "delayBeforeFallIntoFreeCell": 0.1,
+      "fallDownDuration": 0.2
+    }
+  },
+  "view": {
+    "cellSize": 128,
+    "mainMenuLogoSpriteId": "logo",
+    "tiles": [
+      {
+        "type": "Simple1",
+        "spriteId": "gem1"
+      },
+      {
+        "type": "Simple2",
+        "spriteId": "gem2"
+      },
+      {
+        "type": "Simple3",
+        "spriteId": "gem4"
+      },
+      {
+        "type": "Simple4",
+        "spriteId": "gem5"
+      },
+      {
+        "type": "Simple5",
+        "spriteId": "gem6"
+      }
+    ]
+  }
+}
