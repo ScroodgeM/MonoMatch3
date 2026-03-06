@@ -32,6 +32,11 @@ public class Board
         return new Board(gameEvents, timer, inputManager, settings);
     }
 
+    public static void Destroy(Board instance)
+    {
+        instance.Die();
+    }
+
     private Board(IGameEvents gameEvents, ITimer timer, InputManager inputManager, Settings settings)
     {
         this.gameEvents = gameEvents;
