@@ -67,9 +67,9 @@ internal class Tile
             case TileRemoveReason.SuccessMatch:
                 TimeSpan disappearDuration = TimeSpan.FromSeconds(settings.board.timings.successMatchDisappearDuration);
                 TimeSpan now = gameEvents.CurrentTime.Value;
-                this.spriteRenderer.AddAnimation(mySpriteId, new RotateSelf(0f, 10f));
-                this.spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0f, now, now + disappearDuration));
-                this.spriteRenderer.AddAnimation(mySpriteId, new ChangeScale(1f, 2f, now, now + disappearDuration));
+                spriteRenderer.AddAnimation(mySpriteId, new RotateSelf(0f, 10f));
+                spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0f, now, now + disappearDuration));
+                spriteRenderer.AddAnimation(mySpriteId, new ChangeScale(1f, 2f, now, now + disappearDuration));
                 timer.Wait(disappearDuration).Done(Die);
                 break;
             default:
@@ -80,8 +80,8 @@ internal class Tile
 
     internal void Die()
     {
-        this.gameEvents.OnUpdate -= OnUpdate;
-        this.spriteRenderer.RemoveSprite(mySpriteId);
+        gameEvents.OnUpdate -= OnUpdate;
+        spriteRenderer.RemoveSprite(mySpriteId);
     }
 
     private void OnUpdate(GameTime gameTime) => RefreshMovement(gameTime.TotalGameTime);

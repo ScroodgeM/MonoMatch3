@@ -54,7 +54,7 @@ public static class Helpers
 
         if (IsPositionValid(tilePositionX, tilePositionY, settings.board) == true)
         {
-            tilePosition = new TilePosition((byte)tilePositionX, (byte)tilePositionY);
+            tilePosition = new TilePosition(true, (byte)tilePositionX, (byte)tilePositionY);
             return true;
         }
 

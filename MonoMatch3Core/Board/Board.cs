@@ -26,7 +26,7 @@ public class Board
     private readonly BoardInput boardInput;
     private readonly Aggregator matchChecker;
 
-    private StatefulEventInt<bool, TilePosition> selectedTile = StatefulEventInt.Create(false).Add(StatefulEventInt.CreateGenericStruct(TilePosition.Zero));
+    private StatefulEventInt<bool, TilePosition> selectedTile = StatefulEventInt.Create(false).Add(StatefulEventInt.CreateGenericStruct(TilePosition.Unboarded));
     private readonly Random sessionRandom = new Random(Guid.NewGuid().GetHashCode());
     private readonly Dictionary<TilePosition, TileBase> tiles = new Dictionary<TilePosition, TileBase>();
 
@@ -105,19 +105,16 @@ public class Board
 
     private void SpawnNewTileOnTop(byte positionX)
     {
-        TileBase tile = tilesFactory.CreateRandom(new TilePosition(positionX, topLinePositionY));
+        TileBase tile = tilesFactory.CreateRandom(new TilePosition(true, positionX, topLinePositionY));
         tile.StartFallDownToPosition();
         RegisterTile(tile);
     }
 
     private void OnTileClick(TilePosition position)
     {
-        if (selectedTile.Value1 == true && selectedTile.Value2 == position)
+        if (selectedTile.Value1 == true && TrySwap(position, selectedTile.Value2) == true)
         {
-            if (tiles.TryGetValue(position, out TileBase tile) == true && tile.State.Value.movement.HasValue == false)
-            {
-                RemoveTile(position, TileRemoveReason.None);
-            }
+            selectedTile.SetValue1(false);
         }
         else
         {
@@ -125,14 +122,42 @@ public class Board
         }
     }
 
+    private bool TrySwap(TilePosition position1, TilePosition position2)
+    {
+        if (position1.IsNeighborOf(position2) == false)
+        {
+            return false;
+        }
+
+        if (tiles.TryGetValue(position1, out TileBase tile1) == false || tile1.State.Value.movement.HasValue == true)
+        {
+            return false;
+        }
+
+        if (tiles.TryGetValue(position2, out TileBase tile2) == false || tile2.State.Value.movement.HasValue == true)
+        {
+            return false;
+        }
+
+        TileBase.SwapTiles(tile1, tile2);
+        return true;
+    }
+
     private void RegisterTile(TileBase tile)
     {
         tiles.Add(tile.Position.Value, tile);
         tile.Position.OnValueChangedFromTo += (oldPosition, newPosition) =>
         {
-            tiles.Remove(oldPosition);
-            tiles.Add(newPosition, tile);
-            WaitAndProcessFreeCell(oldPosition);
+            if (oldPosition.Boarded == true)
+            {
+                tiles.Remove(oldPosition);
+                WaitAndProcessFreeCell(oldPosition);
+            }
+
+            if (newPosition.Boarded == true)
+            {
+                tiles.Add(newPosition, tile);
+            }
         };
         OnTileCreated(tile);
     }

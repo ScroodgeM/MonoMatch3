@@ -17,7 +17,7 @@ public abstract class TileBase
     protected readonly Settings settings;
     protected readonly IGameEvents gameEvents;
     protected readonly Board.Board board;
-    protected readonly StatefulEventInt<TilePosition> position = StatefulEventInt.CreateGenericStruct(TilePosition.Zero);
+    protected readonly StatefulEventInt<TilePosition> position = StatefulEventInt.CreateGenericStruct(TilePosition.Unboarded);
     protected readonly StatefulEventInt<TileState> state = StatefulEventInt.CreateGenericStruct(TileState.Default);
 
     protected TileBase(Settings settings, IGameEvents gameEvents, Board.Board board, TilePosition position)
@@ -96,5 +96,18 @@ public abstract class TileBase
         position.Set(newPosition);
         StartFallDownToPosition();
         return true;
+    }
+
+    public static void SwapTiles(TileBase tile1, TileBase tile2)
+    {
+        TilePosition tile1NewPosition = tile2.position.Value;
+        TilePosition tile2NewPosition = tile1.position.Value;
+
+        tile1.position.Set(TilePosition.Unboarded);
+        tile2.position.Set(tile2NewPosition);
+        tile1.position.Set(tile1NewPosition);
+
+        tile1.StartFallDownToPosition();
+        tile2.StartFallDownToPosition();
     }
 }
