@@ -17,6 +17,7 @@ public class Settings
     {
         public struct Timings
         {
+            public float firstAppearDuration { get; set; }
             public float delayBeforeFallIntoFreeCell { get; set; }
             public float fallDownDuration { get; set; }
             public float successMatchDisappearDuration { get; set; }

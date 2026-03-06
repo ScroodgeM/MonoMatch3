@@ -1,4 +1,17 @@
 ﻿{
   "texturePath": "images/small_bomb",
-  "regions": []
+  "regions": [
+    {
+      "name": "small_bomb",
+      "x": 0,
+      "y": 0,
+      "w": 512,
+      "h": 512,
+      "scale": 0.3,
+      "pivotX": 256,
+      "pivotY": 256,
+      "flipVertically": false,
+      "flipHorizontally": false
+    }
+  ]
 }

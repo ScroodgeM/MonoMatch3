@@ -35,11 +35,21 @@ public class Tile
         string spriteId = settings.GetSpriteId(tileCore.TileType);
         this.mySpriteId = this.spriteRenderer.AddSprite(spriteId, mySpriteTransform);
 
+        Appear();
+
         this.gameEvents.OnUpdate += OnUpdate;
         RefreshMovement(gameEvents.CurrentTime.Value);
     }
 
     private void OnUpdate(GameTime gameTime) => RefreshMovement(gameTime.TotalGameTime);
+
+    private void Appear()
+    {
+        TimeSpan appearDuration = TimeSpan.FromSeconds(settings.board.timings.firstAppearDuration);
+        TimeSpan now = gameEvents.CurrentTime.Value;
+        this.spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(0f, 1f, now, now + appearDuration));
+        this.spriteRenderer.AddAnimation(mySpriteId, new ChangeScale(2f, 1f, now, now + appearDuration));
+    }
 
     private void RefreshMovement(TimeSpan time)
     {
