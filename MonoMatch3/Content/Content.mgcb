@@ -13,6 +13,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin images/gems.json
+/copy:images/gems.json
+
 #begin images/gems.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -25,8 +28,20 @@
 /processorParam:TextureFormat=Color
 /build:images/gems.png
 
-#begin images/gems.json
-/copy:images/gems.json
+#begin images/horizontal_bonus.json
+/copy:images/horizontal_bonus.json
+
+#begin images/horizontal_bonus.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=False
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/horizontal_bonus.png
 
 #begin images/logo.jpg
 /importer:TextureImporter
@@ -42,6 +57,36 @@
 
 #begin images/logo.json
 /copy:images/logo.json
+
+#begin images/small_bomb.json
+/copy:images/small_bomb.json
+
+#begin images/small_bomb.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=False
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/small_bomb.png
+
+#begin images/vertical_bonus.json
+/copy:images/vertical_bonus.json
+
+#begin images/vertical_bonus.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=False
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/vertical_bonus.png
 
 #begin Settings.json
 /copy:Settings.json

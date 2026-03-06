@@ -99,6 +99,14 @@ public class Board
         WaitAndProcessFreeCell(position);
     }
 
+    public void ReplaceTile(TilePosition position, TileRemoveReason reason, TileType newTileType)
+    {
+        tiles.Remove(position, out TileBase removedTile);
+        OnTileRemoved(removedTile, reason);
+        removedTile.Die();
+        RegisterTile(tilesFactory.Create(position, newTileType));
+    }
+
     private void WaitAndProcessFreeCell(TilePosition position)
     {
         timer.Wait(TimeSpan.FromSeconds(settings.board.timings.delayBeforeFallIntoFreeCell)).Done(() => { ProcessFreeCell(position); });

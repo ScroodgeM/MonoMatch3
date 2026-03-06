@@ -7,4 +7,5 @@ public class DestroyerHorizontalLine(Settings settings, IGameEvents gameEvents, 
 {
     public override TileType TileType => TileType.DestroyerHorizontalLine;
     public override void ProcessSuccessMatch() => throw new System.InvalidOperationException("we should not be here");
+    public override void ChangeTypeTo(TileType newTileType) => throw new System.InvalidOperationException("we should not be here");
 }

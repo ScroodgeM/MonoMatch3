@@ -10,4 +10,9 @@ public class Simple(Settings settings, IGameEvents gameEvents, Board board, Tile
     {
         board.RemoveTile(this.Position.Value, TileRemoveReason.SuccessMatch);
     }
+
+    public override void ChangeTypeTo(TileType newTileType)
+    {
+        board.ReplaceTile(this.Position.Value, TileRemoveReason.SuccessMatch, newTileType);
+    }
 }

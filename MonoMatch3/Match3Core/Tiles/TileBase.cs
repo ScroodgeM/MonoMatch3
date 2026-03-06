@@ -51,6 +51,8 @@ public abstract class TileBase
 
     public abstract void ProcessSuccessMatch();
 
+    public abstract void ChangeTypeTo(TileType newTileType);
+
     public void Die()
     {
         this.gameEvents.CurrentTime.OnValueChanged -= OnTimeChanged;
@@ -92,10 +94,5 @@ public abstract class TileBase
         position.Set(newPosition);
         StartFallDownToPosition();
         return true;
-    }
-
-    public void ChangeTypeTo(TileType lineSpecialBonus)
-    {
-        Console.WriteLine($"Changing type to {lineSpecialBonus}");
     }
 }

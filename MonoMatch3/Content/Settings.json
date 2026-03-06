@@ -2,7 +2,10 @@
   "system": {
     "textureAtlases": [
       "images/gems",
-      "images/logo"
+      "images/logo",
+      "images/small_bomb",
+      "images/horizontal_bonus",
+      "images/vertical_bonus"
     ]
   },
   "board": {
@@ -44,6 +47,18 @@
       {
         "type": "Simple5",
         "spriteId": "gem6"
+      },
+      {
+        "type": "DestroyerHorizontalLine",
+        "spriteId": "horizontal_bonus"
+      },
+      {
+        "type": "DestroyerVerticalLine",
+        "spriteId": "vertical_bonus"
+      },
+      {
+        "type": "DestroyerSquare",
+        "spriteId": "small_bomb"
       }
     ]
   }

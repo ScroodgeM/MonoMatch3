@@ -7,4 +7,5 @@ public class DestroyerSquare(Settings settings, IGameEvents gameEvents, Board bo
 {
     public override TileType TileType => TileType.DestroyerSquare;
     public override void ProcessSuccessMatch() => throw new System.InvalidOperationException("we should not be here");
+    public override void ChangeTypeTo(TileType newTileType) => throw new System.InvalidOperationException("we should not be here");
 }
