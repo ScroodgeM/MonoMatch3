@@ -5,7 +5,7 @@ namespace MonoMatch3.Match3Core.MatchChecker;
 
 public class ThreeInARow(Settings settings, Direction lineDirection) : CheckerBase(settings)
 {
-    static readonly HashSet<TilePosition> foundTilesCache = new HashSet<TilePosition>();
+    protected static readonly HashSet<TilePosition> foundTilesCache = new HashSet<TilePosition>();
 
     internal override bool TryProcessMatch(Dictionary<TilePosition, TileBase> tiles, TilePosition position)
     {
@@ -32,17 +32,22 @@ public class ThreeInARow(Settings settings, Direction lineDirection) : CheckerBa
         CollectTilesOfTheSameTypeInDirection(tiles, position, lineDirection, lineType);
         CollectTilesOfTheSameTypeInDirection(tiles, position, Helpers.Invert(lineDirection), lineType);
 
-        if (foundTilesCache.Count != 3)
-        {
-            return false;
-        }
-
         foreach (TilePosition foundTilePosition in foundTilesCache)
         {
             if (tiles[foundTilePosition].State.Value.movement.HasValue == true)
             {
                 return false;
             }
+        }
+
+        return ProcessFoundTiles(tiles, position);
+    }
+
+    protected virtual bool ProcessFoundTiles(Dictionary<TilePosition, TileBase> tiles, TilePosition position)
+    {
+        if (foundTilesCache.Count != 3)
+        {
+            return false;
         }
 
         foreach (TilePosition foundTilePosition in foundTilesCache)

@@ -93,4 +93,9 @@ public abstract class TileBase
         StartFallDownToPosition();
         return true;
     }
+
+    public void ChangeTypeTo(TileType lineSpecialBonus)
+    {
+        Console.WriteLine($"Changing type to {lineSpecialBonus}");
+    }
 }

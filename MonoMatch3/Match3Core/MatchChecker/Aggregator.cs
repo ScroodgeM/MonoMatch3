@@ -7,6 +7,8 @@ public class Aggregator(Settings settings)
 {
     private readonly CheckerBase[] checkers =
     [
+        new FourInARow(settings, Direction.Right, TileType.DestroyerHorizontalLine),
+        new FourInARow(settings, Direction.Up, TileType.DestroyerVerticalLine),
         new ThreeInARow(settings, Direction.Right),
         new ThreeInARow(settings, Direction.Up),
     ];
