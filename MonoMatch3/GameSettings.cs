@@ -9,8 +9,13 @@ using MonoMatch3.Match3Core.Tiles;
 
 namespace MonoMatch3;
 
-public class GameSettings(XElement rootElement)
+public class GameSettings(XElement element)
 {
+    public readonly struct System(XElement element)
+    {
+        public readonly string[] textureAtlasDefinitions = XMLHelpers.GetArray(element.Element("TextureAtlases").Elements("TextureAtlas"), "pathToDefinitionFile", string.Empty, XMLHelpers.GetStringOrDefault);
+    }
+
     public readonly struct Board(XElement element)
     {
         public readonly struct Timings(XElement element)
@@ -21,12 +26,17 @@ public class GameSettings(XElement rootElement)
 
         public readonly byte width = XMLHelpers.GetByteOrDefault(element, nameof(width));
         public readonly byte height = XMLHelpers.GetByteOrDefault(element, nameof(height));
-        public readonly TileType[] generatorPool = XMLHelpers.GetEnumsValues<TileType>(element.Element("GeneratorPool").Elements("Tile"), "type");
+        public readonly TileType[] generatorPool = XMLHelpers.GetArray(element.Element("GeneratorPool").Elements("Tile"), "type", TileType.None, XMLHelpers.GetEnumOrDefault);
         public readonly Timings timings = new(element.Element(nameof(Timings)));
     }
 
     public readonly struct View(XElement element)
     {
+        public readonly struct MainMenu(XElement element)
+        {
+            public readonly string logoSpriteId = XMLHelpers.GetStringOrDefault(element, nameof(logoSpriteId));
+        }
+
         public readonly struct Tile(XElement element)
         {
             public readonly TileType type = XMLHelpers.GetEnumOrDefault<TileType>(element, nameof(type));
@@ -34,11 +44,13 @@ public class GameSettings(XElement rootElement)
         }
 
         public readonly float cellSize = XMLHelpers.GetFloatOrDefault(element, nameof(cellSize));
+        public readonly MainMenu mainMenu = new(element.Element(nameof(MainMenu)));
         public readonly Tile[] tiles = XMLHelpers.GetCustoms(element.Element("Tiles").Elements(nameof(Tile)), x => new Tile(x));
     }
 
-    public readonly Board board = new(rootElement.Element(nameof(Board)));
-    public readonly View view = new(rootElement.Element(nameof(View)));
+    public readonly System system = new(element.Element(nameof(System)));
+    public readonly Board board = new(element.Element(nameof(Board)));
+    public readonly View view = new(element.Element(nameof(View)));
 
     public static GameSettings FromFile(ContentManager content)
     {

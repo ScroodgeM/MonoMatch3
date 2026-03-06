@@ -10,8 +10,6 @@ namespace MonoGameLibrary.Graphics;
 
 public class TextureAtlas(Texture2D texture)
 {
-    private const string DefaultSpriteName = "default";
-
     private readonly Dictionary<string, Sprite> sprites = new Dictionary<string, Sprite>();
 
     public IEnumerable<string> AllSpriteNames => sprites.Keys;
@@ -74,7 +72,7 @@ public class TextureAtlas(Texture2D texture)
         {
             Rectangle sourceRectangle = new(0, 0, texture.Width, texture.Height);
             Vector2 pivot = new Vector2(texture.Width, texture.Height) * 0.5f;
-            atlas.sprites.Add(DefaultSpriteName, new Sprite(texture, sourceRectangle, pivot, 1f, SpriteEffects.None));
+            atlas.sprites.Add(Path.GetFileNameWithoutExtension(texturePath), new Sprite(texture, sourceRectangle, pivot, 1f, SpriteEffects.None));
         }
 
         return atlas;

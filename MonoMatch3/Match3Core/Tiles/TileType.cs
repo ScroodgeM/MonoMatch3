@@ -2,6 +2,8 @@
 
 public enum TileType : byte
 {
+    None,
+
     Simple1,
     Simple2,
     Simple3,

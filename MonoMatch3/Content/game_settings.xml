@@ -1,5 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GameSettings>
+    <System>
+        <TextureAtlases>
+            <TextureAtlas pathToDefinitionFile="images/gems.xml"/>
+            <TextureAtlas pathToDefinitionFile="images/logo.xml"/>
+        </TextureAtlases>
+    </System>
     <Board width="8" height="8">
         <GeneratorPool>
             <Tile type="Simple1"/>
@@ -14,6 +20,7 @@
         />
     </Board>
     <View cellSize="128">
+        <MainMenu logoSpriteId="logo"/>
         <Tiles>
             <Tile type="Simple1" spriteId="gem1"/>
             <Tile type="Simple2" spriteId="gem2"/>
