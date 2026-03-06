@@ -13,16 +13,16 @@ public class GameStarter() : Core("Mono Match 3", new Vector2(1024, 1024), false
 {
     protected override void LoadContent()
     {
-        Rectangle windowRect = Window.ClientBounds;
-        Vector2 screenCenter = new Vector2(windowRect.Width, windowRect.Height) * 0.5f;
-
         TextureAtlas logoAtlas = TextureAtlas.FromFile(Content, ContentStructure.images.logo);
         spriteRenderer.Pool.Add(logoAtlas);
+        TextureAtlas gemsAtlas = TextureAtlas.FromFile(Content, ContentStructure.images.gems);
+        spriteRenderer.Pool.Add(gemsAtlas);
 
         foreach (string logoSpriteName in logoAtlas.AllSpriteNames)
         {
             Sprite.Transform transform = Sprite.Transform.Default;
-            transform.position = screenCenter;
+            Rectangle windowRect = Window.ClientBounds;
+            transform.position = new Vector2(windowRect.Width, windowRect.Height) * 0.5f;
             transform.layerDepth = (int)RenderLayers.MainMenuLogo;
 
             ushort spriteId = spriteRenderer.AddSprite(logoSpriteName, transform);
@@ -33,20 +33,6 @@ public class GameStarter() : Core("Mono Match 3", new Vector2(1024, 1024), false
             break;
         }
 
-        TextureAtlas gemsAtlas = TextureAtlas.FromFile(Content, ContentStructure.images.gems);
-        spriteRenderer.Pool.Add(gemsAtlas);
-        List<string> gemSpriteNames = new List<string>(gemsAtlas.AllSpriteNames);
-        float initialRotationStep = MathF.PI * 2.0f / (float)gemSpriteNames.Count;
-        for (int i = 0; i < gemSpriteNames.Count; i++)
-        {
-            Sprite.Transform transform = Sprite.Transform.Default;
-            transform.position = screenCenter;
-            transform.layerDepth = (int)RenderLayers.Elements;
-
-            ushort spriteId = spriteRenderer.AddSprite(gemSpriteNames[i], transform);
-
-            spriteRenderer.AddAnimation(spriteId, new RotateAround(i * initialRotationStep, 0.45f, 300f));
-        }
 
         base.LoadContent();
     }
