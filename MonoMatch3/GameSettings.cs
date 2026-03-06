@@ -13,20 +13,20 @@ public class GameSettings(XElement element)
 {
     public readonly struct System(XElement element)
     {
-        public readonly string[] textureAtlasDefinitions = XMLHelpers.GetArray(element.Element("TextureAtlases").Elements("TextureAtlas"), "pathToDefinitionFile", string.Empty, XMLHelpers.GetStringOrDefault);
+        public readonly string[] textureAtlasDefinitions = XMLHelpers.GetArray(element.Element("TextureAtlases").Elements("TextureAtlas"), "pathToDefinitionFile", XMLHelpers.GetString);
     }
 
     public readonly struct Board(XElement element)
     {
         public readonly struct Timings(XElement element)
         {
-            public readonly float delayBeforeFallIntoFreeCell = XMLHelpers.GetFloatOrDefault(element, nameof(delayBeforeFallIntoFreeCell));
-            public readonly float fallDownDuration = XMLHelpers.GetFloatOrDefault(element, nameof(fallDownDuration));
+            public readonly float delayBeforeFallIntoFreeCell = XMLHelpers.GetFloat(element, nameof(delayBeforeFallIntoFreeCell));
+            public readonly float fallDownDuration = XMLHelpers.GetFloat(element, nameof(fallDownDuration));
         }
 
-        public readonly byte width = XMLHelpers.GetByteOrDefault(element, nameof(width));
-        public readonly byte height = XMLHelpers.GetByteOrDefault(element, nameof(height));
-        public readonly TileType[] generatorPool = XMLHelpers.GetArray(element.Element("GeneratorPool").Elements("Tile"), "type", TileType.None, XMLHelpers.GetEnumOrDefault);
+        public readonly byte width = XMLHelpers.GetByte(element, nameof(width));
+        public readonly byte height = XMLHelpers.GetByte(element, nameof(height));
+        public readonly TileType[] generatorPool = XMLHelpers.GetArray<TileType>(element.Element("GeneratorPool").Elements("Tile"), "type", XMLHelpers.GetEnum<TileType>);
         public readonly Timings timings = new(element.Element(nameof(Timings)));
     }
 
@@ -34,16 +34,16 @@ public class GameSettings(XElement element)
     {
         public readonly struct MainMenu(XElement element)
         {
-            public readonly string logoSpriteId = XMLHelpers.GetStringOrDefault(element, nameof(logoSpriteId));
+            public readonly string logoSpriteId = XMLHelpers.GetString(element, nameof(logoSpriteId));
         }
 
         public readonly struct Tile(XElement element)
         {
-            public readonly TileType type = XMLHelpers.GetEnumOrDefault<TileType>(element, nameof(type));
-            public readonly string spriteId = XMLHelpers.GetStringOrDefault(element, nameof(spriteId));
+            public readonly TileType type = XMLHelpers.GetEnum<TileType>(element, nameof(type));
+            public readonly string spriteId = XMLHelpers.GetString(element, nameof(spriteId));
         }
 
-        public readonly float cellSize = XMLHelpers.GetFloatOrDefault(element, nameof(cellSize));
+        public readonly float cellSize = XMLHelpers.GetFloat(element, nameof(cellSize));
         public readonly MainMenu mainMenu = new(element.Element(nameof(MainMenu)));
         public readonly Tile[] tiles = XMLHelpers.GetCustoms(element.Element("Tiles").Elements(nameof(Tile)), x => new Tile(x));
     }

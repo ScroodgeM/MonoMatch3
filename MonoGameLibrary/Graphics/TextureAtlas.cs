@@ -35,30 +35,30 @@ public class TextureAtlas(Texture2D texture)
         {
             foreach (XElement region in regionsRoot.Elements("Region"))
             {
-                string name = XMLHelpers.GetStringOrDefault(region, "name");
+                string name = XMLHelpers.GetString(region, "name");
                 if (string.IsNullOrEmpty(name) == false)
                 {
                     Rectangle sourceRectangle = new(
-                        x: XMLHelpers.GetIntOrDefault(region, "x"),
-                        y: XMLHelpers.GetIntOrDefault(region, "y"),
-                        width: XMLHelpers.GetIntOrDefault(region, "width"),
-                        height: XMLHelpers.GetIntOrDefault(region, "height")
+                        x: XMLHelpers.GetInt(region, "x"),
+                        y: XMLHelpers.GetInt(region, "y"),
+                        width: XMLHelpers.GetInt(region, "width"),
+                        height: XMLHelpers.GetInt(region, "height")
                     );
 
-                    float scale = XMLHelpers.GetFloatOrDefault(region, "scale", 1f);
+                    float scale = XMLHelpers.GetFloat(region, "scale");
 
                     Vector2 pivot = new(
-                        x: XMLHelpers.GetFloatOrDefault(region, "pivotX"),
-                        y: XMLHelpers.GetFloatOrDefault(region, "pivotY")
+                        x: XMLHelpers.GetFloat(region, "pivotX"),
+                        y: XMLHelpers.GetFloat(region, "pivotY")
                     );
 
                     SpriteEffects effects = SpriteEffects.None;
-                    if (XMLHelpers.GetBooleanOrDefault(region, "flipVertically") == true)
+                    if (XMLHelpers.GetBoolean(region, "flipVertically") == true)
                     {
                         effects |= SpriteEffects.FlipVertically;
                     }
 
-                    if (XMLHelpers.GetBooleanOrDefault(region, "flipHorizontally") == true)
+                    if (XMLHelpers.GetBoolean(region, "flipHorizontally") == true)
                     {
                         effects |= SpriteEffects.FlipHorizontally;
                     }

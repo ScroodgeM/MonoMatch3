@@ -6,61 +6,27 @@ namespace MonoGameLibrary;
 
 public static class XMLHelpers
 {
-    public static string GetStringOrDefault(XElement container, string attributeName, string defaultValue = null)
-    {
-        XAttribute xAttribute = container.Attribute(attributeName);
-        return xAttribute != null ? xAttribute.Value : defaultValue;
-    }
+    public static string GetString(XElement container, string attributeName) =>
+        container.Attribute(attributeName).Value;
 
-    public static byte GetByteOrDefault(XElement container, string attributeName, byte defaultValue = 0)
-    {
-        XAttribute xAttribute = container.Attribute(attributeName);
-        return xAttribute != null && byte.TryParse(xAttribute.Value, out byte parsedValue) == true ? parsedValue : defaultValue;
-    }
+    public static byte GetByte(XElement container, string attributeName) =>
+        byte.Parse(container.Attribute(attributeName).Value);
 
-    public static int GetIntOrDefault(XElement container, string attributeName, int defaultValue = 0)
-    {
-        XAttribute xAttribute = container.Attribute(attributeName);
-        return xAttribute != null && int.TryParse(xAttribute.Value, out int parsedValue) == true ? parsedValue : defaultValue;
-    }
+    public static int GetInt(XElement container, string attributeName) =>
+        int.Parse(container.Attribute(attributeName).Value);
 
-    public static float GetFloatOrDefault(XElement container, string attributeName, float defaultValue = 0f)
-    {
-        XAttribute xAttribute = container.Attribute(attributeName);
-        return xAttribute != null && float.TryParse(xAttribute.Value, out float parsedValue) == true ? parsedValue : defaultValue;
-    }
+    public static float GetFloat(XElement container, string attributeName) =>
+        float.Parse(container.Attribute(attributeName).Value);
 
-    public static bool GetBooleanOrDefault(XElement container, string attributeName, bool defaultValue = false)
-    {
-        XAttribute xAttribute = container.Attribute(attributeName);
-        return xAttribute != null && bool.TryParse(xAttribute.Value, out bool parsedValue) == true ? parsedValue : defaultValue;
-    }
+    public static bool GetBoolean(XElement container, string attributeName) =>
+        bool.Parse(container.Attribute(attributeName).Value);
 
-    public static T GetEnumOrDefault<T>(XElement container, string attributeName, T defaultValue = default) where T : struct, Enum
-    {
-        XAttribute xAttribute = container.Attribute(attributeName);
-        return xAttribute != null && Enum.TryParse(xAttribute.Value, out T parsedValue) == true ? parsedValue : defaultValue;
-    }
+    public static T GetEnum<T>(XElement container, string attributeName) where T : struct, Enum =>
+        Enum.Parse<T>(container.Attribute(attributeName).Value);
 
-    public static T[] GetCustoms<T>(IEnumerable<XElement> elements, Func<XElement, T> constructor)
-    {
-        List<T> result = new List<T>();
-        foreach (XElement element in elements)
-        {
-            result.Add(constructor(element));
-        }
+    public static T[] GetCustoms<T>(IEnumerable<XElement> elements, Func<XElement, T> constructor) =>
+        new List<XElement>(elements).ConvertAll(x => constructor(x)).ToArray();
 
-        return result.ToArray();
-    }
-
-    public static T[] GetArray<T>(IEnumerable<XElement> elements, string attributeName, T defaultValue, Func<XElement, string, T, T> valueExtractor)
-    {
-        List<T> result = new List<T>();
-        foreach (XElement element in elements)
-        {
-            result.Add(valueExtractor(element, attributeName, defaultValue));
-        }
-
-        return result.ToArray();
-    }
+    public static T[] GetArray<T>(IEnumerable<XElement> elements, string attributeName, Func<XElement, string, T> valueExtractor) =>
+        new List<XElement>(elements).ConvertAll(x => valueExtractor(x, attributeName)).ToArray();
 }
