@@ -1,20 +1,20 @@
 ﻿using System;
 using MonoGameLibrary;
-using MonoMatch3.Match3Core.Tiles;
 using MonoMatch3Core.Data;
 using MonoMatch3Core.Enums;
+using MonoMatch3Core.Tiles;
 
-namespace MonoMatch3.Match3Core;
+namespace MonoMatch3Core.Board;
 
-public class TilesFactory(Settings settings, IGameEvents gameEvents, Board board, Random sessionRandomGenerator)
+internal class TilesFactory(Settings settings, IGameEvents gameEvents, Board board, Random sessionRandomGenerator)
 {
-    public TileBase CreateRandom(TilePosition position)
+    internal TileBase CreateRandom(TilePosition position)
     {
         int poolIndex = sessionRandomGenerator.Next(settings.board.generatorPool.Length);
         return Create(position, settings.board.generatorPool[poolIndex]);
     }
 
-    public TileBase Create(TilePosition position, TileType tileType)
+    internal TileBase Create(TilePosition position, TileType tileType)
     {
         switch (tileType)
         {

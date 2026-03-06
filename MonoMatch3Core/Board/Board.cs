@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using MonoGameLibrary;
 using MonoGameLibrary.Timers;
-using MonoMatch3.Match3Core.MatchChecker;
-using MonoMatch3.Match3Core.Tiles;
-using MonoMatch3Core;
 using MonoMatch3Core.Data;
 using MonoMatch3Core.Enums;
+using MonoMatch3Core.MatchChecker;
+using MonoMatch3Core.Tiles;
 
-namespace MonoMatch3.Match3Core;
+namespace MonoMatch3Core.Board;
 
 public class Board
 {
@@ -44,19 +43,35 @@ public class Board
         FillBoard();
     }
 
-    public bool IsCellFree(TilePosition position)
+    internal bool IsCellFree(TilePosition position)
     {
         return tiles.ContainsKey(position) == false;
     }
 
-    public void Die()
+    internal void Die()
     {
         this.boardInput.OnTileClick -= OnTileClick;
     }
 
-    public bool TryProcessMatch(TilePosition position)
+    internal bool TryProcessMatch(TilePosition position)
     {
         return matchChecker.TryProcessMatch(tiles, position);
+    }
+
+    internal void RemoveTile(TilePosition position, TileRemoveReason reason)
+    {
+        tiles.Remove(position, out TileBase removedTile);
+        OnTileRemoved(removedTile, reason);
+        removedTile.Die();
+        WaitAndProcessFreeCell(position);
+    }
+
+    internal void ReplaceTile(TilePosition position, TileRemoveReason reason, TileType newTileType)
+    {
+        tiles.Remove(position, out TileBase removedTile);
+        OnTileRemoved(removedTile, reason);
+        removedTile.Die();
+        RegisterTile(tilesFactory.Create(position, newTileType));
     }
 
     private void FillBoard()
@@ -92,22 +107,6 @@ public class Board
             WaitAndProcessFreeCell(oldPosition);
         };
         OnTileCreated(tile);
-    }
-
-    internal void RemoveTile(TilePosition position, TileRemoveReason reason)
-    {
-        tiles.Remove(position, out TileBase removedTile);
-        OnTileRemoved(removedTile, reason);
-        removedTile.Die();
-        WaitAndProcessFreeCell(position);
-    }
-
-    public void ReplaceTile(TilePosition position, TileRemoveReason reason, TileType newTileType)
-    {
-        tiles.Remove(position, out TileBase removedTile);
-        OnTileRemoved(removedTile, reason);
-        removedTile.Die();
-        RegisterTile(tilesFactory.Create(position, newTileType));
     }
 
     private void WaitAndProcessFreeCell(TilePosition position)

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using MonoMatch3.Match3Core.Tiles;
 using MonoMatch3Core.Data;
+using MonoMatch3Core.Tiles;
 
-namespace MonoMatch3.Match3Core.MatchChecker;
+namespace MonoMatch3Core.MatchChecker;
 
-public abstract class CheckerBase(Settings settings)
+internal abstract class CheckerBase(Settings settings)
 {
     internal abstract bool TryProcessMatch(Dictionary<TilePosition, TileBase> tiles, TilePosition position);
 }

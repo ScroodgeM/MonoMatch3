@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using MonoMatch3.Match3Core.Tiles;
 using MonoMatch3Core.Data;
 using MonoMatch3Core.Enums;
+using MonoMatch3Core.Tiles;
 
-namespace MonoMatch3.Match3Core.MatchChecker;
+namespace MonoMatch3Core.MatchChecker;
 
-public class Aggregator(Settings settings)
+internal class Aggregator(Settings settings)
 {
     private readonly CheckerBase[] checkers =
     [
@@ -15,7 +15,7 @@ public class Aggregator(Settings settings)
         new ThreeInARow(settings, Direction.Up),
     ];
 
-    public bool TryProcessMatch(Dictionary<TilePosition, TileBase> tiles, TilePosition position)
+    internal bool TryProcessMatch(Dictionary<TilePosition, TileBase> tiles, TilePosition position)
     {
         foreach (CheckerBase checker in checkers)
         {

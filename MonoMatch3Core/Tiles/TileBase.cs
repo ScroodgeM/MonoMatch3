@@ -4,7 +4,7 @@ using MonoGameLibrary.StatefulEvent;
 using MonoMatch3Core.Data;
 using MonoMatch3Core.Enums;
 
-namespace MonoMatch3.Match3Core.Tiles;
+namespace MonoMatch3Core.Tiles;
 
 public abstract class TileBase
 {
@@ -14,13 +14,13 @@ public abstract class TileBase
 
     private byte bottomLinePositionY => (byte)(settings.board.height - 1);
 
-    private readonly Settings settings;
-    private readonly IGameEvents gameEvents;
-    private readonly Board board;
-    private readonly StatefulEventInt<TilePosition> position = StatefulEventInt.CreateGenericStruct(TilePosition.Zero);
-    private readonly StatefulEventInt<TileState> state = StatefulEventInt.CreateGenericStruct(TileState.Default);
+    protected readonly Settings settings;
+    protected readonly IGameEvents gameEvents;
+    protected readonly Board.Board board;
+    protected readonly StatefulEventInt<TilePosition> position = StatefulEventInt.CreateGenericStruct(TilePosition.Zero);
+    protected readonly StatefulEventInt<TileState> state = StatefulEventInt.CreateGenericStruct(TileState.Default);
 
-    public TileBase(Settings settings, IGameEvents gameEvents, Board board, TilePosition position)
+    protected TileBase(Settings settings, IGameEvents gameEvents, Board.Board board, TilePosition position)
     {
         this.settings = settings;
         this.gameEvents = gameEvents;
@@ -30,12 +30,12 @@ public abstract class TileBase
         this.gameEvents.CurrentTime.OnValueChanged += OnTimeChanged;
     }
 
-    public void StartFallDownToPosition()
+    internal void StartFallDownToPosition()
     {
         StartMovementToPosition(Direction.Down, TimeSpan.FromSeconds(settings.board.timings.fallDownDuration));
     }
 
-    public void StartMovementToPosition(Direction direction, TimeSpan duration)
+    internal void StartMovementToPosition(Direction direction, TimeSpan duration)
     {
         TileState tileState = state.Value;
         if (tileState.movement.HasValue && gameEvents.CurrentTime.Value <= tileState.movement.Value.finishTime)
@@ -51,11 +51,11 @@ public abstract class TileBase
         state.Set(tileState);
     }
 
-    public abstract void ProcessSuccessMatch();
+    internal abstract void ProcessSuccessMatch();
 
-    public abstract void ChangeTypeTo(TileType newTileType);
+    internal abstract void ChangeTypeTo(TileType newTileType);
 
-    public void Die()
+    internal void Die()
     {
         this.gameEvents.CurrentTime.OnValueChanged -= OnTimeChanged;
     }

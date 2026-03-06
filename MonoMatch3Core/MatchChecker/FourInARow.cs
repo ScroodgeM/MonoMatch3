@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using MonoMatch3.Match3Core.Tiles;
 using MonoMatch3Core.Data;
 using MonoMatch3Core.Enums;
+using MonoMatch3Core.Tiles;
 
-namespace MonoMatch3.Match3Core.MatchChecker;
+namespace MonoMatch3Core.MatchChecker;
 
-public class FourInARow(Settings settings, Direction lineDirection, TileType lineSpecialBonus) : ThreeInARow(settings, lineDirection)
+internal class FourInARow(Settings settings, Direction lineDirection, TileType lineSpecialBonus) : ThreeInARow(settings, lineDirection)
 {
     protected override bool ProcessFoundTiles(Dictionary<TilePosition, TileBase> tiles, TilePosition position)
     {

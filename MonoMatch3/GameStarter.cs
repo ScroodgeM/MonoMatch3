@@ -3,8 +3,8 @@ using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.SpriteAnimations;
-using MonoMatch3.Match3Core;
 using MonoMatch3Core;
+using MonoMatch3Core.Board;
 using MonoMatch3Core.Data;
 
 namespace MonoMatch3;

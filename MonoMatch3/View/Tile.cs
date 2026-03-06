@@ -4,11 +4,10 @@ using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.SpriteAnimations;
 using MonoGameLibrary.Timers;
-using MonoMatch3.Match3Core;
-using MonoMatch3.Match3Core.Tiles;
 using MonoMatch3Core;
 using MonoMatch3Core.Data;
 using MonoMatch3Core.Enums;
+using MonoMatch3Core.Tiles;
 
 namespace MonoMatch3.View;
 

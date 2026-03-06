@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using MonoMatch3.Match3Core.Tiles;
-using MonoMatch3Core;
 using MonoMatch3Core.Data;
 using MonoMatch3Core.Enums;
+using MonoMatch3Core.Tiles;
 
-namespace MonoMatch3.Match3Core.MatchChecker;
+namespace MonoMatch3Core.MatchChecker;
 
-public class ThreeInARow(Settings settings, Direction lineDirection) : CheckerBase(settings)
+internal class ThreeInARow(Settings settings, Direction lineDirection) : CheckerBase(settings)
 {
     protected static readonly HashSet<TilePosition> foundTilesCache = new HashSet<TilePosition>();
 

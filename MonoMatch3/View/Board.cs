@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Timers;
-using MonoMatch3.Match3Core;
-using MonoMatch3.Match3Core.Tiles;
 using MonoMatch3Core.Data;
 using MonoMatch3Core.Enums;
+using MonoMatch3Core.Tiles;
 
 namespace MonoMatch3.View;
 
@@ -16,10 +15,10 @@ public class Board
     private readonly Settings settings;
     private readonly IGameEvents gameEvents;
     private readonly ITimer timer;
-    private readonly Match3Core.Board boardCore;
+    private readonly MonoMatch3Core.Board.Board boardCore;
     private readonly Dictionary<TileBase, Tile> tileViews = new Dictionary<TileBase, Tile>();
 
-    public Board(SpriteRenderer spriteRenderer, Settings settings, IGameEvents gameEvents, ITimer timer, Match3Core.Board boardCore)
+    public Board(SpriteRenderer spriteRenderer, Settings settings, IGameEvents gameEvents, ITimer timer, MonoMatch3Core.Board.Board boardCore)
     {
         this.spriteRenderer = spriteRenderer;
         this.settings = settings;
