@@ -49,6 +49,8 @@ public abstract class TileBase
         state.Set(tileState);
     }
 
+    public abstract void ProcessSuccessMatch();
+
     public void Die()
     {
         this.gameEvents.CurrentTime.OnValueChanged -= OnTimeChanged;

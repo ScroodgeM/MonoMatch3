@@ -6,4 +6,5 @@ public class DestroyerVerticalLine(Settings settings, IGameEvents gameEvents, Bo
     : TileBase(settings, gameEvents, board, position)
 {
     public override TileType TileType => TileType.DestroyerVerticalLine;
+    public override void ProcessSuccessMatch() => throw new System.InvalidOperationException("we should not be here");
 }

@@ -31,7 +31,7 @@ public class Board
         this.settings = settings;
         this.tilesFactory = new TilesFactory(settings, gameEvents, this, sessionRandom);
         this.boardInput = boardInput;
-        this.matchChecker = new Aggregator(this);
+        this.matchChecker = new Aggregator(settings);
 
         this.boardInput.OnTileClick += OnTileClick;
     }
@@ -53,7 +53,7 @@ public class Board
 
     public bool TryProcessMatch(TilePosition position)
     {
-        return matchChecker.TryProcessMatch(position);
+        return matchChecker.TryProcessMatch(tiles, position);
     }
 
     private void FillBoard()
@@ -91,7 +91,7 @@ public class Board
         OnTileCreated(tile);
     }
 
-    private void RemoveTile(TilePosition position)
+    internal void RemoveTile(TilePosition position)
     {
         tiles.Remove(position, out TileBase removedTile);
         OnTileRemoved(removedTile);

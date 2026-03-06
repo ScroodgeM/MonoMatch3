@@ -7,6 +7,33 @@ namespace MonoMatch3.Match3Core;
 
 public static class Helpers
 {
+    public static Direction Invert(Direction origin)
+    {
+        return origin switch
+        {
+            Direction.Left => Direction.Right,
+            Direction.Right => Direction.Left,
+            Direction.Down => Direction.Up,
+            Direction.Up => Direction.Down,
+            _ => throw new ArgumentOutOfRangeException(nameof(origin), origin, null)
+        };
+    }
+
+    public static bool TryShift(this Settings settings, TilePosition position, Direction direction, out TilePosition shiftedPosition)
+    {
+        bool canShift =
+            (direction == Direction.Left && position.X > 0)
+            ||
+            (direction == Direction.Right && position.X < settings.board.width - 1)
+            ||
+            (direction == Direction.Up && position.Y > 0)
+            ||
+            (direction == Direction.Down && position.Y < settings.board.height - 1);
+
+        shiftedPosition = canShift ? position.Shift(direction) : default;
+        return canShift;
+    }
+
     public static bool IsPositionValid(int positionX, int positionY, Settings.Board boardSettings)
     {
         return

@@ -1,12 +1,79 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using MonoMatch3.Match3Core.Tiles;
 
 namespace MonoMatch3.Match3Core.MatchChecker;
 
-public class ThreeInARow(Board board) : CheckerBase(board)
+public class ThreeInARow(Settings settings, Direction lineDirection) : CheckerBase(settings)
 {
-    internal override bool TryProcessMatch(TilePosition position)
+    static readonly HashSet<TilePosition> foundTilesCache = new HashSet<TilePosition>();
+
+    internal override bool TryProcessMatch(Dictionary<TilePosition, TileBase> tiles, TilePosition position)
     {
-        Console.WriteLine(position);
-        return false;
+        if (tiles.TryGetValue(position, out TileBase mainTile) == false)
+        {
+            return false;
+        }
+
+        TileType lineType = mainTile.TileType;
+        switch (lineType)
+        {
+            case TileType.Simple1:
+            case TileType.Simple2:
+            case TileType.Simple3:
+            case TileType.Simple4:
+            case TileType.Simple5:
+                break;
+            default:
+                return false;
+        }
+
+        foundTilesCache.Clear();
+        foundTilesCache.Add(position);
+        CollectTilesOfTheSameTypeInDirection(tiles, position, lineDirection, lineType);
+        CollectTilesOfTheSameTypeInDirection(tiles, position, Helpers.Invert(lineDirection), lineType);
+
+        if (foundTilesCache.Count != 3)
+        {
+            return false;
+        }
+
+        foreach (TilePosition foundTilePosition in foundTilesCache)
+        {
+            if (tiles[foundTilePosition].State.Value.movement.HasValue == true)
+            {
+                return false;
+            }
+        }
+
+        foreach (TilePosition foundTilePosition in foundTilesCache)
+        {
+            tiles[foundTilePosition].ProcessSuccessMatch();
+        }
+
+        return true;
+    }
+
+    private void CollectTilesOfTheSameTypeInDirection(Dictionary<TilePosition, TileBase> tiles, TilePosition position, Direction direction, TileType tileType)
+    {
+        while (true)
+        {
+            if (settings.TryShift(position, direction, out TilePosition shiftedPosition) == false)
+            {
+                return;
+            }
+
+            if (tiles.TryGetValue(shiftedPosition, out TileBase tile) == false)
+            {
+                return;
+            }
+
+            if (tile.TileType != tileType)
+            {
+                return;
+            }
+
+            foundTilesCache.Add(shiftedPosition);
+            position = shiftedPosition;
+        }
     }
 }

@@ -1,6 +1,9 @@
-﻿namespace MonoMatch3.Match3Core.MatchChecker;
+﻿using System.Collections.Generic;
+using MonoMatch3.Match3Core.Tiles;
 
-public abstract class CheckerBase(Board board)
+namespace MonoMatch3.Match3Core.MatchChecker;
+
+public abstract class CheckerBase(Settings settings)
 {
-    internal abstract bool TryProcessMatch(TilePosition position);
+    internal abstract bool TryProcessMatch(Dictionary<TilePosition, TileBase> tiles, TilePosition position);
 }

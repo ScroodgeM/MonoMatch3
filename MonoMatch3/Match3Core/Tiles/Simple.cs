@@ -6,4 +6,8 @@ public class Simple(Settings settings, IGameEvents gameEvents, Board board, Tile
     : TileBase(settings, gameEvents, board, position)
 {
     public override TileType TileType => tileType;
+    public override void ProcessSuccessMatch()
+    {
+        board.RemoveTile(this.Position.Value);
+    }
 }
