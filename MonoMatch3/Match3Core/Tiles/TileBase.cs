@@ -75,6 +75,11 @@ public abstract class TileBase
             return false;
         }
 
+        if (state.Value.movement != null)
+        {
+            return false;
+        }
+
         TilePosition newPosition = position.Value.Shift(Direction.Down);
 
         if (board.IsCellFree(newPosition) == false)

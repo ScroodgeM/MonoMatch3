@@ -65,13 +65,10 @@ public class Board
 
     private void OnTileClick(TilePosition position)
     {
-        timer.Wait(TimeSpan.FromSeconds(0.3)).Done(() =>
+        if (tiles.TryGetValue(position, out TileBase tile) == true && tile.State.Value.movement.HasValue == false)
         {
-            if (tiles.ContainsKey(position) == false)
-            {
-                RegisterTile(tilesFactory.CreateRandom(position));
-            }
-        });
+            RemoveTile(position);
+        }
     }
 
     private void RegisterTile(TileBase tile)
@@ -81,11 +78,21 @@ public class Board
         {
             tiles.Remove(oldPosition);
             tiles.Add(newPosition, tile);
-
-            timer.Wait(TimeSpan.FromSeconds(gameSettings.board.timings.delayBeforeFallIntoFreeCell)).Done(() => { ProcessFreeCell(oldPosition); }
-            );
+            WaitAndProcessFreeCell(oldPosition);
         };
         OnTileCreated(tile);
+    }
+
+    private void RemoveTile(TilePosition position)
+    {
+        tiles.Remove(position, out TileBase removedTile);
+        OnTileRemoved(removedTile);
+        WaitAndProcessFreeCell(position);
+    }
+
+    private void WaitAndProcessFreeCell(TilePosition position)
+    {
+        timer.Wait(TimeSpan.FromSeconds(gameSettings.board.timings.delayBeforeFallIntoFreeCell)).Done(() => { ProcessFreeCell(position); });
     }
 
     private void ProcessFreeCell(TilePosition position)
@@ -109,9 +116,6 @@ public class Board
             return;
         }
 
-        if (tiles[positionJustAbove].TryFallDown() == false)
-        {
-            throw new InvalidOperationException("we should not get here");
-        }
+        tiles[positionJustAbove].TryFallDown();
     }
 }
