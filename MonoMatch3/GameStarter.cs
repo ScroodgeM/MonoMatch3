@@ -50,10 +50,8 @@ public class GameStarter() : Core("Mono Match 3", new Vector2(1024, 1024), false
 
     private void StartGame()
     {
-        BoardInput boardInput = new BoardInput(this, Input, settings);
-        Board board = new Board(this, timer, boardInput, settings);
+        Board board = Board.Create(this, timer, Input, settings);
         View.Board boardView = new View.Board(spriteRenderer, settings, this, timer, board);
-
         board.RunGame();
     }
 }

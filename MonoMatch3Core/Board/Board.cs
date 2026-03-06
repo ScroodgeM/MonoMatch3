@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MonoGameLibrary;
+using MonoGameLibrary.Input;
 using MonoGameLibrary.Timers;
 using MonoMatch3Core.Data;
 using MonoMatch3Core.Enums;
@@ -26,13 +27,18 @@ public class Board
     private readonly Random sessionRandom = new Random(Guid.NewGuid().GetHashCode());
     private readonly Dictionary<TilePosition, TileBase> tiles = new Dictionary<TilePosition, TileBase>();
 
-    public Board(IGameEvents gameEvents, ITimer timer, BoardInput boardInput, Settings settings)
+    public static Board Create(IGameEvents gameEvents, ITimer timer, InputManager inputManager, Settings settings)
+    {
+        return new Board(gameEvents, timer, inputManager, settings);
+    }
+
+    private Board(IGameEvents gameEvents, ITimer timer, InputManager inputManager, Settings settings)
     {
         this.gameEvents = gameEvents;
         this.timer = timer;
         this.settings = settings;
         this.tilesFactory = new TilesFactory(settings, gameEvents, this, sessionRandom);
-        this.boardInput = boardInput;
+        this.boardInput = new BoardInput(gameEvents, inputManager, settings);
         this.matchChecker = new Aggregator(settings);
 
         this.boardInput.OnTileClick += OnTileClick;

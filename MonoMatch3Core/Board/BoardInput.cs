@@ -4,17 +4,17 @@ using MonoGameLibrary;
 using MonoGameLibrary.Input;
 using MonoMatch3Core.Data;
 
-namespace MonoMatch3Core;
+namespace MonoMatch3Core.Board;
 
-public class BoardInput
+internal class BoardInput
 {
-    public event Action<TilePosition> OnTileClick = position => { };
+    internal event Action<TilePosition> OnTileClick = position => { };
 
     private readonly IGameEvents gameEvents;
     private readonly InputManager inputManager;
     private readonly Settings settings;
 
-    public BoardInput(IGameEvents gameEvents, InputManager inputManager, Settings settings)
+    internal BoardInput(IGameEvents gameEvents, InputManager inputManager, Settings settings)
     {
         this.gameEvents = gameEvents;
         this.inputManager = inputManager;
@@ -23,7 +23,7 @@ public class BoardInput
         this.gameEvents.OnUpdate += OnUpdate;
     }
 
-    public void Die()
+    internal void Die()
     {
         this.gameEvents.OnUpdate -= OnUpdate;
     }
