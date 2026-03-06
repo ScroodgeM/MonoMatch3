@@ -11,6 +11,8 @@ namespace MonoMatch3;
 
 public class GameSettings(XElement element)
 {
+    private const string fileName = "game_settings.xml";
+
     public readonly struct System(XElement element)
     {
         public readonly string[] textureAtlasDefinitions = XMLHelpers.GetArray(element.Element("TextureAtlases").Elements("TextureAtlas"), "pathToDefinitionFile", XMLHelpers.GetString);
@@ -54,7 +56,7 @@ public class GameSettings(XElement element)
 
     public static GameSettings FromFile(ContentManager content)
     {
-        string filePath = Path.Combine(content.RootDirectory, ContentStructure.game_settings);
+        string filePath = Path.Combine(content.RootDirectory, fileName);
         using Stream stream = TitleContainer.OpenStream(filePath);
         using XmlReader reader = XmlReader.Create(stream);
         return new GameSettings(XDocument.Load(reader).Root);

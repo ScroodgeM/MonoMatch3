@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
@@ -17,10 +15,7 @@ public class GameStarter() : Core("Mono Match 3", new Vector2(1024, 1024), false
     {
         gameSettings = GameSettings.FromFile(Content);
 
-        TextureAtlas logoAtlas = TextureAtlas.FromFile(Content, ContentStructure.images.logo);
-        spriteRenderer.Pool.Add(logoAtlas);
-        TextureAtlas gemsAtlas = TextureAtlas.FromFile(Content, ContentStructure.images.gems);
-        spriteRenderer.Pool.Add(gemsAtlas);
+        TextureAtlas.Load(Content, gameSettings.system.textureAtlasDefinitions, spriteRenderer.Pool);
 
         Sprite.Transform transform = Sprite.Transform.Default;
         Rectangle windowRect = Window.ClientBounds;

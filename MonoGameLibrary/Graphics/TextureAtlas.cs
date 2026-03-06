@@ -16,6 +16,14 @@ public class TextureAtlas(Texture2D texture)
 
     public Sprite GetSprite(string name) => sprites[name];
 
+    public static void Load(ContentManager content, string[] fileNames, SpritesPool spritesPool)
+    {
+        foreach (string fileName in fileNames)
+        {
+            spritesPool.Add(FromFile(content, fileName));
+        }
+    }
+
     public static TextureAtlas FromFile(ContentManager content, string fileName)
     {
         string filePath = Path.Combine(content.RootDirectory, fileName);
