@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using MonoGameLibrary;
 using MonoGameLibrary.Input;
+using MonoMatch3Core.Data;
 
 namespace MonoMatch3.Match3Core;
 

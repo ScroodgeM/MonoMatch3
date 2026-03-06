@@ -2,7 +2,7 @@
 using MonoGameLibrary.StatefulEvent;
 using MonoMatch3Core.Enums;
 
-namespace MonoMatch3.Match3Core;
+namespace MonoMatch3Core.Data;
 
 public readonly struct TilePosition(byte x, byte y) : IEquatable<TilePosition>, IValue<TilePosition>
 {

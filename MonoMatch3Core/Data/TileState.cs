@@ -2,7 +2,7 @@
 using MonoGameLibrary.StatefulEvent;
 using MonoMatch3Core.Enums;
 
-namespace MonoMatch3.Match3Core.Tiles;
+namespace MonoMatch3Core.Data;
 
 public struct TileState : IValue<TileState>
 {
