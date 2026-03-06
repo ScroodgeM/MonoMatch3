@@ -25,8 +25,8 @@
 /processorParam:TextureFormat=Color
 /build:images/gems.png
 
-#begin images/gems.xml
-/copy:images/gems.xml
+#begin images/gems.json
+/copy:images/gems.json
 
 #begin images/logo.jpg
 /importer:TextureImporter
@@ -40,9 +40,8 @@
 /processorParam:TextureFormat=Color
 /build:images/logo.jpg
 
-#begin images/logo.xml
-/copy:images/logo.xml
+#begin images/logo.json
+/copy:images/logo.json
 
 #begin Settings.json
 /copy:Settings.json
-

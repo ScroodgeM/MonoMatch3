@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -7,7 +6,6 @@ using MonoMatch3.Match3Core.Tiles;
 
 namespace MonoMatch3;
 
-[Serializable]
 public class Settings
 {
     public struct System

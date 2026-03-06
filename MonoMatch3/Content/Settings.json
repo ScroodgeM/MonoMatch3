@@ -1,8 +1,8 @@
 ﻿{
   "system": {
     "textureAtlases": [
-      "images/gems.xml",
-      "images/logo.xml"
+      "images/gems",
+      "images/logo"
     ]
   },
   "board": {

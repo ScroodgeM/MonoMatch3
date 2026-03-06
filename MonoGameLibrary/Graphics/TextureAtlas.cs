@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Xml;
-using System.Xml.Linq;
+using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -26,53 +25,35 @@ public class TextureAtlas(Texture2D texture)
 
     public static TextureAtlas FromFile(ContentManager content, string fileName)
     {
+        fileName = Path.ChangeExtension(fileName, "json");
         string filePath = Path.Combine(content.RootDirectory, fileName);
-
         using Stream stream = TitleContainer.OpenStream(filePath);
-        using XmlReader reader = XmlReader.Create(stream);
+        AtlasDefinition definition = JsonSerializer.Deserialize<AtlasDefinition>(stream);
 
-        XDocument doc = XDocument.Load(reader);
-        XElement root = doc.Root;
-
-        string texturePath = root.Element("Texture").Value;
+        string texturePath = definition.texturePath;
         Texture2D texture = content.Load<Texture2D>(texturePath);
         TextureAtlas atlas = new TextureAtlas(texture);
 
-        XElement regionsRoot = root.Element("Regions");
-        if (regionsRoot != null)
+        if (definition.regions != null)
         {
-            foreach (XElement region in regionsRoot.Elements("Region"))
+            foreach (AtlasDefinition.Region region in definition.regions)
             {
-                string name = XMLHelpers.GetString(region, "name");
-                if (string.IsNullOrEmpty(name) == false)
+                Rectangle sourceRectangle = new(region.x, region.y, region.w, region.h);
+
+                Vector2 pivot = new(region.pivotX, region.pivotY);
+
+                SpriteEffects effects = SpriteEffects.None;
+                if (region.flipVertically == true)
                 {
-                    Rectangle sourceRectangle = new(
-                        x: XMLHelpers.GetInt(region, "x"),
-                        y: XMLHelpers.GetInt(region, "y"),
-                        width: XMLHelpers.GetInt(region, "width"),
-                        height: XMLHelpers.GetInt(region, "height")
-                    );
-
-                    float scale = XMLHelpers.GetFloat(region, "scale");
-
-                    Vector2 pivot = new(
-                        x: XMLHelpers.GetFloat(region, "pivotX"),
-                        y: XMLHelpers.GetFloat(region, "pivotY")
-                    );
-
-                    SpriteEffects effects = SpriteEffects.None;
-                    if (XMLHelpers.GetBoolean(region, "flipVertically") == true)
-                    {
-                        effects |= SpriteEffects.FlipVertically;
-                    }
-
-                    if (XMLHelpers.GetBoolean(region, "flipHorizontally") == true)
-                    {
-                        effects |= SpriteEffects.FlipHorizontally;
-                    }
-
-                    atlas.sprites.Add(name, new Sprite(texture, sourceRectangle, pivot, scale, effects));
+                    effects |= SpriteEffects.FlipVertically;
                 }
+
+                if (region.flipHorizontally == true)
+                {
+                    effects |= SpriteEffects.FlipHorizontally;
+                }
+
+                atlas.sprites.Add(region.name, new Sprite(texture, sourceRectangle, pivot, region.scale, effects));
             }
         }
 
