@@ -72,9 +72,9 @@ public class Board
         tiles.Clear();
     }
 
-    internal bool TryProcessMatch(TilePosition position)
+    internal bool TryProcessMatch(TilePosition position, ProcessMatchMode mode)
     {
-        return matchChecker.TryProcessMatch(tiles, position);
+        return matchChecker.TryProcessMatch(tiles, position, mode);
     }
 
     internal void RemoveTile(TilePosition position, TileRemoveReason reason)
@@ -116,33 +116,12 @@ public class Board
         {
             selectedTile.SetValue1(false);
 
-            TrySwap(position, selectedTile.Value2);
+            TileBase.TrySwap(tiles, position, selectedTile.Value2);
         }
         else
         {
             selectedTile.SetValues(true, position);
         }
-    }
-
-    private bool TrySwap(TilePosition position1, TilePosition position2)
-    {
-        if (position1.IsNeighborOf(position2) == false)
-        {
-            return false;
-        }
-
-        if (tiles.TryGetValue(position1, out TileBase tile1) == false || tile1.State.Value.movement.HasValue == true)
-        {
-            return false;
-        }
-
-        if (tiles.TryGetValue(position2, out TileBase tile2) == false || tile2.State.Value.movement.HasValue == true)
-        {
-            return false;
-        }
-
-        TileBase.SwapTiles(tile1, tile2);
-        return true;
     }
 
     private void RegisterTile(TileBase tile)

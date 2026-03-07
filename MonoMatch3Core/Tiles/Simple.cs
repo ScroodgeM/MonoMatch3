@@ -14,7 +14,7 @@ internal class Simple(Settings settings, IGameEvents gameEvents, Board.Board boa
         board.RemoveTile(position.Value, TileRemoveReason.SuccessMatch);
     }
 
-    internal override void ChangeTypeTo(TileType newTileType)
+    internal override void UpgradeTile(TileType newTileType)
     {
         board.ReplaceTile(position.Value, TileRemoveReason.SuccessMatch, newTileType);
     }

@@ -15,11 +15,11 @@ internal class Aggregator(Settings settings)
         new ThreeInARow(settings, Direction.Up),
     ];
 
-    internal bool TryProcessMatch(Dictionary<TilePosition, TileBase> tiles, TilePosition position)
+    internal bool TryProcessMatch(Dictionary<TilePosition, TileBase> tiles, TilePosition position, ProcessMatchMode mode)
     {
         foreach (CheckerBase checker in checkers)
         {
-            if (checker.TryProcessMatch(tiles, position) == true)
+            if (checker.TryProcessMatch(tiles, position, mode) == true)
             {
                 return true;
             }

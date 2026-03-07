@@ -16,5 +16,7 @@ internal class DestroyerHorizontalLine(Settings settings, IGameEvents gameEvents
         board.RemoveTile(position.Value, TileRemoveReason.SuccessMatch);
     }
 
-    internal override void ChangeTypeTo(TileType newTileType) => throw new InvalidOperationException("we should not be here");
+    internal override void UpgradeTile(TileType newTileType)
+    {
+    }
 }

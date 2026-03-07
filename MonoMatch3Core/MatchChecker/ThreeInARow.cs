@@ -9,7 +9,7 @@ internal class ThreeInARow(Settings settings, Direction lineDirection) : Checker
 {
     protected static readonly HashSet<TilePosition> foundTilesCache = new HashSet<TilePosition>();
 
-    internal override bool TryProcessMatch(Dictionary<TilePosition, TileBase> tiles, TilePosition position)
+    internal override bool TryProcessMatch(Dictionary<TilePosition, TileBase> tiles, TilePosition position, ProcessMatchMode mode)
     {
         if (tiles.TryGetValue(position, out TileBase mainTile) == false)
         {
@@ -29,19 +29,22 @@ internal class ThreeInARow(Settings settings, Direction lineDirection) : Checker
             }
         }
 
-        return ProcessFoundTiles(tiles, position);
+        return ProcessFoundTiles(tiles, position, mode);
     }
 
-    protected virtual bool ProcessFoundTiles(Dictionary<TilePosition, TileBase> tiles, TilePosition position)
+    protected virtual bool ProcessFoundTiles(Dictionary<TilePosition, TileBase> tiles, TilePosition position, ProcessMatchMode mode)
     {
         if (foundTilesCache.Count != 3)
         {
             return false;
         }
 
-        foreach (TilePosition foundTilePosition in foundTilesCache)
+        if (mode == ProcessMatchMode.CheckAndConfirmChanges)
         {
-            tiles[foundTilePosition].ProcessSuccessMatch();
+            foreach (TilePosition foundTilePosition in foundTilesCache)
+            {
+                tiles[foundTilePosition].ProcessSuccessMatch();
+            }
         }
 
         return true;

@@ -8,18 +8,21 @@ namespace MonoMatch3Core.MatchChecker;
 
 internal class FourInARow(Settings settings, Direction lineDirection, TileType lineSpecialBonus) : ThreeInARow(settings, lineDirection)
 {
-    protected override bool ProcessFoundTiles(Dictionary<TilePosition, TileBase> tiles, TilePosition position)
+    protected override bool ProcessFoundTiles(Dictionary<TilePosition, TileBase> tiles, TilePosition position, ProcessMatchMode mode)
     {
         if (foundTilesCache.Count == 4)
         {
             foundTilesCache.Remove(position);
 
-            if (base.ProcessFoundTiles(tiles, position) == false)
+            if (base.ProcessFoundTiles(tiles, position, mode) == false)
             {
                 throw new InvalidOperationException("something went wrong");
             }
 
-            tiles[position].ChangeTypeTo(lineSpecialBonus);
+            if (mode == ProcessMatchMode.CheckAndConfirmChanges)
+            {
+                tiles[position].UpgradeTile(lineSpecialBonus);
+            }
 
             return true;
         }

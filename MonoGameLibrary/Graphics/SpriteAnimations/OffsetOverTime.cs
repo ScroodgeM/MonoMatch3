@@ -3,8 +3,14 @@ using Microsoft.Xna.Framework;
 
 namespace MonoGameLibrary.Graphics.SpriteAnimations;
 
-public class ChangeTransparency(float fromValue, float toValue, TimeSpan fromTime, TimeSpan toTime) : SpriteAnimationBase
+public class OffsetOverTime(Vector2 from, Vector2 to, TimeSpan fromTime, TimeSpan toTime, OffsetOverTime.MoveMode mode) : SpriteAnimationBase
 {
+    public enum MoveMode : byte
+    {
+        FromTo,
+        FromToFrom,
+    }
+
     public override void ApplyState(ref Sprite.Transform spriteTransform, GameTime gameTime)
     {
         if (isActive == false)
@@ -23,6 +29,13 @@ public class ChangeTransparency(float fromValue, float toValue, TimeSpan fromTim
             return;
         }
 
-        spriteTransform.color *= fromValue + (toValue - fromValue) * (float)timeNormalized;
+        switch (mode)
+        {
+            case MoveMode.FromToFrom:
+                timeNormalized = 1.0 - Math.Abs(timeNormalized * 2.0 - 1.0);
+                break;
+        }
+
+        spriteTransform.position += from + (to - from) * (float)timeNormalized;
     }
 }

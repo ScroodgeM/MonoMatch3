@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.SpriteAnimations;
+using MonoGameLibrary.StatefulEvent;
 using MonoGameLibrary.Timers;
 using MonoMatch3Core;
 using MonoMatch3Core.Data;
@@ -22,8 +23,6 @@ internal class Tile
     private Sprite.Transform mySpriteTransform;
 
     private SpriteAnimationBase selectedAnimation;
-    private bool isMoving = false;
-
 
     internal Tile(SpriteRenderer spriteRenderer, Settings settings, IGameEvents gameEvents, ITimer timer, TileBase tileCore)
     {
@@ -43,8 +42,9 @@ internal class Tile
 
         Appear();
 
-        this.gameEvents.OnUpdate += OnUpdate;
-        RefreshMovement(gameEvents.CurrentTime.Value);
+        this.tileCore.Position.OnValueChanged += OnPositionChanged;
+        this.tileCore.State.OnValueChanged += OnStateChanged;
+        this.tileCore.OnMoveAttemptFailed += OnMoveAttemptFailed;
     }
 
 
@@ -59,11 +59,8 @@ internal class Tile
         selectedAnimation.SetActive(tileIsSelected);
     }
 
-
     internal void Remove(TileRemoveReason removeReason)
     {
-        this.gameEvents.OnUpdate -= OnUpdate;
-
         switch (removeReason)
         {
             case TileRemoveReason.SuccessMatch:
@@ -82,11 +79,43 @@ internal class Tile
 
     internal void Die()
     {
-        gameEvents.OnUpdate -= OnUpdate;
+        tileCore.Position.OnValueChanged -= OnPositionChanged;
+        tileCore.State.OnValueChanged -= OnStateChanged;
+        tileCore.OnMoveAttemptFailed -= OnMoveAttemptFailed;
         spriteRenderer.RemoveSprite(mySpriteId);
     }
 
-    private void OnUpdate(GameTime gameTime) => RefreshMovement(gameTime.TotalGameTime);
+    private void OnPositionChanged(TilePosition newPosition)
+    {
+        mySpriteTransform.position = settings.BoardToScreen(newPosition).ToVector2();
+        spriteRenderer.UpdateTransform(mySpriteId, mySpriteTransform);
+    }
+
+    private void OnStateChanged(TileState newState)
+    {
+        if (newState.movement.HasValue == true)
+        {
+            TileState.Movement movement = newState.movement.Value;
+            Vector2 moveFrom = -settings.BoardToScreen(movement.direction);
+
+            OffsetOverTime animation = new OffsetOverTime(moveFrom, Vector2.Zero, movement.startTime, movement.finishTime, OffsetOverTime.MoveMode.FromTo);
+            spriteRenderer.AddAnimation(mySpriteId, animation);
+        }
+    }
+
+    private void OnMoveAttemptFailed(TilePosition targetPosition)
+    {
+        Vector2 offset =
+            settings.BoardToScreen(targetPosition).ToVector2()
+            -
+            settings.BoardToScreen(tileCore.Position.Value).ToVector2();
+
+        TimeSpan startTime = gameEvents.CurrentTime.Value;
+        TimeSpan endTime = startTime + TimeSpan.FromSeconds(settings.board.timings.swapTilesDuration);
+
+        OffsetOverTime animation = new OffsetOverTime(Vector2.Zero, offset, startTime, endTime, OffsetOverTime.MoveMode.FromToFrom);
+        spriteRenderer.AddAnimation(mySpriteId, animation);
+    }
 
     private void Appear()
     {
@@ -94,29 +123,5 @@ internal class Tile
         TimeSpan now = gameEvents.CurrentTime.Value;
         this.spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(0f, 1f, now, now + appearDuration));
         this.spriteRenderer.AddAnimation(mySpriteId, new ChangeScale(2f, 1f, now, now + appearDuration));
-    }
-
-    private void RefreshMovement(TimeSpan time)
-    {
-        TileState tileState = tileCore.State.Value;
-
-        if (tileState.movement.HasValue == true)
-        {
-            TileState.Movement movement = tileState.movement.Value;
-            Vector2 moveTo = settings.BoardToScreen(tileCore.Position.Value).ToVector2();
-            Vector2 moveFrom = moveTo - settings.BoardToScreen(movement.direction);
-            TimeSpan timeElapsed = time - movement.startTime;
-            TimeSpan duration = movement.finishTime - movement.startTime;
-            double normalizedTime = Math.Clamp(timeElapsed / duration, 0, 1);
-            mySpriteTransform.position = Vector2.Lerp(moveFrom, moveTo, (float)normalizedTime);
-            spriteRenderer.UpdateTransform(mySpriteId, mySpriteTransform);
-            isMoving = true;
-        }
-        else if (isMoving == true)
-        {
-            mySpriteTransform.position = settings.BoardToScreen(tileCore.Position.Value).ToVector2();
-            spriteRenderer.UpdateTransform(mySpriteId, mySpriteTransform);
-            isMoving = false;
-        }
     }
 }

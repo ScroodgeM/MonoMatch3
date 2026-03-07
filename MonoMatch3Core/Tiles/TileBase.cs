@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using MonoGameLibrary;
 using MonoGameLibrary.StatefulEvent;
 using MonoMatch3Core.Data;
@@ -8,6 +9,7 @@ namespace MonoMatch3Core.Tiles;
 
 public abstract class TileBase
 {
+    public event Action<TilePosition> OnMoveAttemptFailed = targetPosition => { };
     public abstract TileType Type { get; }
     public TileColor Color => color;
     public IStatefulEvent<TilePosition> Position => position;
@@ -58,7 +60,7 @@ public abstract class TileBase
 
     internal abstract void ProcessSuccessMatch();
 
-    internal abstract void ChangeTypeTo(TileType newTileType);
+    internal abstract void UpgradeTile(TileType newTileType);
 
     internal void Die()
     {
@@ -74,10 +76,12 @@ public abstract class TileBase
             state.Set(tileState);
             if (TryFallDown() == false)
             {
-                board.TryProcessMatch(position.Value);
+                TryProcessMatch(ProcessMatchMode.CheckAndConfirmChanges);
             }
         }
     }
+
+    private bool TryProcessMatch(ProcessMatchMode mode) => board.TryProcessMatch(position.Value, mode);
 
     internal bool TryFallDown()
     {
@@ -103,19 +107,46 @@ public abstract class TileBase
         return true;
     }
 
-    public static void SwapTiles(TileBase tile1, TileBase tile2)
+    public static bool TrySwap(Dictionary<TilePosition, TileBase> tiles, TilePosition position1, TilePosition position2)
     {
-        TilePosition tile1NewPosition = tile2.position.Value;
-        TilePosition tile2NewPosition = tile1.position.Value;
+        if (position1.IsNeighborOf(position2) == false)
+        {
+            return false;
+        }
 
-        Direction tile1Direction = Helpers.OffsetToDirection(tile1.position.Value, tile1NewPosition);
-        Direction tile2Direction = Helpers.OffsetToDirection(tile2.position.Value, tile2NewPosition);
+        if (tiles.TryGetValue(position1, out TileBase tile1) == false || tile1.State.Value.movement.HasValue == true)
+        {
+            return false;
+        }
+
+        if (tiles.TryGetValue(position2, out TileBase tile2) == false || tile2.State.Value.movement.HasValue == true)
+        {
+            return false;
+        }
 
         tile1.position.Set(TilePosition.Unboarded);
-        tile2.position.Set(tile2NewPosition);
-        tile1.position.Set(tile1NewPosition);
+        tile2.position.Set(position1);
+        tile1.position.Set(position2);
 
-        tile1.StartMovementToPosition(tile1Direction, TimeSpan.FromSeconds(tile1.settings.board.timings.swapTilesDuration));
-        tile2.StartMovementToPosition(tile2Direction, TimeSpan.FromSeconds(tile2.settings.board.timings.swapTilesDuration));
+        if (tile1.TryProcessMatch(ProcessMatchMode.CheckOnly) == true
+            ||
+            tile2.TryProcessMatch(ProcessMatchMode.CheckOnly) == true)
+        {
+            Direction tile1Direction = Helpers.OffsetToDirection(position1, position2);
+            Direction tile2Direction = Helpers.OffsetToDirection(position2, position1);
+
+            tile1.StartMovementToPosition(tile1Direction, TimeSpan.FromSeconds(tile1.settings.board.timings.swapTilesDuration));
+            tile2.StartMovementToPosition(tile2Direction, TimeSpan.FromSeconds(tile2.settings.board.timings.swapTilesDuration));
+
+            return true;
+        }
+
+        tile1.position.Set(TilePosition.Unboarded);
+        tile2.position.Set(position2);
+        tile1.position.Set(position1);
+
+        tile1.OnMoveAttemptFailed(position2);
+        tile2.OnMoveAttemptFailed(position1);
+        return false;
     }
 }
