@@ -102,8 +102,8 @@
             "color": "Blue",
             "spriteId": "horizontal_bonus",
             "tintColor": {
-              "R": 0,
-              "G": 0,
+              "R": 64,
+              "G": 64,
               "B": 255,
               "A": 255
             }
@@ -112,9 +112,9 @@
             "color": "Green",
             "spriteId": "horizontal_bonus",
             "tintColor": {
-              "R": 0,
+              "R": 64,
               "G": 255,
-              "B": 0,
+              "B": 64,
               "A": 255
             }
           },
@@ -134,7 +134,7 @@
             "tintColor": {
               "R": 255,
               "G": 255,
-              "B": 0,
+              "B": 64,
               "A": 255
             }
           },
@@ -143,7 +143,7 @@
             "spriteId": "horizontal_bonus",
             "tintColor": {
               "R": 255,
-              "G": 0,
+              "G": 64,
               "B": 255,
               "A": 255
             }
@@ -153,8 +153,8 @@
             "spriteId": "horizontal_bonus",
             "tintColor": {
               "R": 255,
-              "G": 0,
-              "B": 0,
+              "G": 64,
+              "B": 64,
               "A": 255
             }
           }
@@ -167,8 +167,8 @@
             "color": "Blue",
             "spriteId": "vertical_bonus",
             "tintColor": {
-              "R": 0,
-              "G": 0,
+              "R": 64,
+              "G": 64,
               "B": 255,
               "A": 255
             }
@@ -177,9 +177,9 @@
             "color": "Green",
             "spriteId": "vertical_bonus",
             "tintColor": {
-              "R": 0,
+              "R": 64,
               "G": 255,
-              "B": 0,
+              "B": 64,
               "A": 255
             }
           },
@@ -199,7 +199,7 @@
             "tintColor": {
               "R": 255,
               "G": 255,
-              "B": 0,
+              "B": 64,
               "A": 255
             }
           },
@@ -208,7 +208,7 @@
             "spriteId": "vertical_bonus",
             "tintColor": {
               "R": 255,
-              "G": 0,
+              "G": 64,
               "B": 255,
               "A": 255
             }
@@ -218,8 +218,8 @@
             "spriteId": "vertical_bonus",
             "tintColor": {
               "R": 255,
-              "G": 0,
-              "B": 0,
+              "G": 64,
+              "B": 64,
               "A": 255
             }
           }
@@ -232,8 +232,8 @@
             "color": "Blue",
             "spriteId": "small_bomb",
             "tintColor": {
-              "R": 0,
-              "G": 0,
+              "R": 64,
+              "G": 64,
               "B": 255,
               "A": 255
             }
@@ -242,9 +242,9 @@
             "color": "Green",
             "spriteId": "small_bomb",
             "tintColor": {
-              "R": 0,
+              "R": 64,
               "G": 255,
-              "B": 0,
+              "B": 64,
               "A": 255
             }
           },
@@ -264,7 +264,7 @@
             "tintColor": {
               "R": 255,
               "G": 255,
-              "B": 0,
+              "B": 64,
               "A": 255
             }
           },
@@ -273,7 +273,7 @@
             "spriteId": "small_bomb",
             "tintColor": {
               "R": 255,
-              "G": 0,
+              "G": 64,
               "B": 255,
               "A": 255
             }
@@ -283,8 +283,8 @@
             "spriteId": "small_bomb",
             "tintColor": {
               "R": 255,
-              "G": 0,
-              "B": 0,
+              "G": 64,
+              "B": 64,
               "A": 255
             }
           }
