@@ -12,6 +12,7 @@ internal abstract class CheckerBase(Settings settings)
     protected int CollectTilesInBothDirections(Dictionary<TilePosition, TileBase> tiles, TilePosition position, Direction direction, TileColor color, HashSet<TilePosition> output)
     {
         int tilesFound = 0;
+
         foreach (TilePosition foundTile in CollectTilesOfTheSameColorInDirection(tiles, position, direction, color))
         {
             if (output.Add(foundTile) == true)
@@ -31,7 +32,7 @@ internal abstract class CheckerBase(Settings settings)
         return tilesFound;
     }
 
-    protected IEnumerable<TilePosition> CollectTilesOfTheSameColorInDirection(Dictionary<TilePosition, TileBase> tiles, TilePosition position, Direction direction, TileColor color)
+    private IEnumerable<TilePosition> CollectTilesOfTheSameColorInDirection(Dictionary<TilePosition, TileBase> tiles, TilePosition position, Direction direction, TileColor color)
     {
         while (true)
         {

@@ -5,7 +5,7 @@ using MonoMatch3Core.Tiles;
 
 namespace MonoMatch3Core.MatchChecker;
 
-internal class CrossLines(Settings settings, TileType specialBonus) : CheckerBase(settings)
+internal abstract class SingleRowChecker(Settings settings, Direction direction) : CheckerBase(settings)
 {
     private static readonly HashSet<TilePosition> foundTilesCache = new HashSet<TilePosition>();
 
@@ -18,13 +18,7 @@ internal class CrossLines(Settings settings, TileType specialBonus) : CheckerBas
 
         foundTilesCache.Clear();
         foundTilesCache.Add(position);
-        int horizontalLineLength = 1 + CollectTilesInBothDirections(tiles, position, Direction.Right, mainTile.Color, foundTilesCache);
-        int verticalLineLength = 1 + CollectTilesInBothDirections(tiles, position, Direction.Up, mainTile.Color, foundTilesCache);
-
-        if (horizontalLineLength < 3 || verticalLineLength < 3)
-        {
-            return false;
-        }
+        CollectTilesInBothDirections(tiles, position, direction, mainTile.Color, foundTilesCache);
 
         foreach (TilePosition foundTilePosition in foundTilesCache)
         {
@@ -34,17 +28,23 @@ internal class CrossLines(Settings settings, TileType specialBonus) : CheckerBas
             }
         }
 
+        if (ValidateTilesFound(foundTilesCache) == false)
+        {
+            return false;
+        }
+
         if (mode == ProcessMatchMode.CheckAndConfirmChanges)
         {
-            tiles[position].UpgradeTile(specialBonus);
-            foundTilesCache.Remove(position);
-
-            foreach (TilePosition foundTilePosition in foundTilesCache)
+            foreach (TilePosition tilePosition in foundTilesCache)
             {
-                tiles[foundTilePosition].ProcessSuccessMatch();
+                ConfirmMatchEffect(tiles[tilePosition], tilePosition == position);
             }
         }
 
         return true;
     }
+
+    protected abstract bool ValidateTilesFound(HashSet<TilePosition> tiles);
+
+    protected abstract void ConfirmMatchEffect(TileBase tile, bool isTriggerTile);
 }

@@ -5,47 +5,9 @@ using MonoMatch3Core.Tiles;
 
 namespace MonoMatch3Core.MatchChecker;
 
-internal class ThreeInARow(Settings settings, Direction lineDirection) : CheckerBase(settings)
+internal class ThreeInARow(Settings settings, Direction direction) : SingleRowChecker(settings, direction)
 {
-    protected static readonly HashSet<TilePosition> foundTilesCache = new HashSet<TilePosition>();
+    protected override bool ValidateTilesFound(HashSet<TilePosition> tiles) => tiles.Count == 3;
 
-    internal override bool TryProcessMatch(Dictionary<TilePosition, TileBase> tiles, TilePosition position, ProcessMatchMode mode)
-    {
-        if (tiles.TryGetValue(position, out TileBase mainTile) == false)
-        {
-            return false;
-        }
-
-        foundTilesCache.Clear();
-        foundTilesCache.Add(position);
-        CollectTilesInBothDirections(tiles, position, lineDirection, mainTile.Color, foundTilesCache);
-
-        foreach (TilePosition foundTilePosition in foundTilesCache)
-        {
-            if (tiles[foundTilePosition].State.Value.movement.HasValue == true)
-            {
-                return false;
-            }
-        }
-
-        return ProcessFoundTiles(tiles, position, mode);
-    }
-
-    protected virtual bool ProcessFoundTiles(Dictionary<TilePosition, TileBase> tiles, TilePosition position, ProcessMatchMode mode)
-    {
-        if (foundTilesCache.Count != 3)
-        {
-            return false;
-        }
-
-        if (mode == ProcessMatchMode.CheckAndConfirmChanges)
-        {
-            foreach (TilePosition foundTilePosition in foundTilesCache)
-            {
-                tiles[foundTilePosition].ProcessSuccessMatch();
-            }
-        }
-
-        return true;
-    }
+    protected override void ConfirmMatchEffect(TileBase tile, bool isTriggerTile) => tile.ProcessSuccessMatch();
 }

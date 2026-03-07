@@ -5,9 +5,9 @@ using MonoMatch3Core.Tiles;
 
 namespace MonoMatch3Core.MatchChecker;
 
-internal class FourInARow(Settings settings, Direction lineDirection, TileType specialBonus) : SingleRowChecker(settings, lineDirection)
+internal class FivePlusInARow(Settings settings, Direction lineDirection, TileType specialBonus) : SingleRowChecker(settings, lineDirection)
 {
-    protected override bool ValidateTilesFound(HashSet<TilePosition> tiles) => tiles.Count == 4;
+    protected override bool ValidateTilesFound(HashSet<TilePosition> tiles) => tiles.Count >= 5;
 
     protected override void ConfirmMatchEffect(TileBase tile, bool isTriggerTile)
     {
