@@ -5,7 +5,7 @@ using MonoMatch3Core.Tiles;
 
 namespace MonoMatch3Core.MatchChecker;
 
-internal class ThreeInARow(Settings settings, Direction lineDirection) : CheckerBase(settings)
+internal class CrossLines(Settings settings) : CheckerBase(settings)
 {
     protected static readonly HashSet<TilePosition> foundTilesCache = new HashSet<TilePosition>();
 
@@ -18,7 +18,13 @@ internal class ThreeInARow(Settings settings, Direction lineDirection) : Checker
 
         foundTilesCache.Clear();
         foundTilesCache.Add(position);
-        CollectTilesInBothDirections(tiles, position, lineDirection, mainTile.Color, foundTilesCache);
+        int horizontalLineLength = 1 + CollectTilesInBothDirections(tiles, position, Direction.Right, mainTile.Color, foundTilesCache);
+        int verticalLineLength = 1 + CollectTilesInBothDirections(tiles, position, Direction.Up, mainTile.Color, foundTilesCache);
+
+        if (horizontalLineLength < 3 || verticalLineLength < 3)
+        {
+            return false;
+        }
 
         foreach (TilePosition foundTilePosition in foundTilesCache)
         {
@@ -28,21 +34,18 @@ internal class ThreeInARow(Settings settings, Direction lineDirection) : Checker
             }
         }
 
-        return ProcessFoundTiles(tiles, position, mode);
-    }
-
-    protected virtual bool ProcessFoundTiles(Dictionary<TilePosition, TileBase> tiles, TilePosition position, ProcessMatchMode mode)
-    {
-        if (foundTilesCache.Count != 3)
-        {
-            return false;
-        }
-
         if (mode == ProcessMatchMode.CheckAndConfirmChanges)
         {
             foreach (TilePosition foundTilePosition in foundTilesCache)
             {
-                tiles[foundTilePosition].ProcessSuccessMatch();
+                if (foundTilePosition == position)
+                {
+                    tiles[position].UpgradeTile(TileType.DestroyerSquare);
+                }
+                else
+                {
+                    tiles[foundTilePosition].ProcessSuccessMatch();
+                }
             }
         }
 

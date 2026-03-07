@@ -9,6 +9,7 @@ internal class Aggregator(Settings settings)
 {
     private readonly CheckerBase[] checkers =
     [
+        new CrossLines(settings),
         new FourInARow(settings, Direction.Right, TileType.DestroyerHorizontalLine),
         new FourInARow(settings, Direction.Up, TileType.DestroyerVerticalLine),
         new ThreeInARow(settings, Direction.Right),
