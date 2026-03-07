@@ -101,11 +101,14 @@ public abstract class TileBase
         TilePosition tile1NewPosition = tile2.position.Value;
         TilePosition tile2NewPosition = tile1.position.Value;
 
+        Direction tile1Direction = Helpers.OffsetToDirection(tile1.position.Value, tile1NewPosition);
+        Direction tile2Direction = Helpers.OffsetToDirection(tile2.position.Value, tile2NewPosition);
+
         tile1.position.Set(TilePosition.Unboarded);
         tile2.position.Set(tile2NewPosition);
         tile1.position.Set(tile1NewPosition);
 
-        tile1.StartFallDownToPosition();
-        tile2.StartFallDownToPosition();
+        tile1.StartMovementToPosition(tile1Direction, TimeSpan.FromSeconds(tile1.settings.board.timings.swapTilesDuration));
+        tile2.StartMovementToPosition(tile2Direction, TimeSpan.FromSeconds(tile2.settings.board.timings.swapTilesDuration));
     }
 }

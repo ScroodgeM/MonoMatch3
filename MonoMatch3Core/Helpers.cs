@@ -8,7 +8,7 @@ namespace MonoMatch3Core;
 
 public static class Helpers
 {
-    public static Direction Invert(Direction origin)
+    public static Direction Invert(this Direction origin)
     {
         return origin switch
         {
@@ -17,6 +17,18 @@ public static class Helpers
             Direction.Down => Direction.Up,
             Direction.Up => Direction.Down,
             _ => throw new ArgumentOutOfRangeException(nameof(origin), origin, null)
+        };
+    }
+
+    public static Direction OffsetToDirection(TilePosition from, TilePosition to)
+    {
+        return (dx: to.X - from.X, dy: to.Y - from.Y) switch
+        {
+            (0, +1) => Direction.Down,
+            (0, -1) => Direction.Up,
+            (+1, 0) => Direction.Right,
+            (-1, 0) => Direction.Left,
+            _ => throw new InvalidOperationException($"there's no direction from {from} to {to}")
         };
     }
 

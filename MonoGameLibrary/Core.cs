@@ -15,9 +15,6 @@ public class Core : Game, IGameEvents
     public event Action<GameTime> OnUpdate = time => { };
     public event Action<GameTime> OnDraw = time => { };
 
-    public static Core Instance => instance;
-    private static Core instance;
-
     public GraphicsDeviceManager Graphics => graphicsDeviceManager;
     public new GraphicsDevice GraphicsDevice => graphicsDevice;
     public SpriteBatch SpriteBatch => spriteBatch;
@@ -37,13 +34,6 @@ public class Core : Game, IGameEvents
 
     public Core(string title, Vector2 screenSize, bool isFullScreen)
     {
-        if (instance != null)
-        {
-            throw new NotSupportedException("Only one instance of Core can be created");
-        }
-
-        instance = this;
-
         graphicsDeviceManager = new GraphicsDeviceManager(this);
         graphicsDeviceManager.PreferredBackBufferWidth = Math.Max(256, (int)screenSize.X);
         graphicsDeviceManager.PreferredBackBufferHeight = Math.Max(256, (int)screenSize.Y);

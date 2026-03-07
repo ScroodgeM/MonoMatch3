@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
@@ -10,6 +12,17 @@ namespace MonoMatch3;
 
 public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false)
 {
+    private static readonly string[] tasks =
+    [
+        "бонус за 5 фишек",
+        "ракета в действии",
+        "бомба в действии",
+        "таймер обратного отсчёта",
+        "кнопка запуска в главном меню",
+        "избавиться от клавиатуры",
+        "выкинуть кор-синглтон",
+    ];
+
     private Settings settings;
 
     private Board board;
@@ -27,6 +40,12 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
     protected override void Initialize()
     {
         base.Initialize();
+
+        foreach (string task in tasks)
+        {
+            Console.OutputEncoding = new UTF8Encoding();
+            Console.WriteLine($"Task: {task}");
+        }
 
         StartMainMenu();
     }

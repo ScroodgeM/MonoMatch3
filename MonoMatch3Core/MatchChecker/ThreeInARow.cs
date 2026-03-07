@@ -32,7 +32,7 @@ internal class ThreeInARow(Settings settings, Direction lineDirection) : Checker
         foundTilesCache.Clear();
         foundTilesCache.Add(position);
         CollectTilesOfTheSameTypeInDirection(tiles, position, lineDirection, lineType);
-        CollectTilesOfTheSameTypeInDirection(tiles, position, Helpers.Invert(lineDirection), lineType);
+        CollectTilesOfTheSameTypeInDirection(tiles, position, lineDirection.Invert(), lineType);
 
         foreach (TilePosition foundTilePosition in foundTilesCache)
         {

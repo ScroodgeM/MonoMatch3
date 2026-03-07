@@ -20,8 +20,9 @@
     ],
     "timings": {
       "firstAppearDuration": 0.25,
-      "delayBeforeFallIntoFreeCell": 0.1,
+      "delayBeforeFallIntoFreeCell": 0.2,
       "fallDownDuration": 0.2,
+      "swapTilesDuration": 0.3,
       "successMatchDisappearDuration": 1.0
     }
   },
