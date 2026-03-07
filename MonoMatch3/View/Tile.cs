@@ -33,10 +33,12 @@ internal class Tile
         this.timer = timer;
         this.tileCore = tileCore;
 
+        settings.GetSpriteView(tileCore.Type, tileCore.Color, out string spriteId, out Color tintColor);
+
         this.mySpriteTransform = Sprite.Transform.Default;
         this.mySpriteTransform.position = settings.BoardToScreen(tileCore.Position.Value).ToVector2();
+        this.mySpriteTransform.color = tintColor;
 
-        string spriteId = settings.GetSpriteId(tileCore.TileType);
         this.mySpriteId = this.spriteRenderer.AddSprite(spriteId, mySpriteTransform);
 
         Appear();

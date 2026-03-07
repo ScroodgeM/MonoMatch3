@@ -11,32 +11,27 @@ internal class TilesFactory(Settings settings, IGameEvents gameEvents, Board boa
     internal TileBase CreateRandom(TilePosition position)
     {
         int poolIndex = sessionRandomGenerator.Next(settings.board.generatorPool.Length);
-        return Create(position, settings.board.generatorPool[poolIndex]);
+        return Create(TileType.Simple, settings.board.generatorPool[poolIndex], position);
     }
 
-    internal TileBase Create(TilePosition position, TileType tileType)
+    internal TileBase Create(TileType type, TileColor color, TilePosition position)
     {
-        switch (tileType)
+        switch (type)
         {
-            case TileType.Simple1:
-            case TileType.Simple2:
-            case TileType.Simple3:
-            case TileType.Simple4:
-            case TileType.Simple5:
-            case TileType.Simple6:
-                return new Simple(settings, gameEvents, board, tileType, position);
+            case TileType.Simple:
+                return new Simple(settings, gameEvents, board, color, position);
 
             case TileType.DestroyerHorizontalLine:
-                return new DestroyerHorizontalLine(settings, gameEvents, board, position);
+                return new DestroyerHorizontalLine(settings, gameEvents, board, color, position);
 
             case TileType.DestroyerVerticalLine:
-                return new DestroyerVerticalLine(settings, gameEvents, board, position);
+                return new DestroyerVerticalLine(settings, gameEvents, board, color,position);
 
             case TileType.DestroyerSquare:
-                return new DestroyerSquare(settings, gameEvents, board, position);
+                return new DestroyerSquare(settings, gameEvents, board, color,position);
 
             default:
-                throw new ArgumentOutOfRangeException(nameof(tileType), tileType, null);
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
     }
 }

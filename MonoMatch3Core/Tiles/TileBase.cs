@@ -8,32 +8,39 @@ namespace MonoMatch3Core.Tiles;
 
 public abstract class TileBase
 {
-    public abstract TileType TileType { get; }
+    public abstract TileType Type { get; }
+    public TileColor Color => color;
     public IStatefulEvent<TilePosition> Position => position;
     public IStatefulEvent<TileState> State => state;
 
     protected readonly Settings settings;
     protected readonly IGameEvents gameEvents;
     protected readonly Board.Board board;
+
+    protected readonly TileColor color;
     protected readonly StatefulEventInt<TilePosition> position = StatefulEventInt.CreateGenericStruct(TilePosition.Unboarded);
     protected readonly StatefulEventInt<TileState> state = StatefulEventInt.CreateGenericStruct(TileState.Default);
 
-    protected TileBase(Settings settings, IGameEvents gameEvents, Board.Board board, TilePosition position)
+    protected TileBase(Settings settings, IGameEvents gameEvents, Board.Board board, TileColor color, TilePosition position)
     {
         this.settings = settings;
         this.gameEvents = gameEvents;
         this.board = board;
+
+        this.color = color;
         this.position.Set(position);
 
         this.gameEvents.CurrentTime.OnValueChanged += OnTimeChanged;
+
+        StartFallDownToPosition();
     }
 
-    internal void StartFallDownToPosition()
+    private void StartFallDownToPosition()
     {
         StartMovementToPosition(Direction.Down, TimeSpan.FromSeconds(settings.board.timings.fallDownDuration));
     }
 
-    internal void StartMovementToPosition(Direction direction, TimeSpan duration)
+    private void StartMovementToPosition(Direction direction, TimeSpan duration)
     {
         TileState tileState = state.Value;
         if (tileState.movement.HasValue && gameEvents.CurrentTime.Value <= tileState.movement.Value.finishTime)

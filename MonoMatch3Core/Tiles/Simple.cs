@@ -4,10 +4,10 @@ using MonoMatch3Core.Enums;
 
 namespace MonoMatch3Core.Tiles;
 
-internal class Simple(Settings settings, IGameEvents gameEvents, Board.Board board, TileType tileType, TilePosition position)
-    : TileBase(settings, gameEvents, board, position)
+internal class Simple(Settings settings, IGameEvents gameEvents, Board.Board board, TileColor tileColor, TilePosition position)
+    : TileBase(settings, gameEvents, board, tileColor, position)
 {
-    public override TileType TileType => tileType;
+    public override TileType Type => TileType.Simple;
 
     internal override void ProcessSuccessMatch()
     {

@@ -93,17 +93,4 @@ public static class Helpers
             _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
         };
     }
-
-    public static string GetSpriteId(this Settings settings, TileType tileType)
-    {
-        foreach (Settings.View.Tile tile in settings.view.tiles)
-        {
-            if (tile.type == tileType)
-            {
-                return tile.spriteId;
-            }
-        }
-
-        throw new KeyNotFoundException($"Sprite name for {tileType} not found");
-    }
 }

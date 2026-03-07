@@ -88,9 +88,10 @@ public class Board
     internal void ReplaceTile(TilePosition position, TileRemoveReason reason, TileType newTileType)
     {
         tiles.Remove(position, out TileBase removedTile);
+        TileColor color = removedTile.Color;
         OnTileRemoved(removedTile, reason);
         removedTile.Die();
-        RegisterTile(tilesFactory.Create(position, newTileType));
+        RegisterTile(tilesFactory.Create(newTileType, color, position));
     }
 
     private void FillBoard()
@@ -104,16 +105,18 @@ public class Board
 
     private void SpawnNewTileOnTop(byte positionX)
     {
-        TileBase tile = tilesFactory.CreateRandom(new TilePosition(true, positionX, settings.GetBoardArea().TopLineY));
-        tile.StartFallDownToPosition();
-        RegisterTile(tile);
+        TilePosition spawnPosition = new TilePosition(true, positionX, settings.GetBoardArea().TopLineY);
+
+        RegisterTile(tilesFactory.CreateRandom(spawnPosition));
     }
 
     private void OnTileClick(TilePosition position)
     {
-        if (selectedTile.Value1 == true && TrySwap(position, selectedTile.Value2) == true)
+        if (selectedTile.Value1 == true)
         {
             selectedTile.SetValue1(false);
+
+            TrySwap(position, selectedTile.Value2);
         }
         else
         {

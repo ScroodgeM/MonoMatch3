@@ -12,11 +12,11 @@
     "width": 8,
     "height": 8,
     "generatorPool": [
-      "Simple1",
-      "Simple2",
-      "Simple4",
-      "Simple5",
-      "Simple6"
+      "Blue",
+      "Green",
+      "Yellow",
+      "Red",
+      "Violet"
     ],
     "timings": {
       "firstAppearDuration": 0.25,
@@ -31,40 +31,264 @@
     "mainMenuLogoSpriteId": "logo",
     "tiles": [
       {
-        "type": "Simple1",
-        "spriteId": "gem1"
-      },
-      {
-        "type": "Simple2",
-        "spriteId": "gem2"
-      },
-      {
-        "type": "Simple3",
-        "spriteId": "gem3"
-      },
-      {
-        "type": "Simple4",
-        "spriteId": "gem4"
-      },
-      {
-        "type": "Simple5",
-        "spriteId": "gem5"
-      },
-      {
-        "type": "Simple6",
-        "spriteId": "gem6"
+        "type": "Simple",
+        "perColor": [
+          {
+            "color": "Blue",
+            "spriteId": "gem1",
+            "tintColor": {
+              "R": 255,
+              "G": 255,
+              "B": 255,
+              "A": 255
+            }
+          },
+          {
+            "color": "Green",
+            "spriteId": "gem2",
+            "tintColor": {
+              "R": 255,
+              "G": 255,
+              "B": 255,
+              "A": 255
+            }
+          },
+          {
+            "color": "White",
+            "spriteId": "gem3",
+            "tintColor": {
+              "R": 255,
+              "G": 255,
+              "B": 255,
+              "A": 255
+            }
+          },
+          {
+            "color": "Yellow",
+            "spriteId": "gem4",
+            "tintColor": {
+              "R": 255,
+              "G": 255,
+              "B": 255,
+              "A": 255
+            }
+          },
+          {
+            "color": "Violet",
+            "spriteId": "gem5",
+            "tintColor": {
+              "R": 255,
+              "G": 255,
+              "B": 255,
+              "A": 255
+            }
+          },
+          {
+            "color": "Red",
+            "spriteId": "gem6",
+            "tintColor": {
+              "R": 255,
+              "G": 255,
+              "B": 255,
+              "A": 255
+            }
+          }
+        ]
       },
       {
         "type": "DestroyerHorizontalLine",
-        "spriteId": "horizontal_bonus"
+        "perColor": [
+          {
+            "color": "Blue",
+            "spriteId": "horizontal_bonus",
+            "tintColor": {
+              "R": 0,
+              "G": 0,
+              "B": 255,
+              "A": 255
+            }
+          },
+          {
+            "color": "Green",
+            "spriteId": "horizontal_bonus",
+            "tintColor": {
+              "R": 0,
+              "G": 255,
+              "B": 0,
+              "A": 255
+            }
+          },
+          {
+            "color": "White",
+            "spriteId": "horizontal_bonus",
+            "tintColor": {
+              "R": 255,
+              "G": 255,
+              "B": 255,
+              "A": 255
+            }
+          },
+          {
+            "color": "Yellow",
+            "spriteId": "horizontal_bonus",
+            "tintColor": {
+              "R": 255,
+              "G": 255,
+              "B": 0,
+              "A": 255
+            }
+          },
+          {
+            "color": "Violet",
+            "spriteId": "horizontal_bonus",
+            "tintColor": {
+              "R": 255,
+              "G": 0,
+              "B": 255,
+              "A": 255
+            }
+          },
+          {
+            "color": "Red",
+            "spriteId": "horizontal_bonus",
+            "tintColor": {
+              "R": 255,
+              "G": 0,
+              "B": 0,
+              "A": 255
+            }
+          }
+        ]
       },
       {
         "type": "DestroyerVerticalLine",
-        "spriteId": "vertical_bonus"
+        "perColor": [
+          {
+            "color": "Blue",
+            "spriteId": "vertical_bonus",
+            "tintColor": {
+              "R": 0,
+              "G": 0,
+              "B": 255,
+              "A": 255
+            }
+          },
+          {
+            "color": "Green",
+            "spriteId": "vertical_bonus",
+            "tintColor": {
+              "R": 0,
+              "G": 255,
+              "B": 0,
+              "A": 255
+            }
+          },
+          {
+            "color": "White",
+            "spriteId": "vertical_bonus",
+            "tintColor": {
+              "R": 255,
+              "G": 255,
+              "B": 255,
+              "A": 255
+            }
+          },
+          {
+            "color": "Yellow",
+            "spriteId": "vertical_bonus",
+            "tintColor": {
+              "R": 255,
+              "G": 255,
+              "B": 0,
+              "A": 255
+            }
+          },
+          {
+            "color": "Violet",
+            "spriteId": "vertical_bonus",
+            "tintColor": {
+              "R": 255,
+              "G": 0,
+              "B": 255,
+              "A": 255
+            }
+          },
+          {
+            "color": "Red",
+            "spriteId": "vertical_bonus",
+            "tintColor": {
+              "R": 255,
+              "G": 0,
+              "B": 0,
+              "A": 255
+            }
+          }
+        ]
       },
       {
         "type": "DestroyerSquare",
-        "spriteId": "small_bomb"
+        "perColor": [
+          {
+            "color": "Blue",
+            "spriteId": "small_bomb",
+            "tintColor": {
+              "R": 0,
+              "G": 0,
+              "B": 255,
+              "A": 255
+            }
+          },
+          {
+            "color": "Green",
+            "spriteId": "small_bomb",
+            "tintColor": {
+              "R": 0,
+              "G": 255,
+              "B": 0,
+              "A": 255
+            }
+          },
+          {
+            "color": "White",
+            "spriteId": "small_bomb",
+            "tintColor": {
+              "R": 255,
+              "G": 255,
+              "B": 255,
+              "A": 255
+            }
+          },
+          {
+            "color": "Yellow",
+            "spriteId": "small_bomb",
+            "tintColor": {
+              "R": 255,
+              "G": 255,
+              "B": 0,
+              "A": 255
+            }
+          },
+          {
+            "color": "Violet",
+            "spriteId": "small_bomb",
+            "tintColor": {
+              "R": 255,
+              "G": 0,
+              "B": 255,
+              "A": 255
+            }
+          },
+          {
+            "color": "Red",
+            "spriteId": "small_bomb",
+            "tintColor": {
+              "R": 255,
+              "G": 0,
+              "B": 0,
+              "A": 255
+            }
+          }
+        ]
       }
     ]
   }

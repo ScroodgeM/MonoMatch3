@@ -16,24 +16,10 @@ internal class ThreeInARow(Settings settings, Direction lineDirection) : Checker
             return false;
         }
 
-        TileType lineType = mainTile.TileType;
-        switch (lineType)
-        {
-            case TileType.Simple1:
-            case TileType.Simple2:
-            case TileType.Simple3:
-            case TileType.Simple4:
-            case TileType.Simple5:
-            case TileType.Simple6:
-                break;
-            default:
-                return false;
-        }
-
         foundTilesCache.Clear();
         foundTilesCache.Add(position);
-        CollectTilesOfTheSameTypeInDirection(tiles, position, lineDirection, lineType);
-        CollectTilesOfTheSameTypeInDirection(tiles, position, lineDirection.Invert(), lineType);
+        CollectTilesOfTheSameColorInDirection(tiles, position, lineDirection, mainTile.Color);
+        CollectTilesOfTheSameColorInDirection(tiles, position, lineDirection.Invert(), mainTile.Color);
 
         foreach (TilePosition foundTilePosition in foundTilesCache)
         {
@@ -61,7 +47,7 @@ internal class ThreeInARow(Settings settings, Direction lineDirection) : Checker
         return true;
     }
 
-    private void CollectTilesOfTheSameTypeInDirection(Dictionary<TilePosition, TileBase> tiles, TilePosition position, Direction direction, TileType tileType)
+    private void CollectTilesOfTheSameColorInDirection(Dictionary<TilePosition, TileBase> tiles, TilePosition position, Direction direction, TileColor tileColor)
     {
         while (true)
         {
@@ -75,7 +61,7 @@ internal class ThreeInARow(Settings settings, Direction lineDirection) : Checker
                 return;
             }
 
-            if (tile.TileType != tileType)
+            if (tile.Color != tileColor)
             {
                 return;
             }

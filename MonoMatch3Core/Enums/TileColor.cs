@@ -3,10 +3,12 @@
 namespace MonoMatch3Core.Enums;
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
-public enum TileType : byte
+public enum TileColor : byte
 {
-    Simple,
-    DestroyerHorizontalLine,
-    DestroyerVerticalLine,
-    DestroyerSquare,
+    Blue = 10,
+    Green = 20,
+    Yellow = 30,
+    Red = 40,
+    Violet = 50,
+    White = 60,
 }

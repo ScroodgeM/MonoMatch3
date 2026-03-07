@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿// ReSharper disable InconsistentNaming
+
+using System.IO;
 using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -26,21 +28,28 @@ public class Settings
 
         public byte width { get; set; }
         public byte height { get; set; }
-        public TileType[] generatorPool { get; set; }
+        public TileColor[] generatorPool { get; set; }
         public Timings timings { get; set; }
     }
 
     public struct View
     {
-        public struct Tile
+        public struct TypedTile
         {
+            public struct ColoredTile
+            {
+                public TileColor color { get; set; }
+                public string spriteId { get; set; }
+                public Color tintColor { get; set; }
+            }
+
             public TileType type { get; set; }
-            public string spriteId { get; set; }
+            public ColoredTile[] perColor { get; set; }
         }
 
         public float cellSize { get; set; }
         public string mainMenuLogoSpriteId { get; set; }
-        public Tile[] tiles { get; set; }
+        public TypedTile[] tiles { get; set; }
     }
 
     public System system { get; set; }
