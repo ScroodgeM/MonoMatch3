@@ -14,9 +14,9 @@
     "generatorPool": [
       "Simple1",
       "Simple2",
-      "Simple3",
       "Simple4",
-      "Simple5"
+      "Simple5",
+      "Simple6"
     ],
     "timings": {
       "firstAppearDuration": 0.25,
@@ -40,14 +40,18 @@
       },
       {
         "type": "Simple3",
-        "spriteId": "gem4"
+        "spriteId": "gem3"
       },
       {
         "type": "Simple4",
-        "spriteId": "gem5"
+        "spriteId": "gem4"
       },
       {
         "type": "Simple5",
+        "spriteId": "gem5"
+      },
+      {
+        "type": "Simple6",
         "spriteId": "gem6"
       },
       {

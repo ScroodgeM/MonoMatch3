@@ -10,6 +10,7 @@ public enum TileType : byte
     Simple3,
     Simple4,
     Simple5,
+    Simple6,
 
     DestroyerHorizontalLine,
     DestroyerVerticalLine,

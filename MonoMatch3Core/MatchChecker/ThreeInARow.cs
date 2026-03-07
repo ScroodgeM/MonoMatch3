@@ -24,6 +24,7 @@ internal class ThreeInARow(Settings settings, Direction lineDirection) : Checker
             case TileType.Simple3:
             case TileType.Simple4:
             case TileType.Simple5:
+            case TileType.Simple6:
                 break;
             default:
                 return false;

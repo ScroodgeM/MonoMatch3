@@ -23,6 +23,7 @@ internal class TilesFactory(Settings settings, IGameEvents gameEvents, Board boa
             case TileType.Simple3:
             case TileType.Simple4:
             case TileType.Simple5:
+            case TileType.Simple6:
                 return new Simple(settings, gameEvents, board, tileType, position);
 
             case TileType.DestroyerHorizontalLine:
