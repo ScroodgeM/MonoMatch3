@@ -17,8 +17,6 @@ public class Board
     public event Action<TileBase> OnTileCreated = tile => { };
     public event Action<TileBase, TileRemoveReason> OnTileRemoved = (tile, reason) => { };
 
-    private byte topLinePositionY => 0;
-
     private readonly IGameEvents gameEvents;
     private readonly ITimer timer;
     private readonly Settings settings;
@@ -26,7 +24,7 @@ public class Board
     private readonly BoardInput boardInput;
     private readonly Aggregator matchChecker;
 
-    private StatefulEventInt<bool, TilePosition> selectedTile = StatefulEventInt.Create(false).Add(StatefulEventInt.CreateGenericStruct(TilePosition.Unboarded));
+    private readonly StatefulEventInt<bool, TilePosition> selectedTile = StatefulEventInt.Create(false).Add(StatefulEventInt.CreateGenericStruct(TilePosition.Unboarded));
     private readonly Random sessionRandom = new Random(Guid.NewGuid().GetHashCode());
     private readonly Dictionary<TilePosition, TileBase> tiles = new Dictionary<TilePosition, TileBase>();
 
@@ -97,7 +95,8 @@ public class Board
 
     private void FillBoard()
     {
-        for (byte x = 0; x <= settings.board.width; x++)
+        BoardArea area = settings.GetBoardArea();
+        for (byte x = area.LeftLineX; x <= area.RightLineX; x++)
         {
             SpawnNewTileOnTop(x);
         }
@@ -105,7 +104,7 @@ public class Board
 
     private void SpawnNewTileOnTop(byte positionX)
     {
-        TileBase tile = tilesFactory.CreateRandom(new TilePosition(true, positionX, topLinePositionY));
+        TileBase tile = tilesFactory.CreateRandom(new TilePosition(true, positionX, settings.GetBoardArea().TopLineY));
         tile.StartFallDownToPosition();
         RegisterTile(tile);
     }
@@ -174,7 +173,7 @@ public class Board
             return;
         }
 
-        if (position.Y == topLinePositionY)
+        if (position.Y == settings.GetBoardArea().TopLineY)
         {
             SpawnNewTileOnTop(position.X);
             return;

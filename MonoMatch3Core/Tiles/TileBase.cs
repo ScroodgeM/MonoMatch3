@@ -12,8 +12,6 @@ public abstract class TileBase
     public IStatefulEvent<TilePosition> Position => position;
     public IStatefulEvent<TileState> State => state;
 
-    private byte bottomLinePositionY => (byte)(settings.board.height - 1);
-
     protected readonly Settings settings;
     protected readonly IGameEvents gameEvents;
     protected readonly Board.Board board;
@@ -76,7 +74,7 @@ public abstract class TileBase
 
     internal bool TryFallDown()
     {
-        if (position.Value.Y == bottomLinePositionY)
+        if (position.Value.Y == settings.GetBoardArea().BottomLineY)
         {
             return false;
         }

@@ -35,16 +35,10 @@ public static class Helpers
         return canShift;
     }
 
-    public static bool IsPositionValid(int positionX, int positionY, Settings.Board boardSettings)
+    public static BoardArea GetBoardArea(this Settings settings)
     {
-        return
-            positionX >= 0
-            &&
-            positionX < boardSettings.width
-            &&
-            positionY >= 0
-            &&
-            positionY < boardSettings.height;
+        Settings.Board board = settings.board;
+        return new BoardArea(board.width, board.height);
     }
 
     public static bool TryScreenToBoard(this Settings settings, Point screenPoint, out TilePosition tilePosition)
@@ -52,7 +46,7 @@ public static class Helpers
         int tilePositionX = (int)MathF.Floor(screenPoint.X / settings.view.cellSize);
         int tilePositionY = (int)MathF.Floor(screenPoint.Y / settings.view.cellSize);
 
-        if (IsPositionValid(tilePositionX, tilePositionY, settings.board) == true)
+        if (settings.GetBoardArea().Contains(tilePositionX, tilePositionY) == true)
         {
             tilePosition = new TilePosition(true, (byte)tilePositionX, (byte)tilePositionY);
             return true;
