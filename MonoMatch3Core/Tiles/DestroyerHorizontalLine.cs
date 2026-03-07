@@ -1,7 +1,7 @@
-﻿using System;
-using MonoGameLibrary;
+﻿using MonoGameLibrary;
 using MonoMatch3Core.Data;
 using MonoMatch3Core.Enums;
+using MonoMatch3Core.Specials;
 
 namespace MonoMatch3Core.Tiles;
 
@@ -12,11 +12,22 @@ internal class DestroyerHorizontalLine(Settings settings, IGameEvents gameEvents
 
     internal override void ProcessSuccessMatch()
     {
-        Console.WriteLine("process destroyer effect here");
-        board.RemoveTile(position.Value, TileRemoveReason.SuccessMatch);
+        MakeBoom(TileRemoveReason.DestroyedBySpecial);
     }
 
     internal override void UpgradeTile(TileType newTileType)
     {
+    }
+
+    internal override void DestroyBySpecial()
+    {
+        MakeBoom(TileRemoveReason.DestroyedBySpecial);
+    }
+
+    private void MakeBoom(TileRemoveReason removeReason)
+    {
+        board.RegisterSpecial(new LineDestroyer(settings, gameEvents, position.Value, Direction.Left));
+        board.RegisterSpecial(new LineDestroyer(settings, gameEvents, position.Value, Direction.Right));
+        board.RemoveTile(position.Value, removeReason);
     }
 }

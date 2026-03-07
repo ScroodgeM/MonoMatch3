@@ -24,7 +24,8 @@
       "fallDownDuration": 0.2,
       "swapTilesDuration": 0.3,
       "successMatchDisappearDuration": 1.0,
-      "bombExplodeDelay": 0.25
+      "bombExplodeDelay": 0.25,
+      "lineDestroyerFlySpeed": 3
     }
   },
   "view": {
