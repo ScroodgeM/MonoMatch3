@@ -3,8 +3,6 @@ using Microsoft.Xna.Framework;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.SpriteAnimations;
-using MonoGameLibrary.StatefulEvent;
-using MonoGameLibrary.Timers;
 using MonoMatch3Core;
 using MonoMatch3Core.Data;
 using MonoMatch3Core.Enums;
@@ -59,14 +57,23 @@ internal class Tile
 
     internal void Remove(TileRemoveReason removeReason)
     {
+        TimeSpan now = gameEvents.CurrentTime.Value;
+        TimeSpan disappearDuration;
+
         switch (removeReason)
         {
             case TileRemoveReason.SuccessMatch:
-                TimeSpan disappearDuration = TimeSpan.FromSeconds(settings.board.timings.successMatchDisappearDuration);
-                TimeSpan now = gameEvents.CurrentTime.Value;
+                disappearDuration = TimeSpan.FromSeconds(settings.board.timings.successMatchDisappearDuration);
                 spriteRenderer.AddAnimation(mySpriteId, new RotateSelf(0f, 10f));
                 spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0f, now, now + disappearDuration));
                 spriteRenderer.AddAnimation(mySpriteId, new ChangeScale(1f, 2f, now, now + disappearDuration));
+                gameEvents.Timer.Wait(disappearDuration).Done(Die);
+                break;
+            case TileRemoveReason.DestroyedBySpecial:
+                disappearDuration = TimeSpan.FromSeconds(settings.board.timings.destroyBySpecialDisappearDuration);
+                spriteRenderer.AddAnimation(mySpriteId, new ChangeScale(1f, 2f, now, now + disappearDuration));
+                spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0.5f, now, now + disappearDuration));
+                spriteRenderer.AddAnimation(mySpriteId, new ChangeColor(Color.White, Color.Red, now, now + disappearDuration));
                 gameEvents.Timer.Wait(disappearDuration).Done(Die);
                 break;
             default:

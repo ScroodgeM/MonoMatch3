@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace MonoGameLibrary.Graphics.SpriteAnimations;
 
-public class ChangeTransparency(float from, float to, TimeSpan fromTime, TimeSpan toTime) : SpriteAnimationBase
+public class ChangeColor(Color from, Color to, TimeSpan fromTime, TimeSpan toTime) : SpriteAnimationBase
 {
     public override void ApplyState(ref Sprite.Transform spriteTransform, GameTime gameTime)
     {
@@ -23,6 +23,6 @@ public class ChangeTransparency(float from, float to, TimeSpan fromTime, TimeSpa
             return;
         }
 
-        spriteTransform.color *= from + (to - from) * (float)timeNormalized;
+        spriteTransform.color *= Color.Lerp(from, to, (float)timeNormalized);
     }
 }
