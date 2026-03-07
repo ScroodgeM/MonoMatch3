@@ -24,6 +24,7 @@ public class Settings
             public float fallDownDuration { get; set; }
             public float swapTilesDuration { get; set; }
             public float successMatchDisappearDuration { get; set; }
+            public float bombExplodeDelay { get; set; }
         }
 
         public byte width { get; set; }

@@ -11,9 +11,10 @@ namespace MonoGameLibrary;
 
 public class Core : Game, IGameEvents
 {
-    public IStatefulEvent<TimeSpan> CurrentTime => currentTime;
     public event Action<GameTime> OnUpdate = time => { };
     public event Action<GameTime> OnDraw = time => { };
+    public IStatefulEvent<TimeSpan> CurrentTime => currentTime;
+    public ITimer Timer => timer;
 
     public GraphicsDeviceManager Graphics => graphicsDeviceManager;
     public new GraphicsDevice GraphicsDevice => graphicsDevice;
@@ -22,7 +23,6 @@ public class Core : Game, IGameEvents
     public InputManager Input => inputManager;
 
     protected readonly SpriteRenderer spriteRenderer;
-    protected readonly Timer timer;
 
     private readonly StatefulEventInt<TimeSpan> currentTime = new(TimeSpan.Zero, (a, b) => a == b);
 
@@ -30,6 +30,7 @@ public class Core : Game, IGameEvents
     private GraphicsDevice graphicsDevice;
     private SpriteBatch spriteBatch;
     private readonly ContentManager contentManager;
+    private readonly Timer timer;
     private InputManager inputManager;
 
     public Core(string title, Vector2 screenSize, bool isFullScreen)

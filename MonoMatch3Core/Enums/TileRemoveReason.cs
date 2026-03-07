@@ -2,6 +2,7 @@
 
 public enum TileRemoveReason : byte
 {
-    None = 0,
+    None = 1,
     SuccessMatch = 10,
+    DestroyedBySpecial = 20,
 }

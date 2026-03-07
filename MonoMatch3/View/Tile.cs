@@ -17,19 +17,17 @@ internal class Tile
     private readonly SpriteRenderer spriteRenderer;
     private readonly Settings settings;
     private readonly IGameEvents gameEvents;
-    private readonly ITimer timer;
     private readonly TileBase tileCore;
     private readonly ushort mySpriteId;
     private Sprite.Transform mySpriteTransform;
 
     private SpriteAnimationBase selectedAnimation;
 
-    internal Tile(SpriteRenderer spriteRenderer, Settings settings, IGameEvents gameEvents, ITimer timer, TileBase tileCore)
+    internal Tile(SpriteRenderer spriteRenderer, Settings settings, IGameEvents gameEvents, TileBase tileCore)
     {
         this.spriteRenderer = spriteRenderer;
         this.settings = settings;
         this.gameEvents = gameEvents;
-        this.timer = timer;
         this.tileCore = tileCore;
 
         settings.GetSpriteView(tileCore.Type, tileCore.Color, out string spriteId, out Color tintColor);
@@ -69,7 +67,7 @@ internal class Tile
                 spriteRenderer.AddAnimation(mySpriteId, new RotateSelf(0f, 10f));
                 spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0f, now, now + disappearDuration));
                 spriteRenderer.AddAnimation(mySpriteId, new ChangeScale(1f, 2f, now, now + disappearDuration));
-                timer.Wait(disappearDuration).Done(Die);
+                gameEvents.Timer.Wait(disappearDuration).Done(Die);
                 break;
             default:
                 Die();

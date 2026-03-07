@@ -18,4 +18,9 @@ internal class Simple(Settings settings, IGameEvents gameEvents, Board.Board boa
     {
         board.ReplaceTile(position.Value, TileRemoveReason.SuccessMatch, newTileType);
     }
+
+    internal override void DestroyBySpecial()
+    {
+        board.RemoveTile(position.Value, TileRemoveReason.DestroyedBySpecial);
+    }
 }

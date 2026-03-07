@@ -1,12 +1,15 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using MonoGameLibrary.StatefulEvent;
+using MonoGameLibrary.Timers;
 
 namespace MonoGameLibrary;
 
 public interface IGameEvents
 {
-    IStatefulEvent<TimeSpan> CurrentTime { get; }
     event Action<GameTime> OnUpdate;
     event Action<GameTime> OnDraw;
+
+    IStatefulEvent<TimeSpan> CurrentTime { get; }
+    ITimer Timer { get; }
 }

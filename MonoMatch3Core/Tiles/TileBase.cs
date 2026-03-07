@@ -62,6 +62,8 @@ public abstract class TileBase
 
     internal abstract void UpgradeTile(TileType newTileType);
 
+    internal abstract void DestroyBySpecial();
+
     internal void Die()
     {
         this.gameEvents.CurrentTime.OnValueChanged -= OnTimeChanged;

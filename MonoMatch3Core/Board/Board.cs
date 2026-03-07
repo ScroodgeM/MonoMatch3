@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using MonoGameLibrary;
 using MonoGameLibrary.Input;
 using MonoGameLibrary.StatefulEvent;
-using MonoGameLibrary.Timers;
 using MonoMatch3Core.Data;
 using MonoMatch3Core.Enums;
 using MonoMatch3Core.MatchChecker;
+using MonoMatch3Core.Specials;
 using MonoMatch3Core.Tiles;
 
 namespace MonoMatch3Core.Board;
@@ -16,9 +16,9 @@ public class Board
     public IStatefulEvent<bool, TilePosition> SelectedTile => selectedTile;
     public event Action<TileBase> OnTileCreated = tile => { };
     public event Action<TileBase, TileRemoveReason> OnTileRemoved = (tile, reason) => { };
+    public event Action<SpecialBase> OnSpecialCreated = special => { };
 
     private readonly IGameEvents gameEvents;
-    private readonly ITimer timer;
     private readonly Settings settings;
     private readonly TilesFactory tilesFactory;
     private readonly BoardInput boardInput;
@@ -28,26 +28,14 @@ public class Board
     private readonly Random sessionRandom = new Random(Guid.NewGuid().GetHashCode());
     private readonly Dictionary<TilePosition, TileBase> tiles = new Dictionary<TilePosition, TileBase>();
 
-    public static Board Create(IGameEvents gameEvents, ITimer timer, InputManager inputManager, Settings settings)
+    public static Board Create(IGameEvents gameEvents, InputManager inputManager, Settings settings)
     {
-        return new Board(gameEvents, timer, inputManager, settings);
+        return new Board(gameEvents, inputManager, settings);
     }
 
     public static void Destroy(Board instance)
     {
         instance.Die();
-    }
-
-    private Board(IGameEvents gameEvents, ITimer timer, InputManager inputManager, Settings settings)
-    {
-        this.gameEvents = gameEvents;
-        this.timer = timer;
-        this.settings = settings;
-        this.tilesFactory = new TilesFactory(settings, gameEvents, this, sessionRandom);
-        this.boardInput = new BoardInput(gameEvents, inputManager, settings);
-        this.matchChecker = new Aggregator(settings);
-
-        this.boardInput.OnTileClick += OnTileClick;
     }
 
     public void RunGame()
@@ -58,18 +46,6 @@ public class Board
     internal bool IsCellFree(TilePosition position)
     {
         return tiles.ContainsKey(position) == false;
-    }
-
-    private void Die()
-    {
-        this.boardInput.OnTileClick -= OnTileClick;
-
-        foreach (TileBase tile in tiles.Values)
-        {
-            tile.Die();
-        }
-
-        tiles.Clear();
     }
 
     internal bool TryProcessMatch(TilePosition position, ProcessMatchMode mode)
@@ -92,6 +68,36 @@ public class Board
         OnTileRemoved(removedTile, reason);
         removedTile.Die();
         RegisterTile(tilesFactory.Create(newTileType, color, position));
+    }
+
+    internal void RegisterSpecial(SpecialBase special)
+    {
+        OnSpecialCreated(special);
+        special.OnTileDestroyAttempt += OnSpecialTileDestroyAttempt;
+        special.OnCompleted += OnSpecialCompleted;
+    }
+
+    private Board(IGameEvents gameEvents, InputManager inputManager, Settings settings)
+    {
+        this.gameEvents = gameEvents;
+        this.settings = settings;
+        this.tilesFactory = new TilesFactory(settings, gameEvents, this, sessionRandom);
+        this.boardInput = new BoardInput(gameEvents, inputManager, settings);
+        this.matchChecker = new Aggregator(settings);
+
+        this.boardInput.OnTileClick += OnTileClick;
+    }
+
+    private void Die()
+    {
+        this.boardInput.OnTileClick -= OnTileClick;
+
+        foreach (TileBase tile in tiles.Values)
+        {
+            tile.Die();
+        }
+
+        tiles.Clear();
     }
 
     private void FillBoard()
@@ -145,7 +151,21 @@ public class Board
 
     private void WaitAndProcessFreeCell(TilePosition position)
     {
-        timer.Wait(TimeSpan.FromSeconds(settings.board.timings.delayBeforeFallIntoFreeCell)).Done(() => { ProcessFreeCell(position); });
+        gameEvents.Timer.Wait(TimeSpan.FromSeconds(settings.board.timings.delayBeforeFallIntoFreeCell)).Done(() => { ProcessFreeCell(position); });
+    }
+
+    private void OnSpecialTileDestroyAttempt(TilePosition position)
+    {
+        if (tiles.TryGetValue(position, out TileBase tile) == true)
+        {
+            tile.DestroyBySpecial();
+        }
+    }
+
+    private void OnSpecialCompleted(SpecialBase special)
+    {
+        special.OnTileDestroyAttempt -= OnSpecialTileDestroyAttempt;
+        special.OnCompleted -= OnSpecialCompleted;
     }
 
     private void ProcessFreeCell(TilePosition position)

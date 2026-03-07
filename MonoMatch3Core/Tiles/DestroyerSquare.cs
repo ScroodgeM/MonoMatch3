@@ -1,7 +1,7 @@
-﻿using System;
-using MonoGameLibrary;
+﻿using MonoGameLibrary;
 using MonoMatch3Core.Data;
 using MonoMatch3Core.Enums;
+using MonoMatch3Core.Specials;
 
 namespace MonoMatch3Core.Tiles;
 
@@ -12,11 +12,21 @@ internal class DestroyerSquare(Settings settings, IGameEvents gameEvents, Board.
 
     internal override void ProcessSuccessMatch()
     {
-        Console.WriteLine("process destroyer effect here");
-        board.RemoveTile(position.Value, TileRemoveReason.SuccessMatch);
+        MakeBoom(TileRemoveReason.SuccessMatch);
     }
 
     internal override void UpgradeTile(TileType newTileType)
     {
+    }
+
+    internal override void DestroyBySpecial()
+    {
+        MakeBoom(TileRemoveReason.DestroyedBySpecial);
+    }
+
+    private void MakeBoom(TileRemoveReason removeReason)
+    {
+        board.RegisterSpecial(new SquareBomb(settings, gameEvents, position.Value));
+        board.RemoveTile(position.Value, removeReason);
     }
 }

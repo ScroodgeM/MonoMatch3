@@ -14,7 +14,6 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
 {
     private static readonly string[] tasks =
     [
-        "бонус за 5 фишек",
         "ракета в действии",
         "бомба в действии",
         "таймер обратного отсчёта",
@@ -100,8 +99,8 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
 
     private void StartGame()
     {
-        board = Board.Create(this, timer, Input, settings);
-        boardView = new View.Board(spriteRenderer, settings, this, timer, board);
+        board = Board.Create(this, Input, settings);
+        boardView = new View.Board(spriteRenderer, settings, this, board);
         board.RunGame();
     }
 
