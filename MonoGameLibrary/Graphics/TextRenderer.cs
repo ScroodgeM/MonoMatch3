@@ -76,18 +76,19 @@ public class TextRenderer
 
         foreach (TextData textData in allTexts.Values)
         {
-            Transform textTransform = textData.transform;
+            string text = textData.text.Value;
+            Transform transform = textData.transform;
 
             spriteBatch.DrawString(
                 font,
-                textData.text.Value,
-                textTransform.position,
-                textTransform.color,
-                textTransform.rotation,
-                Vector2.Zero,
-                textTransform.scale,
+                text,
+                transform.position,
+                transform.color,
+                transform.rotation,
+                font.MeasureString(text) * 0.5f,
+                transform.scale,
                 SpriteEffects.None,
-                textTransform.layerDepth
+                transform.layerDepth
             );
         }
 

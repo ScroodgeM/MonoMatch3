@@ -39,10 +39,10 @@
     "boardCenterX": 512,
     "boardCenterY": 400,
     "cellSize": 100,
-    "countdownPositionX": 112,
-    "countdownPositionY": 870,
-    "scorePositionX": 570,
-    "scorePositionY": 870,
+    "countdownPositionX": 350,
+    "countdownPositionY": 900,
+    "scorePositionX": 750,
+    "scorePositionY": 900,
     "mainMenuLogoSpriteId": "logo",
     "tiles": [
       {
