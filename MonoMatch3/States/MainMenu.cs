@@ -7,7 +7,11 @@ using MonoMatch3Core.Data;
 
 namespace MonoMatch3.States;
 
-internal class MainMenu(SpriteRenderer spriteRenderer, TextRenderer textRenderer, Settings settings, Rectangle windowRect)
+internal class MainMenu(
+    SpriteRenderer spriteRenderer,
+    TextRenderer textRenderer,
+    Settings settings,
+    Rectangle windowRect)
     : BaseState(spriteRenderer, textRenderer, settings)
 {
     private readonly List<ushort> mySprites = new List<ushort>();

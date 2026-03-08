@@ -30,8 +30,6 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
     ];
 
     private Settings settings;
-    private MonoMatch3Core.Board.Board board;
-    private View.Board boardView;
     private BaseState currentState;
 
     protected override void LoadContent()
@@ -67,35 +65,17 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
 
         if (Input.Keyboard.WasKeyJustPressed(Keys.Space))
         {
-            if (board == null)
+            if (currentState is MainMenu)
             {
                 StartNewState(State.Gameplay);
-                StartGame();
             }
             else
             {
-                FinishGame();
                 StartNewState(State.MainMenu);
             }
         }
 
         base.Update(gameTime);
-    }
-
-    private void StartGame()
-    {
-        board = MonoMatch3Core.Board.Board.Create(this, Input, settings);
-        boardView = new View.Board(spriteRenderer, settings, this, board);
-        board.RunGame();
-    }
-
-    private void FinishGame()
-    {
-        MonoMatch3Core.Board.Board.Destroy(board);
-        board = null;
-
-        boardView.Die();
-        boardView = null;
     }
 
     private void StartNewState(State state)
@@ -119,6 +99,8 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
         {
             case State.MainMenu:
                 return new MainMenu(spriteRenderer, textRenderer, settings, Window.ClientBounds);
+            case State.Gameplay:
+                return new Gameplay(spriteRenderer, textRenderer, this, Input, settings);
         }
 
         return null;
