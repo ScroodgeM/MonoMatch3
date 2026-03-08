@@ -21,7 +21,8 @@
     ],
     "timings": {
       "firstAppearDuration": 0.25,
-      "delayBeforeFallIntoFreeCell": 0.2,
+      "delayBeforeFallIntoFreeCellUponRelease": 0.2,
+      "delayBeforeFallIntoFreeCellUponDestroy": 1.0,
       "fallDownDuration": 0.2,
       "swapTilesDuration": 0.3,
       "successMatchDisappearDuration": 1.0,

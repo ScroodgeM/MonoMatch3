@@ -58,7 +58,7 @@ public class Board
         tiles.Remove(position, out TileBase removedTile);
         OnTileRemoved(removedTile, reason);
         removedTile.Die();
-        WaitAndProcessFreeCell(position);
+        WaitAndProcessFreeCell(position, settings.board.timings.delayBeforeFallIntoFreeCellUponDestroy);
     }
 
     internal void ReplaceTile(TilePosition position, TileRemoveReason reason, TileType newTileType)
@@ -138,7 +138,7 @@ public class Board
             if (oldPosition.Boarded == true)
             {
                 tiles.Remove(oldPosition);
-                WaitAndProcessFreeCell(oldPosition);
+                WaitAndProcessFreeCell(oldPosition, settings.board.timings.delayBeforeFallIntoFreeCellUponRelease);
             }
 
             if (newPosition.Boarded == true)
@@ -149,9 +149,9 @@ public class Board
         OnTileCreated(tile);
     }
 
-    private void WaitAndProcessFreeCell(TilePosition position)
+    private void WaitAndProcessFreeCell(TilePosition position, float delay)
     {
-        gameEvents.Timer.Wait(TimeSpan.FromSeconds(settings.board.timings.delayBeforeFallIntoFreeCell)).Done(() => { ProcessFreeCell(position); });
+        gameEvents.Timer.Wait(TimeSpan.FromSeconds(delay)).Done(() => { ProcessFreeCell(position); });
     }
 
     private void OnSpecialTileDestroyAttempt(TilePosition position)
