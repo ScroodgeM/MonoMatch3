@@ -17,6 +17,7 @@ internal class DestroyerSquare(Settings settings, IGameEvents gameEvents, Board.
 
     internal override void UpgradeTile(TileType newTileType)
     {
+        ProcessSuccessMatch();
     }
 
     internal override void DestroyBySpecial()

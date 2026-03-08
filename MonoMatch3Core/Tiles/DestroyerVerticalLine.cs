@@ -17,6 +17,7 @@ internal class DestroyerVerticalLine(Settings settings, IGameEvents gameEvents, 
 
     internal override void UpgradeTile(TileType newTileType)
     {
+        ProcessSuccessMatch();
     }
 
     internal override void DestroyBySpecial()
