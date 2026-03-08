@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using MonoMatch3.States;
@@ -15,7 +14,6 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
     [
         "ракета в действии - может пересечься навстречу падающему шарику",
         "бомба в действии",
-        "избавиться от клавиатуры",
         "выкинуть кор-синглтон",
         "свапы?",
         "топ-очки и очки на экрае поражения",

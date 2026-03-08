@@ -4,7 +4,6 @@ namespace MonoGameLibrary.Input;
 
 public class InputManager
 {
-    public KeyboardInfo Keyboard { get; private set; }
     public MouseInfo Mouse { get; private set; }
 
     private readonly IGameEvents gameEvents;
@@ -17,7 +16,6 @@ public class InputManager
         this.spriteRenderer = spriteRenderer;
         this.textRenderer = textRenderer;
 
-        Keyboard = new KeyboardInfo(gameEvents);
         Mouse = new MouseInfo(gameEvents);
     }
 

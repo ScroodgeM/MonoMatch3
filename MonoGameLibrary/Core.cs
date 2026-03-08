@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Input;
@@ -16,27 +15,19 @@ public class Core : Game, IGameEvents
     public IStatefulEvent<TimeSpan> CurrentTime => currentTime;
     public ITimer Timer => timer;
 
-    public GraphicsDeviceManager Graphics => graphicsDeviceManager;
-    public new GraphicsDevice GraphicsDevice => graphicsDevice;
-    public SpriteBatch SpriteBatch => spriteBatch;
-    public new ContentManager Content => contentManager;
-    public InputManager Input => inputManager;
+    protected InputManager Input => inputManager;
 
     protected readonly SpriteRenderer spriteRenderer;
     protected readonly TextRenderer textRenderer;
 
     private readonly StatefulEventInt<TimeSpan> currentTime = new(TimeSpan.Zero, (a, b) => a == b);
 
-    private readonly GraphicsDeviceManager graphicsDeviceManager;
-    private GraphicsDevice graphicsDevice;
-    private SpriteBatch spriteBatch;
-    private readonly ContentManager contentManager;
     private readonly Timer timer;
     private InputManager inputManager;
 
     protected Core(string title, Vector2 screenSize, bool isFullScreen)
     {
-        graphicsDeviceManager = new GraphicsDeviceManager(this);
+        GraphicsDeviceManager graphicsDeviceManager = new GraphicsDeviceManager(this);
         graphicsDeviceManager.PreferredBackBufferWidth = Math.Max(256, (int)screenSize.X);
         graphicsDeviceManager.PreferredBackBufferHeight = Math.Max(256, (int)screenSize.Y);
         graphicsDeviceManager.IsFullScreen = isFullScreen;
@@ -44,8 +35,7 @@ public class Core : Game, IGameEvents
 
         Window.Title = title;
 
-        contentManager = base.Content;
-        contentManager.RootDirectory = "Content";
+        Content.RootDirectory = "Content";
 
         spriteRenderer = new SpriteRenderer();
         textRenderer = new TextRenderer();
@@ -59,8 +49,7 @@ public class Core : Game, IGameEvents
     {
         base.Initialize();
 
-        graphicsDevice = base.GraphicsDevice;
-        spriteBatch = new SpriteBatch(graphicsDevice);
+        SpriteBatch spriteBatch = new SpriteBatch(GraphicsDevice);
 
         spriteRenderer.Init(spriteBatch);
         textRenderer.Init(spriteBatch);
