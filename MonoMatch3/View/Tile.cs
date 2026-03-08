@@ -17,7 +17,7 @@ internal class Tile
     private readonly IGameEvents gameEvents;
     private readonly TileBase tileCore;
     private readonly ushort mySpriteId;
-    private Sprite.Transform mySpriteTransform;
+    private Transform mySpriteTransform;
 
     private SpriteAnimationBase selectedAnimation;
 
@@ -30,7 +30,8 @@ internal class Tile
 
         settings.GetSpriteView(tileCore.Type, tileCore.Color, out string spriteId, out Color tintColor);
 
-        this.mySpriteTransform = Sprite.Transform.Default;
+        this.mySpriteTransform = Transform.Default;
+        this.mySpriteTransform.layerDepth = RenderLayer.Elements.ToLayerDepth();
         this.mySpriteTransform.position = settings.BoardToScreen(tileCore.Position.Value).ToVector2();
         this.mySpriteTransform.color = tintColor;
 
@@ -41,8 +42,9 @@ internal class Tile
         this.tileCore.Position.OnValueChanged += OnPositionChanged;
         this.tileCore.State.OnValueChanged += OnStateChanged;
         this.tileCore.OnMoveAttemptFailed += OnMoveAttemptFailed;
-    }
 
+        OnStateChanged(this.tileCore.State.Value);
+    }
 
     internal void SetSelected(bool tileIsSelected)
     {
@@ -82,7 +84,9 @@ internal class Tile
                 {
                     TimeSpan vfxDuration = duration * (1.0f - i * 0.2f);
                     float vfxScale = 0.5f + 0.3f * i;
-                    ushort vfxSpriteId = spriteRenderer.AddSprite(settings.view.tileDestroyVfxSpriteId, mySpriteTransform);
+                    Transform vfxTransform = mySpriteTransform;
+                    vfxTransform.layerDepth = RenderLayer.VFX.ToLayerDepth();
+                    ushort vfxSpriteId = spriteRenderer.AddSprite(settings.view.tileDestroyVfxSpriteId, vfxTransform);
                     spriteRenderer.AddAnimation(vfxSpriteId, new ChangeScale(0f, vfxScale, fromTime, fromTime + vfxDuration));
                     gameEvents.Timer.Wait(vfxDuration).Done(() => spriteRenderer.RemoveSprite(vfxSpriteId));
                 }
@@ -136,9 +140,8 @@ internal class Tile
 
     private void Appear()
     {
-        TimeSpan appearDuration = TimeSpan.FromSeconds(settings.board.timings.firstAppearDuration);
-        TimeSpan now = gameEvents.CurrentTime.Value;
-        this.spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(0f, 1f, now, now + appearDuration));
-        this.spriteRenderer.AddAnimation(mySpriteId, new ChangeScale(2f, 1f, now, now + appearDuration));
+        TimeSpan fromTime = gameEvents.CurrentTime.Value;
+        TimeSpan toTime = fromTime + TimeSpan.FromSeconds(settings.board.timings.firstAppearDuration);
+        spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(0f, 1f, fromTime, toTime));
     }
 }

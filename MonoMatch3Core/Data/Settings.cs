@@ -13,6 +13,7 @@ public class Settings
     public struct System
     {
         public string[] textureAtlases { get; set; }
+        public string fontName { get; set; }
     }
 
     public struct Board

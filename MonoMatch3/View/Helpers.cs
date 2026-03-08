@@ -31,4 +31,9 @@ public static class Helpers
 
         throw new KeyNotFoundException($"Sprite name for {tileType} not found");
     }
+
+    public static float ToLayerDepth(this RenderLayer renderLayer)
+    {
+        return (float)renderLayer / (float)RenderLayer.MaxValue;
+    }
 }

@@ -11,7 +11,7 @@ public class OffsetOverTime(Vector2 from, Vector2 to, TimeSpan fromTime, TimeSpa
         FromToFrom,
     }
 
-    public override void ApplyState(ref Sprite.Transform spriteTransform, GameTime gameTime)
+    public override void ApplyState(ref Transform spriteTransform, GameTime gameTime)
     {
         if (isActive == false)
         {

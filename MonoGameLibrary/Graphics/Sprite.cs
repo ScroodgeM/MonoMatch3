@@ -8,29 +8,6 @@ namespace MonoGameLibrary.Graphics;
 
 public class Sprite(Texture2D texture, Rectangle sourceRectangle, Vector2 pivot, float scale, SpriteEffects effects)
 {
-    public struct Transform
-    {
-        public Vector2 position;
-        public float rotation;
-        public Vector2 scale;
-        public Color color;
-        public int layerDepth;
-
-        public static Transform Default
-        {
-            get
-            {
-                Transform transform;
-                transform.position = Vector2.Zero;
-                transform.rotation = 0f;
-                transform.scale = Vector2.One;
-                transform.color = Color.White;
-                transform.layerDepth = 0;
-                return transform;
-            }
-        }
-    }
-
     public class Animator
     {
         private byte animationsIncrementalId = 0;

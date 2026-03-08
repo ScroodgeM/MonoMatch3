@@ -8,7 +8,7 @@ public class PingPongColorChannels(float minValue, float maxValue, float speedR,
     private readonly float center = (maxValue + minValue) * 0.5f;
     private readonly float offset = (maxValue - minValue) * 0.5f;
 
-    public override void ApplyState(ref Sprite.Transform spriteTransform, GameTime gameTime)
+    public override void ApplyState(ref Transform spriteTransform, GameTime gameTime)
     {
         if (isActive == false)
         {

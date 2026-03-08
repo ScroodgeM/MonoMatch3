@@ -11,7 +11,7 @@ public class SpriteRenderer
     private struct SpriteData
     {
         public Sprite sprite;
-        public Sprite.Transform transform;
+        public Transform transform;
         public Sprite.Animator animator;
     }
 
@@ -19,7 +19,7 @@ public class SpriteRenderer
 
     private readonly SpritesPool spritesPool = new SpritesPool();
     private SpriteBatch spriteBatch;
-    private ushort animationsIncrementalId = 0;
+    private ushort spriteIncrementalId = 0;
     private readonly Dictionary<ushort, SpriteData> allSprites = new Dictionary<ushort, SpriteData>();
 
     internal void Init(SpriteBatch spriteBatch)
@@ -27,7 +27,7 @@ public class SpriteRenderer
         this.spriteBatch = spriteBatch;
     }
 
-    public ushort AddSprite(string spriteId, Sprite.Transform transform)
+    public ushort AddSprite(string spriteId, Transform transform)
     {
         if (allSprites.Count >= ushort.MaxValue)
         {
@@ -39,18 +39,18 @@ public class SpriteRenderer
         newData.transform = transform;
         newData.animator = null;
 
-        while (allSprites.TryAdd(animationsIncrementalId, newData) == false)
+        while (allSprites.TryAdd(spriteIncrementalId, newData) == false)
         {
             unchecked
             {
-                animationsIncrementalId++;
+                spriteIncrementalId++;
             }
         }
 
-        return animationsIncrementalId;
+        return spriteIncrementalId;
     }
 
-    public void UpdateTransform(ushort spriteId, Sprite.Transform transform)
+    public void UpdateTransform(ushort spriteId, Transform transform)
     {
         if (allSprites.TryGetValue(spriteId, out SpriteData data) == true)
         {

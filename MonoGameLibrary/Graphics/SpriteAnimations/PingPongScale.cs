@@ -9,7 +9,7 @@ public class PingPongScale(float minScale, float maxScale, float speed) : Sprite
     private readonly float offset = (maxScale - minScale) * 0.5f;
     private readonly double timeToRadians = Math.PI * 2.0 * speed;
 
-    public override void ApplyState(ref Sprite.Transform spriteTransform, GameTime gameTime)
+    public override void ApplyState(ref Transform spriteTransform, GameTime gameTime)
     {
         if (isActive == false)
         {

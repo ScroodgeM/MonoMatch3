@@ -20,7 +20,7 @@ public abstract class SpriteAnimationBase
         this.isActive = isActive;
     }
 
-    public abstract void ApplyState(ref Sprite.Transform spriteTransform, GameTime gameTime);
+    public abstract void ApplyState(ref Transform spriteTransform, GameTime gameTime);
 
     protected void CallOnCompleted()
     {

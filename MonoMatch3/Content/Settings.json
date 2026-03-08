@@ -7,7 +7,8 @@
       "images/horizontal_bonus",
       "images/vertical_bonus",
       "images/vfx_tile_destroy",
-    ]
+    ],
+    "fontName": "CozyFont"
   },
   "board": {
     "width": 8,

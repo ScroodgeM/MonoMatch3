@@ -5,7 +5,7 @@ namespace MonoGameLibrary.Graphics.SpriteAnimations;
 
 public class RotateSelf(float radiansInitialRotation, float radiansPerSecond) : SpriteAnimationBase
 {
-    public override void ApplyState(ref Sprite.Transform spriteTransform, GameTime gameTime)
+    public override void ApplyState(ref Transform spriteTransform, GameTime gameTime)
     {
         if (isActive == false)
         {

@@ -23,6 +23,7 @@ public class Core : Game, IGameEvents
     public InputManager Input => inputManager;
 
     protected readonly SpriteRenderer spriteRenderer;
+    protected readonly TextRenderer textRenderer;
 
     private readonly StatefulEventInt<TimeSpan> currentTime = new(TimeSpan.Zero, (a, b) => a == b);
 
@@ -33,7 +34,7 @@ public class Core : Game, IGameEvents
     private readonly Timer timer;
     private InputManager inputManager;
 
-    public Core(string title, Vector2 screenSize, bool isFullScreen)
+    protected Core(string title, Vector2 screenSize, bool isFullScreen)
     {
         graphicsDeviceManager = new GraphicsDeviceManager(this);
         graphicsDeviceManager.PreferredBackBufferWidth = Math.Max(256, (int)screenSize.X);
@@ -47,6 +48,7 @@ public class Core : Game, IGameEvents
         contentManager.RootDirectory = "Content";
 
         spriteRenderer = new SpriteRenderer();
+        textRenderer = new TextRenderer();
 
         timer = new Timer(this);
 
@@ -61,9 +63,12 @@ public class Core : Game, IGameEvents
         spriteBatch = new SpriteBatch(graphicsDevice);
 
         spriteRenderer.Init(spriteBatch);
+        textRenderer.Init(spriteBatch);
 
         inputManager = new InputManager(this);
     }
+
+    protected void LoadFont(string fontName) => textRenderer.SetFont(Content.Load<SpriteFont>(fontName));
 
     protected override void Update(GameTime gameTime)
     {
@@ -78,6 +83,8 @@ public class Core : Game, IGameEvents
     {
         GraphicsDevice.Clear(Color.LightSeaGreen);
         spriteRenderer.Draw(gameTime);
+        textRenderer.Draw();
+
         base.Draw(gameTime);
 
         OnDraw(gameTime);

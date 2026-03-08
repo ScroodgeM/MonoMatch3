@@ -5,7 +5,7 @@ namespace MonoGameLibrary.Graphics.SpriteAnimations;
 
 public class ChangeColor(Color from, Color to, TimeSpan fromTime, TimeSpan toTime) : SpriteAnimationBase
 {
-    public override void ApplyState(ref Sprite.Transform spriteTransform, GameTime gameTime)
+    public override void ApplyState(ref Transform spriteTransform, GameTime gameTime)
     {
         if (isActive == false)
         {
