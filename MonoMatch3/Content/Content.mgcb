@@ -125,6 +125,21 @@
 /processorParam:TextureFormat=Color
 /build:images/vertical_bonus.png
 
+#begin images/vfx_bomb.json
+/copy:images/vfx_bomb.json
+
+#begin images/vfx_bomb.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=False
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/vfx_bomb.png
+
 #begin images/vfx_tile_destroy.json
 /copy:images/vfx_tile_destroy.json
 

@@ -8,6 +8,7 @@
       "images/small_bomb",
       "images/horizontal_bonus",
       "images/vertical_bonus",
+      "images/vfx_bomb",
       "images/vfx_tile_destroy",
     ],
     "fontName": "CozyFont",
@@ -314,6 +315,7 @@
         ]
       }
     ],
-    "tileDestroyVfxSpriteId": "vfx_tile_destroy"
+    "tileDestroyVfxSpriteId": "vfx_tile_destroy",
+    "bombDestroyVfxSpriteId": "vfx_bomb"
   }
 }

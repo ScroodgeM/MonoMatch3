@@ -63,37 +63,70 @@ internal class Tile
         TimeSpan duration;
         TimeSpan toTime;
 
-        switch (removeReason)
+        switch (tileCore.Type)
         {
-            case TileRemoveReason.SuccessMatch:
-                duration = TimeSpan.FromSeconds(settings.board.timings.successMatchDisappearDuration);
-                toTime = fromTime + duration;
-                spriteRenderer.AddAnimation(mySpriteId, new RotateSelf(0f, 10f));
-                spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0f, fromTime, toTime));
-                spriteRenderer.AddAnimation(mySpriteId, new ChangeScale(1f, 2f, fromTime, toTime));
-                gameEvents.Timer.Wait(duration).Done(Die);
+            case TileType.DestroyerHorizontalLine:
+                Die();
                 break;
-            case TileRemoveReason.DestroyedBySpecial:
-                duration = TimeSpan.FromSeconds(settings.board.timings.destroyBySpecialDisappearDuration);
+
+            case TileType.DestroyerVerticalLine:
+                Die();
+                break;
+
+            case TileType.DestroyerSquare:
+                duration = TimeSpan.FromSeconds(settings.board.timings.bombExplodeDelay);
                 toTime = fromTime + duration;
-                spriteRenderer.AddAnimation(mySpriteId, new ChangeScale(1f, 2f, fromTime, toTime));
                 spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0f, fromTime, toTime));
                 gameEvents.Timer.Wait(duration).Done(Die);
 
                 for (int i = 0; i <= 3; i++)
                 {
-                    TimeSpan vfxDuration = duration * (1.0f - i * 0.2f);
-                    float vfxScale = 0.5f + 0.3f * i;
                     Transform vfxTransform = mySpriteTransform;
                     vfxTransform.layerDepth = RenderLayer.VFX.ToLayerDepth();
-                    ushort vfxSpriteId = spriteRenderer.AddSprite(settings.view.tileDestroyVfxSpriteId, vfxTransform);
-                    spriteRenderer.AddAnimation(vfxSpriteId, new ChangeScale(0f, vfxScale, fromTime, fromTime + vfxDuration));
-                    gameEvents.Timer.Wait(vfxDuration).Done(() => spriteRenderer.RemoveSprite(vfxSpriteId));
+                    ushort vfxSpriteId = spriteRenderer.AddSprite(settings.view.bombDestroyVfxSpriteId, vfxTransform);
+                    spriteRenderer.AddAnimation(vfxSpriteId, new ChangeScale(0.5f, 1.5f, fromTime, fromTime + duration));
+                    gameEvents.Timer.Wait(duration).Done(() => spriteRenderer.RemoveSprite(vfxSpriteId));
                 }
 
                 break;
-            default:
-                Die();
+
+            case TileType.Simple:
+                switch (removeReason)
+                {
+                    case TileRemoveReason.SuccessMatch:
+                        duration = TimeSpan.FromSeconds(settings.board.timings.successMatchDisappearDuration);
+                        toTime = fromTime + duration;
+                        spriteRenderer.AddAnimation(mySpriteId, new RotateSelf(0f, 10f));
+                        spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0f, fromTime, toTime));
+                        spriteRenderer.AddAnimation(mySpriteId, new ChangeScale(1f, 2f, fromTime, toTime));
+                        gameEvents.Timer.Wait(duration).Done(Die);
+                        break;
+
+                    case TileRemoveReason.DestroyedBySpecial:
+                        duration = TimeSpan.FromSeconds(settings.board.timings.destroyBySpecialDisappearDuration);
+                        toTime = fromTime + duration;
+                        spriteRenderer.AddAnimation(mySpriteId, new ChangeScale(1f, 2f, fromTime, toTime));
+                        spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0f, fromTime, toTime));
+                        gameEvents.Timer.Wait(duration).Done(Die);
+
+                        for (int i = 0; i <= 3; i++)
+                        {
+                            TimeSpan vfxDuration = duration * (1.0f - i * 0.2f);
+                            float vfxScale = 0.5f + 0.3f * i;
+                            Transform vfxTransform = mySpriteTransform;
+                            vfxTransform.layerDepth = RenderLayer.VFX.ToLayerDepth();
+                            ushort vfxSpriteId = spriteRenderer.AddSprite(settings.view.tileDestroyVfxSpriteId, vfxTransform);
+                            spriteRenderer.AddAnimation(vfxSpriteId, new ChangeScale(0f, vfxScale, fromTime, fromTime + vfxDuration));
+                            gameEvents.Timer.Wait(vfxDuration).Done(() => spriteRenderer.RemoveSprite(vfxSpriteId));
+                        }
+
+                        break;
+
+                    default:
+                        Die();
+                        break;
+                }
+
                 break;
         }
     }
