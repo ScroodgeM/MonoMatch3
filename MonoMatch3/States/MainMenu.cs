@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.SpriteAnimations;
+using MonoGameLibrary.StatefulEvent;
 using MonoMatch3.View;
 using MonoMatch3Core.Data;
 
@@ -29,7 +30,7 @@ internal class MainMenu(
         mySprites.Add(spriteId);
 
         transform.layerDepth = RenderLayer.Text.ToLayerDepth();
-        byte textId = textRenderer.AddText("Test 42", transform);
+        byte textId = textRenderer.AddText(StatefulEventInt.Create("Test 42"), transform);
         myTexts.Add(textId);
     }
 

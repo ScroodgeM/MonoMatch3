@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using MonoMatch3Core;
 using MonoMatch3Core.Data;
 using MonoMatch3Core.Enums;
 
@@ -7,6 +9,19 @@ namespace MonoMatch3.View;
 
 public static class Helpers
 {
+    public static Point BoardToScreen(this Settings settings, TilePosition tilePosition)
+    {
+        return
+        (
+            settings.GetBoardTopLeftCornerOffset()
+            +
+            new Vector2(
+                0.5f + tilePosition.X,
+                0.5f + tilePosition.Y
+            ) * settings.view.cellSize
+        ).ToPoint();
+    }
+
     public static void GetSpriteView(this Settings settings, TileType tileType, TileColor tileColor, out string spriteId, out Color tintColor)
     {
         foreach (Settings.View.TypedTile typedTile in settings.view.tiles)

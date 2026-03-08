@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameLibrary.StatefulEvent;
 
 namespace MonoGameLibrary.Graphics;
 
@@ -9,7 +10,7 @@ public class TextRenderer
 {
     private struct TextData
     {
-        public string text;
+        public IStatefulEvent<string> text;
         public Transform transform;
     }
 
@@ -28,7 +29,7 @@ public class TextRenderer
         this.font = font;
     }
 
-    public byte AddText(string text, Transform transform)
+    public byte AddText(IStatefulEvent<string> text, Transform transform)
     {
         if (allTexts.Count >= byte.MaxValue)
         {
@@ -79,7 +80,7 @@ public class TextRenderer
 
             spriteBatch.DrawString(
                 font,
-                textData.text,
+                textData.text.Value,
                 textTransform.position,
                 textTransform.color,
                 textTransform.rotation,

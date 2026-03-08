@@ -20,6 +20,7 @@ public class Settings
     {
         public struct Timings
         {
+            public float gameSessionTimeLimit { get; set; }
             public float firstAppearDuration { get; set; }
             public float delayBeforeFallIntoFreeCellUponRelease { get; set; }
             public float delayBeforeFallIntoFreeCellUponDestroy { get; set; }
@@ -52,7 +53,11 @@ public class Settings
             public ColoredTile[] perColor { get; set; }
         }
 
+        public float boardCenterX { get; set; }
+        public float boardCenterY { get; set; }
         public float cellSize { get; set; }
+        public float countdownPositionX { get; set; }
+        public float countdownPositionY { get; set; }
         public string mainMenuLogoSpriteId { get; set; }
         public TypedTile[] tiles { get; set; }
         public string tileDestroyVfxSpriteId { get; set; }

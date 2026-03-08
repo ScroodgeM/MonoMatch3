@@ -55,8 +55,10 @@ public static class Helpers
 
     public static bool TryScreenToBoard(this Settings settings, Point screenPoint, out TilePosition tilePosition)
     {
-        int tilePositionX = (int)MathF.Floor(screenPoint.X / settings.view.cellSize);
-        int tilePositionY = (int)MathF.Floor(screenPoint.Y / settings.view.cellSize);
+        Vector2 boardPoint = screenPoint.ToVector2() - settings.GetBoardTopLeftCornerOffset();
+
+        int tilePositionX = (int)MathF.Floor(boardPoint.X / settings.view.cellSize);
+        int tilePositionY = (int)MathF.Floor(boardPoint.Y / settings.view.cellSize);
 
         if (settings.GetBoardArea().Contains(tilePositionX, tilePositionY) == true)
         {
@@ -66,19 +68,6 @@ public static class Helpers
 
         tilePosition = default;
         return false;
-    }
-
-    public static Point BoardToScreen(this Settings settings, TilePosition tilePosition)
-    {
-        return (
-                new Vector2(
-                    0.5f + tilePosition.X,
-                    0.5f + tilePosition.Y
-                )
-                *
-                settings.view.cellSize
-            )
-            .ToPoint();
     }
 
     public static Vector2 BoardToScreen(this Settings settings, Direction direction)
@@ -92,5 +81,15 @@ public static class Helpers
             Direction.Up => new Vector2(0, -cellSize),
             _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
         };
+    }
+
+    public static Vector2 GetBoardTopLeftCornerOffset(this Settings settings)
+    {
+        Vector2 boardCenter = new Vector2(settings.view.boardCenterX, settings.view.boardCenterY);
+
+        Vector2 boardSize = new Vector2(settings.board.width, settings.board.height);
+        Vector2 centerToTopLeftCornerOffset = -boardSize * 0.5f * settings.view.cellSize;
+
+        return boardCenter + centerToTopLeftCornerOffset;
     }
 }

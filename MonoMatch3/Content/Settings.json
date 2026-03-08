@@ -21,6 +21,7 @@
       "Violet"
     ],
     "timings": {
+      "gameSessionTimeLimit": 60,
       "firstAppearDuration": 0.25,
       "delayBeforeFallIntoFreeCellUponRelease": 0.2,
       "delayBeforeFallIntoFreeCellUponDestroy": 1.0,
@@ -33,7 +34,11 @@
     }
   },
   "view": {
-    "cellSize": 128,
+    "boardCenterX": 512,
+    "boardCenterY": 400,
+    "cellSize": 100,
+    "countdownPositionX": 112,
+    "countdownPositionY": 870,
     "mainMenuLogoSpriteId": "logo",
     "tiles": [
       {

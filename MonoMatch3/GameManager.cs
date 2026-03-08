@@ -15,7 +15,6 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
     [
         "ракета в действии - может пересечься навстречу падающему шарику",
         "бомба в действии",
-        "таймер обратного отсчёта",
         "кнопка запуска в главном меню",
         "избавиться от клавиатуры",
         "выкинуть кор-синглтон",
@@ -58,20 +57,11 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
 
     protected override void Update(GameTime gameTime)
     {
-        if (Input.Keyboard.WasKeyJustPressed(Keys.Escape))
-        {
-            Exit();
-        }
-
         if (Input.Keyboard.WasKeyJustPressed(Keys.Space))
         {
             if (currentState is MainMenu)
             {
                 StartNewState(State.Gameplay);
-            }
-            else
-            {
-                StartNewState(State.MainMenu);
             }
         }
 
@@ -89,6 +79,7 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
         currentState = CreateState(state);
         if (currentState != null)
         {
+            currentState.OnNewStateRequest += StartNewState;
             currentState.Start();
         }
     }
