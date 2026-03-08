@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using MonoMatch3.States;
@@ -10,15 +8,6 @@ namespace MonoMatch3;
 
 public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false)
 {
-    private static readonly string[] tasks =
-    [
-        "ракета в действии - может пересечься навстречу падающему шарику",
-        "свапы?",
-        "топ-очки и очки на экрае поражения",
-        "3. Игровой Экран представляет из себя поле 8x8 квадратных клеток.",
-        "21. Все перемещения Разрушителей должны быть анимированы.",
-    ];
-
     private Settings settings;
     private BaseState currentState;
 
@@ -34,12 +23,6 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
     protected override void Initialize()
     {
         base.Initialize();
-
-        foreach (string task in tasks)
-        {
-            Console.OutputEncoding = new UTF8Encoding();
-            Console.WriteLine($"Task: {task}");
-        }
 
         LoadFont(settings.system.fontName);
 
