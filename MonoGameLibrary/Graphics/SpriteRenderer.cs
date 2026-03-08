@@ -15,7 +15,7 @@ public class SpriteRenderer
         public Sprite.Animator animator;
     }
 
-    public SpritesPool Pool => spritesPool;
+    internal SpritesPool Pool => spritesPool;
 
     private readonly SpritesPool spritesPool = new SpritesPool();
     private SpriteBatch spriteBatch;

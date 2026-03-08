@@ -6,15 +6,15 @@ using MonoGameLibrary.Graphics.SpriteAnimations;
 
 namespace MonoGameLibrary.Graphics;
 
-public class Sprite(Texture2D texture, Rectangle sourceRectangle, Vector2 pivot, float scale, SpriteEffects effects)
+internal class Sprite(Texture2D texture, Rectangle sourceRectangle, Vector2 pivot, float scale, SpriteEffects effects)
 {
-    public class Animator
+    internal class Animator
     {
         private byte animationsIncrementalId = 0;
 
         private readonly Dictionary<byte, SpriteAnimationBase> animations = new Dictionary<byte, SpriteAnimationBase>();
 
-        public void Add(SpriteAnimationBase animation)
+        internal void Add(SpriteAnimationBase animation)
         {
             if (animations.Count >= byte.MaxValue)
             {
@@ -33,7 +33,7 @@ public class Sprite(Texture2D texture, Rectangle sourceRectangle, Vector2 pivot,
             animation.OnCompleted += () => animations.Remove(thisAnimationId);
         }
 
-        public void Process(ref Transform transform, GameTime gameTime)
+        internal void Process(ref Transform transform, GameTime gameTime)
         {
             foreach (SpriteAnimationBase spriteAnimation in animations.Values)
             {
@@ -42,7 +42,17 @@ public class Sprite(Texture2D texture, Rectangle sourceRectangle, Vector2 pivot,
         }
     }
 
-    public void Draw(SpriteBatch spriteBatch, Transform transform, Animator animator, GameTime gameTime)
+    internal Rectangle GetRectangle(Vector2 position)
+    {
+        Rectangle result = sourceRectangle;
+        result.X = (int)(position.X - pivot.X * scale);
+        result.Y = (int)(position.Y - pivot.Y * scale);
+        result.Width = (int)(result.Width * scale);
+        result.Height = (int)(result.Height * scale);
+        return result;
+    }
+
+    internal void Draw(SpriteBatch spriteBatch, Transform transform, Animator animator, GameTime gameTime)
     {
         if (animator != null)
         {

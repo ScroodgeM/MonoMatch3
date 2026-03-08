@@ -15,13 +15,10 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
     [
         "ракета в действии - может пересечься навстречу падающему шарику",
         "бомба в действии",
-        "кнопка запуска в главном меню",
         "избавиться от клавиатуры",
         "выкинуть кор-синглтон",
         "свапы?",
         "топ-очки и очки на экрае поражения",
-        "1. При запуске игры открывается Главное Меню, в котором есть единственная кнопка Play.",
-        "2. При нажатии на Play открывается Игровой Экран.",
         "3. Игровой Экран представляет из себя поле 8x8 квадратных клеток.",
         "14. По завершению игры должно появиться сообщение «Game Over», с единственной кнопкой Ok. При нажатии на Ok игрок попадёт в Главное Меню.",
         "21. Все перемещения Разрушителей должны быть анимированы.",
@@ -34,7 +31,7 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
     {
         settings = Settings.Load(Content);
 
-        TextureAtlas.Load(Content, settings.system.textureAtlases, spriteRenderer.Pool);
+        AtlasLoader.Load(Content, settings.system.textureAtlases, spriteRenderer);
 
         base.LoadContent();
     }
@@ -88,7 +85,7 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
         switch (state)
         {
             case State.MainMenu:
-                return new MainMenu(spriteRenderer, textRenderer, settings, Window.ClientBounds);
+                return new MainMenu(spriteRenderer, textRenderer, Input, settings, Window.ClientBounds);
             case State.Gameplay:
                 return new Gameplay(spriteRenderer, textRenderer, this, Input, settings);
         }

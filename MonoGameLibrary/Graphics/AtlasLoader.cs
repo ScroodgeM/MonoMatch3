@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -7,32 +6,30 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGameLibrary.Graphics;
 
-public class TextureAtlas(Texture2D texture)
+public static class AtlasLoader
 {
-    private readonly Dictionary<string, Sprite> sprites = new Dictionary<string, Sprite>();
-
-    public IEnumerable<string> AllSpriteNames => sprites.Keys;
-
-    public Sprite GetSprite(string name) => sprites[name];
-
-    public static void Load(ContentManager content, string[] fileNames, SpritesPool spritesPool)
+    public static void Load(ContentManager content, string[] fileNames, SpriteRenderer spriteRenderer)
     {
         foreach (string fileName in fileNames)
         {
-            spritesPool.Add(FromFile(content, fileName));
+            Load(content, fileName, spriteRenderer);
         }
     }
 
-    public static TextureAtlas FromFile(ContentManager content, string fileName)
+    private static void Load(ContentManager content, string fileName, SpriteRenderer spriteRenderer)
     {
         fileName = Path.ChangeExtension(fileName, "json");
         string filePath = Path.Combine(content.RootDirectory, fileName);
         using Stream stream = TitleContainer.OpenStream(filePath);
-        AtlasDefinition definition = JsonSerializer.Deserialize<AtlasDefinition>(stream);
+        Load(content, JsonSerializer.Deserialize<AtlasDefinition>(stream), spriteRenderer);
+    }
 
+    private static void Load(ContentManager content, AtlasDefinition definition, SpriteRenderer spriteRenderer)
+    {
         string texturePath = definition.texturePath;
         Texture2D texture = content.Load<Texture2D>(texturePath);
-        TextureAtlas atlas = new TextureAtlas(texture);
+
+        int spritesFound = 0;
 
         if (definition.regions != null)
         {
@@ -53,17 +50,20 @@ public class TextureAtlas(Texture2D texture)
                     effects |= SpriteEffects.FlipHorizontally;
                 }
 
-                atlas.sprites.Add(region.name, new Sprite(texture, sourceRectangle, pivot, region.scale, effects));
+                Sprite sprite = new Sprite(texture, sourceRectangle, pivot, region.scale, effects);
+                spriteRenderer.Pool.Add(region.name, sprite);
+
+                spritesFound++;
             }
         }
 
-        if (atlas.sprites.Count == 0)
+        if (spritesFound == 0)
         {
             Rectangle sourceRectangle = new(0, 0, texture.Width, texture.Height);
             Vector2 pivot = new Vector2(texture.Width, texture.Height) * 0.5f;
-            atlas.sprites.Add(Path.GetFileNameWithoutExtension(texturePath), new Sprite(texture, sourceRectangle, pivot, 1f, SpriteEffects.None));
+            string spriteId = Path.GetFileNameWithoutExtension(texturePath);
+            Sprite sprite = new Sprite(texture, sourceRectangle, pivot, 1f, SpriteEffects.None);
+            spriteRenderer.Pool.Add(spriteId, sprite);
         }
-
-        return atlas;
     }
 }

@@ -4,7 +4,8 @@ public enum RenderLayer : byte
 {
     VFX,
     Text,
-    Elements,
-    MainMenuLogo,
+    UIEements,
+    GameElements,
+    Background,
     MaxValue = byte.MaxValue,
 }

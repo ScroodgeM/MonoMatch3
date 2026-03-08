@@ -1,6 +1,7 @@
 ﻿{
   "system": {
     "textureAtlases": [
+      "images/button_default",
       "images/gems",
       "images/logo",
       "images/small_bomb",
@@ -8,7 +9,9 @@
       "images/vertical_bonus",
       "images/vfx_tile_destroy",
     ],
-    "fontName": "CozyFont"
+    "fontName": "CozyFont",
+    "mainMenuLogoSpriteId": "logo",
+    "buttonBackgroundSpriteId": "button_default"
   },
   "board": {
     "width": 8,
@@ -36,6 +39,8 @@
     }
   },
   "view": {
+    "startButtonPositionX": 512,
+    "startButtonPositionY": 900,
     "boardCenterX": 512,
     "boardCenterY": 400,
     "cellSize": 100,
@@ -43,7 +48,6 @@
     "countdownPositionY": 900,
     "scorePositionX": 750,
     "scorePositionY": 900,
-    "mainMenuLogoSpriteId": "logo",
     "tiles": [
       {
         "type": "Simple",

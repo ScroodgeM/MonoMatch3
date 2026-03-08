@@ -14,6 +14,8 @@ public class Settings
     {
         public string[] textureAtlases { get; set; }
         public string fontName { get; set; }
+        public string mainMenuLogoSpriteId { get; set; }
+        public string buttonBackgroundSpriteId { get; set; }
     }
 
     public struct Board
@@ -55,6 +57,8 @@ public class Settings
             public ColoredTile[] perColor { get; set; }
         }
 
+        public float startButtonPositionX { get; set; }
+        public float startButtonPositionY { get; set; }
         public float boardCenterX { get; set; }
         public float boardCenterY { get; set; }
         public float cellSize { get; set; }
@@ -62,7 +66,6 @@ public class Settings
         public float countdownPositionY { get; set; }
         public float scorePositionX { get; set; }
         public float scorePositionY { get; set; }
-        public string mainMenuLogoSpriteId { get; set; }
         public TypedTile[] tiles { get; set; }
         public string tileDestroyVfxSpriteId { get; set; }
     }

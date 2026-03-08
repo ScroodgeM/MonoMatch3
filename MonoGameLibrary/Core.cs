@@ -65,7 +65,7 @@ public class Core : Game, IGameEvents
         spriteRenderer.Init(spriteBatch);
         textRenderer.Init(spriteBatch);
 
-        inputManager = new InputManager(this);
+        inputManager = new InputManager(this, spriteRenderer, textRenderer);
     }
 
     protected void LoadFont(string fontName) => textRenderer.SetFont(Content.Load<SpriteFont>(fontName));

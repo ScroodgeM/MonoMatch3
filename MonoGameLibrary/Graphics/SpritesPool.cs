@@ -3,22 +3,19 @@ using System.Data;
 
 namespace MonoGameLibrary.Graphics;
 
-public class SpritesPool
+internal class SpritesPool
 {
     private readonly Dictionary<string, Sprite> allSprites = new Dictionary<string, Sprite>();
 
-    public void Add(TextureAtlas atlas)
+    internal void Add(string spriteId, Sprite sprite)
     {
-        foreach (string spriteId in atlas.AllSpriteNames)
+        if (allSprites.TryAdd(spriteId, sprite) == false)
         {
-            if (allSprites.TryAdd(spriteId, atlas.GetSprite(spriteId)) == false)
-            {
-                throw new DuplicateNameException($"{nameof(SpritesPool)}: sprite with id '{spriteId}' already exists");
-            }
+            throw new DuplicateNameException($"{nameof(SpritesPool)}: sprite with id '{spriteId}' already exists");
         }
     }
 
-    public Sprite Get(string spriteId)
+    internal Sprite Get(string spriteId)
     {
         if (allSprites.TryGetValue(spriteId, out Sprite sprite) == false)
         {

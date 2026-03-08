@@ -31,7 +31,7 @@ internal class Tile
         settings.GetSpriteView(tileCore.Type, tileCore.Color, out string spriteId, out Color tintColor);
 
         this.mySpriteTransform = Transform.Default;
-        this.mySpriteTransform.layerDepth = RenderLayer.Elements.ToLayerDepth();
+        this.mySpriteTransform.layerDepth = RenderLayer.GameElements.ToLayerDepth();
         this.mySpriteTransform.position = settings.BoardToScreen(tileCore.Position.Value).ToVector2();
         this.mySpriteTransform.color = tintColor;
 
