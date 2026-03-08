@@ -2,6 +2,7 @@
   "system": {
     "textureAtlases": [
       "images/button_default",
+      "images/ribbon",
       "images/gems",
       "images/logo",
       "images/small_bomb",
@@ -11,6 +12,7 @@
     ],
     "fontName": "CozyFont",
     "mainMenuLogoSpriteId": "logo",
+    "gameOverLogoSpriteId": "ribbon",
     "buttonBackgroundSpriteId": "button_default"
   },
   "board": {
@@ -41,6 +43,8 @@
   "view": {
     "startButtonPositionX": 512,
     "startButtonPositionY": 900,
+    "gameOverOKButtonPositionX": 512,
+    "gameOverOKButtonPositionY": 700,
     "boardCenterX": 512,
     "boardCenterY": 400,
     "cellSize": 100,

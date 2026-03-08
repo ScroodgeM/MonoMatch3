@@ -80,6 +80,21 @@
 #begin images/logo.json
 /copy:images/logo.json
 
+#begin images/ribbon.json
+/copy:images/ribbon.json
+
+#begin images/ribbon.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=False
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/ribbon.png
+
 #begin images/small_bomb.json
 /copy:images/small_bomb.json
 

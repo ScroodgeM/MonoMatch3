@@ -47,7 +47,7 @@ internal class Gameplay(
     {
         MonoMatch3Core.Board.Board.Destroy(board);
         boardView.Die();
-
+        gameEvents.CurrentTime.OnValueChanged -= OnTimeChanged;
         base.Die();
     }
 

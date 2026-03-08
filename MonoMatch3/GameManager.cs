@@ -20,7 +20,6 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
         "свапы?",
         "топ-очки и очки на экрае поражения",
         "3. Игровой Экран представляет из себя поле 8x8 квадратных клеток.",
-        "14. По завершению игры должно появиться сообщение «Game Over», с единственной кнопкой Ok. При нажатии на Ok игрок попадёт в Главное Меню.",
         "21. Все перемещения Разрушителей должны быть анимированы.",
     ];
 
@@ -51,19 +50,6 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
         StartNewState(State.MainMenu);
     }
 
-    protected override void Update(GameTime gameTime)
-    {
-        if (Input.Keyboard.WasKeyJustPressed(Keys.Space))
-        {
-            if (currentState is MainMenu)
-            {
-                StartNewState(State.Gameplay);
-            }
-        }
-
-        base.Update(gameTime);
-    }
-
     private void StartNewState(State state)
     {
         if (currentState != null)
@@ -88,6 +74,8 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
                 return new MainMenu(spriteRenderer, textRenderer, Input, settings, Window.ClientBounds);
             case State.Gameplay:
                 return new Gameplay(spriteRenderer, textRenderer, this, Input, settings);
+            case State.GameOver:
+                return new GameOver(spriteRenderer, textRenderer, Input, settings, Window.ClientBounds);
         }
 
         return null;

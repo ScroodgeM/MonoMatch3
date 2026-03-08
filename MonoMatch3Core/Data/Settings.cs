@@ -15,6 +15,7 @@ public class Settings
         public string[] textureAtlases { get; set; }
         public string fontName { get; set; }
         public string mainMenuLogoSpriteId { get; set; }
+        public string gameOverLogoSpriteId { get; set; }
         public string buttonBackgroundSpriteId { get; set; }
     }
 
@@ -59,6 +60,8 @@ public class Settings
 
         public float startButtonPositionX { get; set; }
         public float startButtonPositionY { get; set; }
+        public float gameOverOKButtonPositionX { get; set; }
+        public float gameOverOKButtonPositionY { get; set; }
         public float boardCenterX { get; set; }
         public float boardCenterY { get; set; }
         public float cellSize { get; set; }
