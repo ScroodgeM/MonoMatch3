@@ -71,6 +71,7 @@ public class Settings
         public float scorePositionY { get; set; }
         public TypedTile[] tiles { get; set; }
         public string tileDestroyVfxSpriteId { get; set; }
+        public string rocketDestroyVfxSpriteId { get; set; }
         public string bombDestroyVfxSpriteId { get; set; }
     }
 

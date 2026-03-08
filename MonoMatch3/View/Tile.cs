@@ -66,11 +66,54 @@ internal class Tile
         switch (tileCore.Type)
         {
             case TileType.DestroyerHorizontalLine:
-                Die();
+                duration = TimeSpan.FromSeconds(settings.board.timings.bombExplodeDelay);
+                toTime = fromTime + duration;
+                spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0f, fromTime, toTime));
+                gameEvents.Timer.Wait(duration).Done(Die);
+
+            {
+                Transform rocketTransform = mySpriteTransform;
+                rocketTransform.layerDepth = RenderLayer.VFX.ToLayerDepth();
+                rocketTransform.scale = Vector2.One * 0.75f;
+                byte boardSize = settings.board.width;
+                Vector2 rocketAwayPosition = Vector2.UnitX * settings.view.cellSize * boardSize;
+                TimeSpan rocketDuration = TimeSpan.FromSeconds(boardSize / settings.board.timings.lineDestroyerFlySpeed);
+
+                rocketTransform.rotation = MathF.PI * 0.5f;
+                ushort rocketSpriteId1 = spriteRenderer.AddSprite(settings.view.rocketDestroyVfxSpriteId, rocketTransform);
+                spriteRenderer.AddAnimation(rocketSpriteId1, new OffsetOverTime(Vector2.Zero, rocketAwayPosition, fromTime, fromTime + rocketDuration, OffsetOverTime.MoveMode.FromTo));
+                gameEvents.Timer.Wait(rocketDuration).Done(() => spriteRenderer.RemoveSprite(rocketSpriteId1));
+
+                rocketTransform.rotation = MathF.PI * 1.5f;
+                ushort rocketSpriteId2 = spriteRenderer.AddSprite(settings.view.rocketDestroyVfxSpriteId, rocketTransform);
+                spriteRenderer.AddAnimation(rocketSpriteId2, new OffsetOverTime(Vector2.Zero, -rocketAwayPosition, fromTime, fromTime + rocketDuration, OffsetOverTime.MoveMode.FromTo));
+                gameEvents.Timer.Wait(rocketDuration).Done(() => spriteRenderer.RemoveSprite(rocketSpriteId2));
+            }
                 break;
 
             case TileType.DestroyerVerticalLine:
-                Die();
+                duration = TimeSpan.FromSeconds(settings.board.timings.bombExplodeDelay);
+                toTime = fromTime + duration;
+                spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0f, fromTime, toTime));
+                gameEvents.Timer.Wait(duration).Done(Die);
+
+            {
+                Transform rocketTransform = mySpriteTransform;
+                rocketTransform.layerDepth = RenderLayer.VFX.ToLayerDepth();
+                rocketTransform.scale = Vector2.One * 0.75f;
+                byte boardSize = settings.board.height;
+                Vector2 rocketAwayPosition = Vector2.UnitY * settings.view.cellSize * boardSize;
+                TimeSpan rocketDuration = TimeSpan.FromSeconds(boardSize / settings.board.timings.lineDestroyerFlySpeed);
+
+                ushort rocketSpriteId1 = spriteRenderer.AddSprite(settings.view.rocketDestroyVfxSpriteId, rocketTransform);
+                spriteRenderer.AddAnimation(rocketSpriteId1, new OffsetOverTime(Vector2.Zero, -rocketAwayPosition, fromTime, fromTime + rocketDuration, OffsetOverTime.MoveMode.FromTo));
+                gameEvents.Timer.Wait(rocketDuration).Done(() => spriteRenderer.RemoveSprite(rocketSpriteId1));
+
+                rocketTransform.rotation = MathF.PI;
+                ushort rocketSpriteId2 = spriteRenderer.AddSprite(settings.view.rocketDestroyVfxSpriteId, rocketTransform);
+                spriteRenderer.AddAnimation(rocketSpriteId2, new OffsetOverTime(Vector2.Zero, rocketAwayPosition, fromTime, fromTime + rocketDuration, OffsetOverTime.MoveMode.FromTo));
+                gameEvents.Timer.Wait(rocketDuration).Done(() => spriteRenderer.RemoveSprite(rocketSpriteId2));
+            }
                 break;
 
             case TileType.DestroyerSquare:
@@ -81,11 +124,11 @@ internal class Tile
 
                 for (int i = 0; i <= 3; i++)
                 {
-                    Transform vfxTransform = mySpriteTransform;
-                    vfxTransform.layerDepth = RenderLayer.VFX.ToLayerDepth();
-                    ushort vfxSpriteId = spriteRenderer.AddSprite(settings.view.bombDestroyVfxSpriteId, vfxTransform);
-                    spriteRenderer.AddAnimation(vfxSpriteId, new ChangeScale(0.5f, 1.5f, fromTime, fromTime + duration));
-                    gameEvents.Timer.Wait(duration).Done(() => spriteRenderer.RemoveSprite(vfxSpriteId));
+                    Transform boomTransform = mySpriteTransform;
+                    boomTransform.layerDepth = RenderLayer.VFX.ToLayerDepth();
+                    ushort boomSpriteId = spriteRenderer.AddSprite(settings.view.bombDestroyVfxSpriteId, boomTransform);
+                    spriteRenderer.AddAnimation(boomSpriteId, new ChangeScale(0.5f, 1.5f, fromTime, fromTime + duration));
+                    gameEvents.Timer.Wait(duration).Done(() => spriteRenderer.RemoveSprite(boomSpriteId));
                 }
 
                 break;

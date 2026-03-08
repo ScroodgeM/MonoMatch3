@@ -10,6 +10,7 @@
       "images/vertical_bonus",
       "images/vfx_bomb",
       "images/vfx_tile_destroy",
+      "images/vfx_rocket"
     ],
     "fontName": "CozyFont",
     "mainMenuLogoSpriteId": "logo",
@@ -316,6 +317,7 @@
       }
     ],
     "tileDestroyVfxSpriteId": "vfx_tile_destroy",
+    "rocketDestroyVfxSpriteId": "vfx_rocket",
     "bombDestroyVfxSpriteId": "vfx_bomb"
   }
 }
