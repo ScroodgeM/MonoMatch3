@@ -4,8 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
-using MonoGameLibrary.Graphics.SpriteAnimations;
-using MonoMatch3.View;
+using MonoMatch3.States;
 using MonoMatch3Core.Data;
 
 namespace MonoMatch3;
@@ -33,6 +32,7 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
     private Settings settings;
     private MonoMatch3Core.Board.Board board;
     private View.Board boardView;
+    private BaseState currentState;
 
     protected override void LoadContent()
     {
@@ -55,7 +55,7 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
 
         LoadFont(settings.system.fontName);
 
-        StartMainMenu();
+        StartNewState(State.MainMenu);
     }
 
     protected override void Update(GameTime gameTime)
@@ -69,39 +69,17 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
         {
             if (board == null)
             {
-                FinishMainMenu();
+                StartNewState(State.Gameplay);
                 StartGame();
             }
             else
             {
                 FinishGame();
-                StartMainMenu();
+                StartNewState(State.MainMenu);
             }
         }
 
         base.Update(gameTime);
-    }
-
-    private void StartMainMenu()
-    {
-        Transform transform = Transform.Default;
-        Rectangle windowRect = Window.ClientBounds;
-        transform.position = new Vector2(windowRect.Width, windowRect.Height) * 0.5f;
-        transform.layerDepth = RenderLayer.MainMenuLogo.ToLayerDepth();
-
-        ushort spriteId = spriteRenderer.AddSprite(settings.view.mainMenuLogoSpriteId, transform);
-
-        spriteRenderer.AddAnimation(spriteId, new PingPongColorChannels(0.5f, 1f, 0.20f, 0.25f, 0.33f));
-        spriteRenderer.AddAnimation(spriteId, new PingPongScale(1.0f, 1.1f, 0.16f));
-
-        transform.layerDepth = RenderLayer.Text.ToLayerDepth();
-        textRenderer.AddText("Test 42", transform);
-    }
-
-    private void FinishMainMenu()
-    {
-        textRenderer.RemoveAll();
-        spriteRenderer.RemoveAll();
     }
 
     private void StartGame()
@@ -118,5 +96,31 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
 
         boardView.Die();
         boardView = null;
+    }
+
+    private void StartNewState(State state)
+    {
+        if (currentState != null)
+        {
+            currentState.Die();
+            currentState = null;
+        }
+
+        currentState = CreateState(state);
+        if (currentState != null)
+        {
+            currentState.Start();
+        }
+    }
+
+    private BaseState CreateState(State state)
+    {
+        switch (state)
+        {
+            case State.MainMenu:
+                return new MainMenu(spriteRenderer, textRenderer, settings, Window.ClientBounds);
+        }
+
+        return null;
     }
 }
