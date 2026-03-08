@@ -35,6 +35,8 @@ public class Settings
         public byte width { get; set; }
         public byte height { get; set; }
         public TileColor[] generatorPool { get; set; }
+        public int scorePerMatchedTile { get; set; }
+        public int scorePerDestroyedTile { get; set; }
         public Timings timings { get; set; }
     }
 
@@ -58,6 +60,8 @@ public class Settings
         public float cellSize { get; set; }
         public float countdownPositionX { get; set; }
         public float countdownPositionY { get; set; }
+        public float scorePositionX { get; set; }
+        public float scorePositionY { get; set; }
         public string mainMenuLogoSpriteId { get; set; }
         public TypedTile[] tiles { get; set; }
         public string tileDestroyVfxSpriteId { get; set; }

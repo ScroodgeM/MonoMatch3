@@ -20,6 +20,8 @@
       "Red",
       "Violet"
     ],
+    "scorePerMatchedTile": 10,
+    "scorePerDestroyedTile": 5,
     "timings": {
       "gameSessionTimeLimit": 60,
       "firstAppearDuration": 0.25,
@@ -39,6 +41,8 @@
     "cellSize": 100,
     "countdownPositionX": 112,
     "countdownPositionY": 870,
+    "scorePositionX": 570,
+    "scorePositionY": 870,
     "mainMenuLogoSpriteId": "logo",
     "tiles": [
       {
