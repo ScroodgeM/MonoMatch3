@@ -5,7 +5,8 @@
       "images/logo",
       "images/small_bomb",
       "images/horizontal_bonus",
-      "images/vertical_bonus"
+      "images/vertical_bonus",
+      "images/vfx_tile_destroy",
     ]
   },
   "board": {
@@ -24,7 +25,7 @@
       "fallDownDuration": 0.2,
       "swapTilesDuration": 0.3,
       "successMatchDisappearDuration": 1.0,
-      "destroyBySpecialDisappearDuration": 0.5,
+      "destroyBySpecialDisappearDuration": 0.75,
       "bombExplodeDelay": 0.25,
       "lineDestroyerFlySpeed": 5
     }
@@ -293,6 +294,7 @@
           }
         ]
       }
-    ]
+    ],
+    "tileDestroyVfxSpriteId": "vfx_tile_destroy"
   }
 }

@@ -53,6 +53,7 @@ public class Settings
         public float cellSize { get; set; }
         public string mainMenuLogoSpriteId { get; set; }
         public TypedTile[] tiles { get; set; }
+        public string tileDestroyVfxSpriteId { get; set; }
     }
 
     public System system { get; set; }
