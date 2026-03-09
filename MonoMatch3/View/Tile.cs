@@ -59,19 +59,16 @@ internal class Tile
 
     internal void Remove(TileRemoveReason removeReason)
     {
-        TimeSpan fromTime = gameEvents.CurrentTime.Value;
-        TimeSpan duration;
-        TimeSpan toTime;
-
         switch (tileCore.Type)
         {
             case TileType.DestroyerHorizontalLine:
-                duration = TimeSpan.FromSeconds(settings.board.timings.bombExplodeDelay);
-                toTime = fromTime + duration;
-                spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0f, fromTime, toTime));
-                gameEvents.Timer.Wait(duration).Done(Die);
+                spriteRenderer
+                    .AnimateSpecialTileDestroy(gameEvents, settings, mySpriteId)
+                    .Done(Die);
 
             {
+                TimeSpan fromTime = gameEvents.CurrentTime.Value;
+
                 Transform rocketTransform = mySpriteTransform;
                 rocketTransform.layerDepth = RenderLayer.VFX.ToLayerDepth();
                 rocketTransform.scale = Vector2.One * 0.75f;
@@ -92,12 +89,13 @@ internal class Tile
                 break;
 
             case TileType.DestroyerVerticalLine:
-                duration = TimeSpan.FromSeconds(settings.board.timings.bombExplodeDelay);
-                toTime = fromTime + duration;
-                spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0f, fromTime, toTime));
-                gameEvents.Timer.Wait(duration).Done(Die);
+                spriteRenderer
+                    .AnimateSpecialTileDestroy(gameEvents, settings, mySpriteId)
+                    .Done(Die);
 
             {
+                TimeSpan fromTime = gameEvents.CurrentTime.Value;
+
                 Transform rocketTransform = mySpriteTransform;
                 rocketTransform.layerDepth = RenderLayer.VFX.ToLayerDepth();
                 rocketTransform.scale = Vector2.One * 0.75f;
@@ -117,13 +115,14 @@ internal class Tile
                 break;
 
             case TileType.DestroyerSquare:
-                duration = TimeSpan.FromSeconds(settings.board.timings.bombExplodeDelay);
-                toTime = fromTime + duration;
-                spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0f, fromTime, toTime));
-                gameEvents.Timer.Wait(duration).Done(Die);
+                spriteRenderer
+                    .AnimateSpecialTileDestroy(gameEvents, settings, mySpriteId)
+                    .Done(Die);
 
                 for (int i = 0; i <= 3; i++)
                 {
+                    TimeSpan fromTime = gameEvents.CurrentTime.Value;
+                    TimeSpan duration = TimeSpan.FromSeconds(settings.board.timings.bombExplodeDelay);
                     Transform boomTransform = mySpriteTransform;
                     boomTransform.layerDepth = RenderLayer.VFX.ToLayerDepth();
                     ushort boomSpriteId = spriteRenderer.AddSprite(settings.view.bombDestroyVfxSpriteId, boomTransform);
@@ -137,23 +136,20 @@ internal class Tile
                 switch (removeReason)
                 {
                     case TileRemoveReason.SuccessMatch:
-                        duration = TimeSpan.FromSeconds(settings.board.timings.successMatchDisappearDuration);
-                        toTime = fromTime + duration;
-                        spriteRenderer.AddAnimation(mySpriteId, new RotateSelf(0f, 10f));
-                        spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0f, fromTime, toTime));
-                        spriteRenderer.AddAnimation(mySpriteId, new ChangeScale(1f, 2f, fromTime, toTime));
-                        gameEvents.Timer.Wait(duration).Done(Die);
+                        spriteRenderer
+                            .AnimateSimpleTileDestroyByMatch(gameEvents, settings, mySpriteId)
+                            .Done(Die);
                         break;
 
                     case TileRemoveReason.DestroyedBySpecial:
-                        duration = TimeSpan.FromSeconds(settings.board.timings.destroyBySpecialDisappearDuration);
-                        toTime = fromTime + duration;
-                        spriteRenderer.AddAnimation(mySpriteId, new ChangeScale(1f, 2f, fromTime, toTime));
-                        spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(1f, 0f, fromTime, toTime));
-                        gameEvents.Timer.Wait(duration).Done(Die);
+                        spriteRenderer
+                            .AnimateSimpleTileDestroyBySpecial(gameEvents, settings, mySpriteId)
+                            .Done(Die);
 
                         for (int i = 0; i <= 3; i++)
                         {
+                            TimeSpan fromTime = gameEvents.CurrentTime.Value;
+                            TimeSpan duration = TimeSpan.FromSeconds(settings.board.timings.destroyBySpecialDisappearDuration);
                             TimeSpan vfxDuration = duration * (1.0f - i * 0.2f);
                             float vfxScale = 0.5f + 0.3f * i;
                             Transform vfxTransform = mySpriteTransform;
