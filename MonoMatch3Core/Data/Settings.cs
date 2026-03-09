@@ -13,6 +13,7 @@ public class Settings
     public struct System
     {
         public string[] textureAtlases { get; set; }
+        public string[] textureTilemaps { get; set; }
         public string fontName { get; set; }
         public string mainMenuLogoSpriteId { get; set; }
         public string gameOverLogoSpriteId { get; set; }
@@ -66,6 +67,7 @@ public class Settings
         public float gameOverTopScorePositionY { get; set; }
         public float gameOverOKButtonPositionX { get; set; }
         public float gameOverOKButtonPositionY { get; set; }
+        public string boardTilemapId { get; set; }
         public float boardCenterX { get; set; }
         public float boardCenterY { get; set; }
         public float cellSize { get; set; }

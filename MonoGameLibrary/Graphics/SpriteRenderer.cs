@@ -75,11 +75,6 @@ public class SpriteRenderer
         allSprites.Remove(spriteId);
     }
 
-    public void RemoveAll()
-    {
-        allSprites.Clear();
-    }
-
     public void Draw(GameTime gameTime)
     {
         spriteBatch.Begin(sortMode: SpriteSortMode.BackToFront);

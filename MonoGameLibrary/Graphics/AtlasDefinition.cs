@@ -1,4 +1,6 @@
-﻿namespace MonoGameLibrary.Graphics;
+﻿// ReSharper disable InconsistentNaming
+
+namespace MonoGameLibrary.Graphics;
 
 public class AtlasDefinition
 {

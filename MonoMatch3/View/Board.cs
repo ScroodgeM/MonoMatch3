@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
+using MonoMatch3Core;
 using MonoMatch3Core.Data;
 using MonoMatch3Core.Enums;
 using MonoMatch3Core.Tiles;
@@ -10,14 +12,16 @@ namespace MonoMatch3.View;
 public class Board
 {
     private readonly SpriteRenderer spriteRenderer;
+    private readonly TilemapRenderer tilemapRenderer;
     private readonly Settings settings;
     private readonly IGameEvents gameEvents;
     private readonly MonoMatch3Core.Board.Board boardCore;
     private readonly Dictionary<TileBase, Tile> tileViews = new Dictionary<TileBase, Tile>();
 
-    public Board(SpriteRenderer spriteRenderer, Settings settings, IGameEvents gameEvents, MonoMatch3Core.Board.Board boardCore)
+    public Board(SpriteRenderer spriteRenderer, TilemapRenderer tilemapRenderer, Settings settings, IGameEvents gameEvents, MonoMatch3Core.Board.Board boardCore)
     {
         this.spriteRenderer = spriteRenderer;
+        this.tilemapRenderer = tilemapRenderer;
         this.settings = settings;
         this.gameEvents = gameEvents;
         this.boardCore = boardCore;
@@ -25,13 +29,21 @@ public class Board
         this.boardCore.OnTileCreated += OnTileCreated;
         this.boardCore.OnTileRemoved += OnTileRemoved;
         this.boardCore.SelectedTile.OnValueChanged += OnSelectedValueChanged;
+
+        Transform transform = Transform.Default;
+        transform.position = settings.GetBoardTopLeftCornerOffset();
+        transform.layerDepth = RenderLayer.Background.ToLayerDepth();
+        transform.color = Color.White * 0.5f;
+        this.tilemapRenderer.Show(settings.view.boardTilemapId, transform);
     }
 
     public void Die()
     {
-        this.boardCore.OnTileCreated -= OnTileCreated;
-        this.boardCore.OnTileRemoved -= OnTileRemoved;
-        this.boardCore.SelectedTile.OnValueChanged -= OnSelectedValueChanged;
+        tilemapRenderer.Hide(settings.view.boardTilemapId);
+
+        boardCore.OnTileCreated -= OnTileCreated;
+        boardCore.OnTileRemoved -= OnTileRemoved;
+        boardCore.SelectedTile.OnValueChanged -= OnSelectedValueChanged;
 
         foreach (Tile tileView in tileViews.Values)
         {

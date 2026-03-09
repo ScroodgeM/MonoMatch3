@@ -18,6 +18,7 @@ public class Core : Game, IGameEvents
     protected InputManager Input => inputManager;
 
     protected readonly SpriteRenderer spriteRenderer;
+    protected readonly TilemapRenderer tilemapRenderer;
     protected readonly TextRenderer textRenderer;
 
     private readonly StatefulEventInt<TimeSpan> currentTime = new(TimeSpan.Zero, (a, b) => a == b);
@@ -38,6 +39,7 @@ public class Core : Game, IGameEvents
         Content.RootDirectory = "Content";
 
         spriteRenderer = new SpriteRenderer();
+        tilemapRenderer = new TilemapRenderer(spriteRenderer);
         textRenderer = new TextRenderer();
 
         timer = new Timer(this);

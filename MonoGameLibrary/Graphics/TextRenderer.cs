@@ -65,11 +65,6 @@ public class TextRenderer
         allTexts.Remove(spriteId);
     }
 
-    public void RemoveAll()
-    {
-        allTexts.Clear();
-    }
-
     public void Draw()
     {
         spriteBatch.Begin(sortMode: SpriteSortMode.BackToFront);

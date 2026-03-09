@@ -13,6 +13,7 @@ namespace MonoMatch3.States;
 
 internal class Gameplay(
     SpriteRenderer spriteRenderer,
+    TilemapRenderer tilemapRenderer,
     TextRenderer textRenderer,
     IGameEvents gameEvents,
     InputManager inputManager,
@@ -29,7 +30,7 @@ internal class Gameplay(
     internal override void Start()
     {
         board = MonoMatch3Core.Board.Board.Create(gameEvents, inputManager, settings);
-        boardView = new Board(spriteRenderer, settings, gameEvents, board);
+        boardView = new Board(spriteRenderer, tilemapRenderer, settings, gameEvents, board);
 
         board.OnTileRemoved += OnTileRemoved;
 

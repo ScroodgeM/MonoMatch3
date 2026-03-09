@@ -12,6 +12,9 @@
       "images/vfx_tile_destroy",
       "images/vfx_rocket"
     ],
+    "textureTilemaps": [
+      "tilemaps/board"
+    ],
     "fontName": "CozyFont",
     "mainMenuLogoSpriteId": "logo",
     "gameOverLogoSpriteId": "ribbon",
@@ -51,6 +54,7 @@
     "gameOverTopScorePositionY": 300,
     "gameOverOKButtonPositionX": 512,
     "gameOverOKButtonPositionY": 700,
+    "boardTilemapId": "board",
     "boardCenterX": 512,
     "boardCenterY": 400,
     "cellSize": 100,

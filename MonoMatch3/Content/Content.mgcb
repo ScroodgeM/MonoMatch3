@@ -173,3 +173,18 @@
 #begin Settings.json
 /copy:Settings.json
 
+#begin tilemaps/board.json
+/copy:tilemaps/board.json
+
+#begin tilemaps/board.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=False
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:tilemaps/board.png
+
