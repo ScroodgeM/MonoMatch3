@@ -118,18 +118,8 @@ internal class Tile
                 spriteRenderer
                     .AnimateSpecialTileDestroy(gameEvents, settings, mySpriteId)
                     .Done(Die);
-
-                for (int i = 0; i <= 3; i++)
-                {
-                    TimeSpan fromTime = gameEvents.CurrentTime.Value;
-                    TimeSpan duration = TimeSpan.FromSeconds(settings.board.timings.bombExplodeDelay);
-                    Transform boomTransform = mySpriteTransform;
-                    boomTransform.layerDepth = RenderLayer.VFX.ToLayerDepth();
-                    ushort boomSpriteId = spriteRenderer.AddSprite(settings.view.bombDestroyVfxSpriteId, boomTransform);
-                    spriteRenderer.AddAnimation(boomSpriteId, new ChangeScale(0.5f, 1.5f, fromTime, fromTime + duration));
-                    gameEvents.Timer.Wait(duration).Done(() => spriteRenderer.RemoveSprite(boomSpriteId));
-                }
-
+                spriteRenderer
+                    .PlayBombExplodeVfx(gameEvents, settings, mySpriteTransform.position);
                 break;
 
             case TileType.Simple:
@@ -145,20 +135,8 @@ internal class Tile
                         spriteRenderer
                             .AnimateSimpleTileDestroyBySpecial(gameEvents, settings, mySpriteId)
                             .Done(Die);
-
-                        for (int i = 0; i <= 3; i++)
-                        {
-                            TimeSpan fromTime = gameEvents.CurrentTime.Value;
-                            TimeSpan duration = TimeSpan.FromSeconds(settings.board.timings.destroyBySpecialDisappearDuration);
-                            TimeSpan vfxDuration = duration * (1.0f - i * 0.2f);
-                            float vfxScale = 0.5f + 0.3f * i;
-                            Transform vfxTransform = mySpriteTransform;
-                            vfxTransform.layerDepth = RenderLayer.VFX.ToLayerDepth();
-                            ushort vfxSpriteId = spriteRenderer.AddSprite(settings.view.tileDestroyVfxSpriteId, vfxTransform);
-                            spriteRenderer.AddAnimation(vfxSpriteId, new ChangeScale(0f, vfxScale, fromTime, fromTime + vfxDuration));
-                            gameEvents.Timer.Wait(vfxDuration).Done(() => spriteRenderer.RemoveSprite(vfxSpriteId));
-                        }
-
+                        spriteRenderer
+                            .PlaySimpleTileDestroyedBySpecialVfx(gameEvents, settings, mySpriteTransform.position);
                         break;
 
                     default:
