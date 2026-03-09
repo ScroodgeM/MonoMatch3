@@ -60,6 +60,10 @@ public class Settings
 
         public float startButtonPositionX { get; set; }
         public float startButtonPositionY { get; set; }
+        public float gameOverLastScorePositionX { get; set; }
+        public float gameOverLastScorePositionY { get; set; }
+        public float gameOverTopScorePositionX { get; set; }
+        public float gameOverTopScorePositionY { get; set; }
         public float gameOverOKButtonPositionX { get; set; }
         public float gameOverOKButtonPositionY { get; set; }
         public float boardCenterX { get; set; }

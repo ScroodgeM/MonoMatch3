@@ -13,6 +13,7 @@ internal class GameOver(
     TextRenderer textRenderer,
     InputManager inputManager,
     Settings settings,
+    ProfileState profileState,
     Rectangle windowRect)
     : BaseState(spriteRenderer, textRenderer, settings)
 {
@@ -29,9 +30,13 @@ internal class GameOver(
         RegisterSpriteToRemoveOnDeath(spriteId);
 
         transform.layerDepth = RenderLayer.Text.ToLayerDepth();
+        RegisterTextToRemoveOnDeath(textRenderer.AddText(StatefulEventInt.Create("Game Over"), transform));
 
-        byte textId = textRenderer.AddText(StatefulEventInt.Create("Game Over"), transform);
-        RegisterTextToRemoveOnDeath(textId);
+        transform.position = new Vector2(settings.view.gameOverTopScorePositionX, settings.view.gameOverTopScorePositionY);
+        RegisterTextToRemoveOnDeath(textRenderer.AddText(StatefulEventInt.Create($"Top score: {profileState.GetTopScore():#,##0}"), transform));
+
+        transform.position = new Vector2(settings.view.gameOverLastScorePositionX, settings.view.gameOverLastScorePositionY);
+        RegisterTextToRemoveOnDeath(textRenderer.AddText(StatefulEventInt.Create($"Your score: {profileState.GetTopScore():#,##0}"), transform));
 
         ScreenButton.Transform screenButtonTransform;
         screenButtonTransform.position = new Vector2(settings.view.gameOverOKButtonPositionX, settings.view.gameOverOKButtonPositionY);

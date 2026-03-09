@@ -45,6 +45,10 @@
   "view": {
     "startButtonPositionX": 512,
     "startButtonPositionY": 900,
+    "gameOverLastScorePositionX": 512,
+    "gameOverLastScorePositionY": 200,
+    "gameOverTopScorePositionX": 512,
+    "gameOverTopScorePositionY": 300,
     "gameOverOKButtonPositionX": 512,
     "gameOverOKButtonPositionY": 700,
     "boardCenterX": 512,

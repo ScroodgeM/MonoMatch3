@@ -8,6 +8,8 @@ namespace MonoMatch3;
 
 public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false)
 {
+    private readonly ProfileState profileState = new ProfileState();
+
     private Settings settings;
     private BaseState currentState;
 
@@ -54,7 +56,7 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
             case State.Gameplay:
                 return new Gameplay(spriteRenderer, textRenderer, this, Input, settings);
             case State.GameOver:
-                return new GameOver(spriteRenderer, textRenderer, Input, settings, Window.ClientBounds);
+                return new GameOver(spriteRenderer, textRenderer, Input, settings, profileState, Window.ClientBounds);
         }
 
         return null;
