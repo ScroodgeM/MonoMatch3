@@ -4,7 +4,7 @@ using MonoMatch3Core.Data;
 
 namespace MonoMatch3Core.Specials;
 
-public abstract class SpecialBase(IGameEvents gameEvents)
+public abstract class SpecialBase
 {
     public event Action<TilePosition> OnTileDestroyAttempt = position => { };
     public event Action<SpecialBase> OnCompleted = special => { };

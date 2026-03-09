@@ -6,7 +6,7 @@ using MonoMatch3Core.Data;
 
 namespace MonoMatch3Core.Specials;
 
-public abstract class TileDestroyer(IGameEvents gameEvents) : SpecialBase(gameEvents)
+public abstract class TileDestroyer(IGameEvents gameEvents) : SpecialBase
 {
     private List<(TimeSpan, TilePosition)> scheduledDestroys = new List<(TimeSpan, TilePosition)>();
 
