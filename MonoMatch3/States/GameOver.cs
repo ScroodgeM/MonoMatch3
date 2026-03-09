@@ -36,7 +36,7 @@ internal class GameOver(
         RegisterTextToRemoveOnDeath(textRenderer.AddText(StatefulEventInt.Create($"Top score: {profileState.GetTopScore():#,##0}"), transform));
 
         transform.position = new Vector2(settings.view.gameOverLastScorePositionX, settings.view.gameOverLastScorePositionY);
-        RegisterTextToRemoveOnDeath(textRenderer.AddText(StatefulEventInt.Create($"Your score: {profileState.GetTopScore():#,##0}"), transform));
+        RegisterTextToRemoveOnDeath(textRenderer.AddText(StatefulEventInt.Create($"Your score: {profileState.GetLastScore():#,##0}"), transform));
 
         ScreenButton.Transform screenButtonTransform;
         screenButtonTransform.position = new Vector2(settings.view.gameOverOKButtonPositionX, settings.view.gameOverOKButtonPositionY);

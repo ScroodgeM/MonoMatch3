@@ -16,13 +16,13 @@ internal class Gameplay(
     TextRenderer textRenderer,
     IGameEvents gameEvents,
     InputManager inputManager,
-    Settings settings)
+    Settings settings,
+    ProfileState profileState)
     : BaseState(spriteRenderer, textRenderer, settings)
 {
     private MonoMatch3Core.Board.Board board;
     private Board boardView;
     private TimeSpan gameStartTime;
-    private int score = 0;
     private readonly StatefulEventInt<string> sessionCountdown = StatefulEventInt.Create(string.Empty);
     private readonly StatefulEventInt<string> scoreLabel = StatefulEventInt.Create(string.Empty);
 
@@ -69,10 +69,10 @@ internal class Gameplay(
         switch (removeReason)
         {
             case TileRemoveReason.DestroyedBySpecial:
-                score += settings.board.scorePerDestroyedTile;
+                profileState.AddScore(settings.board.scorePerDestroyedTile);
                 break;
             case TileRemoveReason.SuccessMatch:
-                score += settings.board.scorePerMatchedTile;
+                profileState.AddScore(settings.board.scorePerMatchedTile);
                 break;
         }
 
@@ -81,7 +81,7 @@ internal class Gameplay(
 
     private void UpdateScoreLabel()
     {
-        scoreLabel.Set($"Score: {score}");
+        scoreLabel.Set($"Score: {profileState.GetLastScore():#,##0}");
     }
 
     private void OnTimeChanged(TimeSpan time)

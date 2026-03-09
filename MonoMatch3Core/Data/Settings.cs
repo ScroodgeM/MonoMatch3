@@ -38,8 +38,8 @@ public class Settings
         public byte width { get; set; }
         public byte height { get; set; }
         public TileColor[] generatorPool { get; set; }
-        public int scorePerMatchedTile { get; set; }
-        public int scorePerDestroyedTile { get; set; }
+        public ulong scorePerMatchedTile { get; set; }
+        public ulong scorePerDestroyedTile { get; set; }
         public Timings timings { get; set; }
     }
 

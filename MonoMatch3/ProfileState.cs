@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MonoMatch3Core.Data;
+namespace MonoMatch3;
 
 public class ProfileState
 {
@@ -11,9 +11,14 @@ public class ProfileState
 
     public ulong GetLastScore() => lastScore;
 
-    internal void SubmitScore(ulong score)
+    internal void StartNewGame()
     {
-        lastScore = score;
-        topScore = Math.Max(topScore, score);
+        lastScore = 0;
+    }
+
+    internal void AddScore(ulong score)
+    {
+        lastScore += score;
+        topScore = Math.Max(topScore, lastScore);
     }
 }
