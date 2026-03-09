@@ -52,11 +52,11 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
         switch (state)
         {
             case State.MainMenu:
-                return new MainMenu(spriteRenderer, textRenderer, Input, settings, Window.ClientBounds);
+                return new MainMenu(spriteRenderer, textRenderer, Input, settings, GraphicsDevice.PresentationParameters);
             case State.Gameplay:
                 return new Gameplay(spriteRenderer, textRenderer, this, Input, settings, profileState);
             case State.GameOver:
-                return new GameOver(spriteRenderer, textRenderer, Input, settings, profileState, Window.ClientBounds);
+                return new GameOver(spriteRenderer, textRenderer, Input, settings, profileState, GraphicsDevice.PresentationParameters);
         }
 
         return null;

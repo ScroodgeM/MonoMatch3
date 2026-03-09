@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.SpriteAnimations;
 using MonoGameLibrary.Input;
@@ -12,7 +13,7 @@ internal class MainMenu(
     TextRenderer textRenderer,
     InputManager inputManager,
     Settings settings,
-    Rectangle windowRect)
+    PresentationParameters presentationParameters)
     : BaseState(spriteRenderer, textRenderer, settings)
 {
     private ScreenButton screenButton;
@@ -20,7 +21,7 @@ internal class MainMenu(
     internal override void Start()
     {
         Transform transform = Transform.Default;
-        transform.position = new Vector2(windowRect.Width, windowRect.Height) * 0.5f;
+        transform.position = new Vector2(presentationParameters.BackBufferWidth, presentationParameters.BackBufferHeight) * 0.5f;
         transform.layerDepth = RenderLayer.Background.ToLayerDepth();
 
         ushort spriteId = spriteRenderer.AddSprite(settings.system.mainMenuLogoSpriteId, transform);
