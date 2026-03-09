@@ -5,6 +5,7 @@ using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.SpriteAnimations;
 using MonoGameLibrary.Promises;
 using MonoMatch3Core.Data;
+using MonoMatch3Core.Enums;
 
 namespace MonoMatch3.View;
 
@@ -95,5 +96,54 @@ internal static class VfxHelpers
                 .Wait(duration)
                 .Done(() => spriteRenderer.RemoveSprite(spriteId));
         }
+    }
+
+    internal static void PlayLineDestroyerVfx(this SpriteRenderer spriteRenderer, IGameEvents gameEvents, Settings settings, Vector2 position, Direction direction)
+    {
+        Transform transform = Transform.Default;
+        transform.position = position;
+        transform.layerDepth = RenderLayer.VFX.ToLayerDepth();
+        transform.scale = Vector2.One * 0.75f;
+
+        byte boardSize;
+
+        switch (direction)
+        {
+            case Direction.Up:
+                boardSize = settings.board.height;
+                transform.rotation = 0f;
+                break;
+
+            case Direction.Down:
+                boardSize = settings.board.height;
+                transform.rotation = MathF.PI;
+                break;
+
+            case Direction.Left:
+                boardSize = settings.board.width;
+                transform.rotation = MathF.PI * 1.5f;
+                break;
+
+            case Direction.Right:
+                boardSize = settings.board.width;
+                transform.rotation = MathF.PI * 0.5f;
+                break;
+
+            default:
+                throw new InvalidOperationException($"direction {direction} not supported");
+        }
+
+        ushort spriteId = spriteRenderer.AddSprite(settings.view.rocketDestroyVfxSpriteId, transform);
+
+        TimeSpan fromTime = gameEvents.CurrentTime.Value;
+        TimeSpan duration = TimeSpan.FromSeconds(boardSize / settings.board.timings.lineDestroyerFlySpeed);
+        TimeSpan toTime = fromTime + duration;
+
+        Vector2 awayPosition = MonoMatch3Core.Helpers.BoardToScreen(settings, direction) * boardSize;
+        spriteRenderer.AddAnimation(spriteId, new OffsetOverTime(Vector2.Zero, awayPosition, fromTime, toTime, OffsetOverTime.MoveMode.FromTo));
+
+        gameEvents.Timer
+            .Wait(duration)
+            .Done(() => spriteRenderer.RemoveSprite(spriteId));
     }
 }
