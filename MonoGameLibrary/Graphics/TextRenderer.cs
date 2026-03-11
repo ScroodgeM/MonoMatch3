@@ -5,7 +5,7 @@ using MonoGameLibrary.StatefulEvent;
 
 namespace MonoGameLibrary.Graphics;
 
-public class TextRenderer
+internal class TextRenderer
 {
     private struct TextData
     {
@@ -28,7 +28,7 @@ public class TextRenderer
         this.font = font;
     }
 
-    public byte AddText(IStatefulEvent<string> text, Transform transform)
+    internal byte AddText(IStatefulEvent<string> text, Transform transform)
     {
         if (allTexts.Count >= byte.MaxValue)
         {
@@ -50,7 +50,7 @@ public class TextRenderer
         return textIncrementalId;
     }
 
-    public void UpdateTransform(byte textId, Transform transform)
+    internal void UpdateTransform(byte textId, Transform transform)
     {
         if (allTexts.TryGetValue(textId, out TextData data) == true)
         {
@@ -59,12 +59,12 @@ public class TextRenderer
         }
     }
 
-    public void RemoveText(byte spriteId)
+    internal void RemoveText(byte spriteId)
     {
         allTexts.Remove(spriteId);
     }
 
-    public void Draw()
+    internal void Draw()
     {
         spriteBatch.Begin(sortMode: SpriteSortMode.BackToFront);
 

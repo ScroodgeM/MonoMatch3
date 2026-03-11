@@ -14,7 +14,6 @@ public class RenderSystem
 #warning REFACTORING-IN-PROGRESS
     public SpriteRenderer SpriteRenderer => spriteRenderer;
     public TilemapRenderer TilemapRenderer => tilemapRenderer;
-    public TextRenderer TextRenderer => textRenderer;
 
     #endregion refactor this
 

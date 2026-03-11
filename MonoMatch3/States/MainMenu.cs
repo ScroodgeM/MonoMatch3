@@ -10,11 +10,11 @@ namespace MonoMatch3.States;
 
 internal class MainMenu(
     SpriteRenderer spriteRenderer,
-    TextRenderer textRenderer,
+    RenderSystem renderSystem,
     InputManager inputManager,
     Settings settings,
     PresentationParameters presentationParameters)
-    : BaseState(spriteRenderer, textRenderer, settings)
+    : BaseState(spriteRenderer, renderSystem, settings)
 {
     private ScreenButton screenButton;
 

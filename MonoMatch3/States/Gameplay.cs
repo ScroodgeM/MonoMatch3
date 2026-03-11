@@ -14,12 +14,12 @@ namespace MonoMatch3.States;
 internal class Gameplay(
     SpriteRenderer spriteRenderer,
     TilemapRenderer tilemapRenderer,
-    TextRenderer textRenderer,
+    RenderSystem renderSystem,
     IGameEvents gameEvents,
     InputManager inputManager,
     Settings settings,
     ProfileState profileState)
-    : BaseState(spriteRenderer, textRenderer, settings)
+    : BaseState(spriteRenderer, renderSystem, settings)
 {
     private MonoMatch3Core.Board.Board board;
     private Board boardView;
@@ -57,12 +57,12 @@ internal class Gameplay(
         Transform countdownTransform = Transform.Default;
         countdownTransform.layerDepth = RenderLayer.Text.ToLayerDepth();
         countdownTransform.position = new Vector2(settings.view.countdownPositionX, settings.view.countdownPositionY);
-        RegisterTextToRemoveOnDeath(textRenderer.AddText(sessionCountdown, countdownTransform));
+        RegisterTextToRemoveOnDeath(renderSystem.AddText(sessionCountdown, countdownTransform));
 
         Transform scoreTransform = Transform.Default;
         scoreTransform.layerDepth = RenderLayer.Text.ToLayerDepth();
         scoreTransform.position = new Vector2(settings.view.scorePositionX, settings.view.scorePositionY);
-        RegisterTextToRemoveOnDeath(textRenderer.AddText(scoreLabel, scoreTransform));
+        RegisterTextToRemoveOnDeath(renderSystem.AddText(scoreLabel, scoreTransform));
     }
 
     private void OnTileRemoved(TileBase tile, TileRemoveReason removeReason)

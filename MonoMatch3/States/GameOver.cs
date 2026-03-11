@@ -11,12 +11,12 @@ namespace MonoMatch3.States;
 
 internal class GameOver(
     SpriteRenderer spriteRenderer,
-    TextRenderer textRenderer,
+    RenderSystem renderSystem,
     InputManager inputManager,
     Settings settings,
     ProfileState profileState,
     PresentationParameters presentationParameters)
-    : BaseState(spriteRenderer, textRenderer, settings)
+    : BaseState(spriteRenderer, renderSystem, settings)
 {
     private ScreenButton screenButton;
 
@@ -31,13 +31,13 @@ internal class GameOver(
         RegisterSpriteToRemoveOnDeath(spriteId);
 
         transform.layerDepth = RenderLayer.Text.ToLayerDepth();
-        RegisterTextToRemoveOnDeath(textRenderer.AddText(StatefulEventInt.Create("Game Over"), transform));
+        RegisterTextToRemoveOnDeath(renderSystem.AddText(StatefulEventInt.Create("Game Over"), transform));
 
         transform.position = new Vector2(settings.view.gameOverTopScorePositionX, settings.view.gameOverTopScorePositionY);
-        RegisterTextToRemoveOnDeath(textRenderer.AddText(StatefulEventInt.Create($"Top score: {profileState.GetTopScore():#,##0}"), transform));
+        RegisterTextToRemoveOnDeath(renderSystem.AddText(StatefulEventInt.Create($"Top score: {profileState.GetTopScore():#,##0}"), transform));
 
         transform.position = new Vector2(settings.view.gameOverLastScorePositionX, settings.view.gameOverLastScorePositionY);
-        RegisterTextToRemoveOnDeath(textRenderer.AddText(StatefulEventInt.Create($"Your score: {profileState.GetLastScore():#,##0}"), transform));
+        RegisterTextToRemoveOnDeath(renderSystem.AddText(StatefulEventInt.Create($"Your score: {profileState.GetLastScore():#,##0}"), transform));
 
         ScreenButton.Transform screenButtonTransform;
         screenButtonTransform.position = new Vector2(settings.view.gameOverOKButtonPositionX, settings.view.gameOverOKButtonPositionY);
