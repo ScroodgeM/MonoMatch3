@@ -25,7 +25,7 @@ internal abstract class BaseState(
     {
         foreach (ushort spriteId in spritesToRemoveOnDeath)
         {
-            spriteRenderer.RemoveSprite(spriteId);
+            spriteRenderer.Remove(spriteId);
         }
 
         renderSystem.RemoveGraphic(textsToRemoveOnDeath);

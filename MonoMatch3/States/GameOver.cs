@@ -26,7 +26,7 @@ internal class GameOver(
         transform.position = new Vector2(presentationParameters.BackBufferWidth, presentationParameters.BackBufferHeight) * 0.5f;
         transform.layerDepth = RenderLayer.Background.ToLayerDepth();
 
-        ushort spriteId = spriteRenderer.AddSprite(settings.system.gameOverLogoSpriteId, transform);
+        ushort spriteId = spriteRenderer.Add(settings.system.gameOverLogoSpriteId, transform);
         spriteRenderer.AddAnimation(spriteId, new PingPongScale(1.0f, 1.1f, 0.16f));
         RegisterSpriteToRemoveOnDeath(spriteId);
 

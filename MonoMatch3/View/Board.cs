@@ -12,16 +12,16 @@ namespace MonoMatch3.View;
 public class Board
 {
     private readonly SpriteRenderer spriteRenderer;
-    private readonly TilemapRenderer tilemapRenderer;
+    private readonly RenderSystem renderSystem;
     private readonly Settings settings;
     private readonly IGameEvents gameEvents;
     private readonly MonoMatch3Core.Board.Board boardCore;
     private readonly Dictionary<TileBase, Tile> tileViews = new Dictionary<TileBase, Tile>();
 
-    public Board(SpriteRenderer spriteRenderer, TilemapRenderer tilemapRenderer, Settings settings, IGameEvents gameEvents, MonoMatch3Core.Board.Board boardCore)
+    public Board(SpriteRenderer spriteRenderer, RenderSystem renderSystem, Settings settings, IGameEvents gameEvents, MonoMatch3Core.Board.Board boardCore)
     {
         this.spriteRenderer = spriteRenderer;
-        this.tilemapRenderer = tilemapRenderer;
+        this.renderSystem = renderSystem;
         this.settings = settings;
         this.gameEvents = gameEvents;
         this.boardCore = boardCore;
@@ -34,12 +34,12 @@ public class Board
         transform.position = settings.GetBoardTopLeftCornerOffset();
         transform.layerDepth = RenderLayer.Background.ToLayerDepth();
         transform.color = Color.White * 0.5f;
-        this.tilemapRenderer.Show(settings.view.boardTilemapId, transform);
+        this.renderSystem.ShowTilemap(settings.view.boardTilemapId, transform);
     }
 
     public void Die()
     {
-        tilemapRenderer.Hide(settings.view.boardTilemapId);
+        renderSystem.HideTilemap(settings.view.boardTilemapId);
 
         boardCore.OnTileCreated -= OnTileCreated;
         boardCore.OnTileRemoved -= OnTileRemoved;

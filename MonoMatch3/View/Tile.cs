@@ -35,7 +35,7 @@ internal class Tile
         this.mySpriteTransform.position = settings.BoardToScreen(tileCore.Position.Value).ToVector2();
         this.mySpriteTransform.color = tintColor;
 
-        this.mySpriteId = this.spriteRenderer.AddSprite(spriteId, mySpriteTransform);
+        this.mySpriteId = this.spriteRenderer.Add(spriteId, mySpriteTransform);
 
         Appear();
 
@@ -120,7 +120,7 @@ internal class Tile
         tileCore.Position.OnValueChanged -= OnPositionChanged;
         tileCore.State.OnValueChanged -= OnStateChanged;
         tileCore.OnMoveAttemptFailed -= OnMoveAttemptFailed;
-        spriteRenderer.RemoveSprite(mySpriteId);
+        spriteRenderer.Remove(mySpriteId);
     }
 
     private void OnPositionChanged(TilePosition newPosition)

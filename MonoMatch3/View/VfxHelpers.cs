@@ -61,7 +61,7 @@ internal static class VfxHelpers
 
         for (int i = 0; i <= 3; i++)
         {
-            ushort spriteId = spriteRenderer.AddSprite(settings.view.tileDestroyVfxSpriteId, transform);
+            ushort spriteId = spriteRenderer.Add(settings.view.tileDestroyVfxSpriteId, transform);
 
             TimeSpan duration = baseDuration * (1.0f - i * 0.2f);
             TimeSpan toTime = fromTime + duration;
@@ -70,7 +70,7 @@ internal static class VfxHelpers
 
             gameEvents.Timer
                 .Wait(duration)
-                .Done(() => spriteRenderer.RemoveSprite(spriteId));
+                .Done(() => spriteRenderer.Remove(spriteId));
         }
     }
 
@@ -86,7 +86,7 @@ internal static class VfxHelpers
 
         for (int i = 0; i <= 3; i++)
         {
-            ushort spriteId = spriteRenderer.AddSprite(settings.view.bombDestroyVfxSpriteId, transform);
+            ushort spriteId = spriteRenderer.Add(settings.view.bombDestroyVfxSpriteId, transform);
 
             float scaleFrom = 0.5f + 0.2f * i;
             float scaleTo = scaleFrom + 1.0f;
@@ -94,7 +94,7 @@ internal static class VfxHelpers
 
             gameEvents.Timer
                 .Wait(duration)
-                .Done(() => spriteRenderer.RemoveSprite(spriteId));
+                .Done(() => spriteRenderer.Remove(spriteId));
         }
     }
 
@@ -133,7 +133,7 @@ internal static class VfxHelpers
                 throw new InvalidOperationException($"direction {direction} not supported");
         }
 
-        ushort spriteId = spriteRenderer.AddSprite(settings.view.rocketDestroyVfxSpriteId, transform);
+        ushort spriteId = spriteRenderer.Add(settings.view.rocketDestroyVfxSpriteId, transform);
 
         TimeSpan fromTime = gameEvents.CurrentTime.Value;
         TimeSpan duration = TimeSpan.FromSeconds(boardSize / settings.board.timings.lineDestroyerFlySpeed);
@@ -144,6 +144,6 @@ internal static class VfxHelpers
 
         gameEvents.Timer
             .Wait(duration)
-            .Done(() => spriteRenderer.RemoveSprite(spriteId));
+            .Done(() => spriteRenderer.Remove(spriteId));
     }
 }

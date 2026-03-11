@@ -27,7 +27,7 @@ public class SpriteRenderer
         this.spriteBatch = spriteBatch;
     }
 
-    public ushort AddSprite(string spriteId, Transform transform)
+    public ushort Add(string spriteId, Transform transform)
     {
         if (allSprites.Count >= ushort.MaxValue)
         {
@@ -77,7 +77,7 @@ public class SpriteRenderer
         }
     }
 
-    public void RemoveSprite(ushort spriteId)
+    public void Remove(ushort spriteId)
     {
         allSprites.Remove(spriteId);
     }

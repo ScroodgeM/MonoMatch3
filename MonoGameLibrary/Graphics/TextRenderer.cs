@@ -28,7 +28,7 @@ internal class TextRenderer
         this.font = font;
     }
 
-    internal byte AddText(IStatefulEvent<string> text, Transform transform)
+    internal byte Add(IStatefulEvent<string> text, Transform transform)
     {
         if (allTexts.Count >= byte.MaxValue)
         {
@@ -59,7 +59,7 @@ internal class TextRenderer
         }
     }
 
-    internal void RemoveText(byte spriteId)
+    internal void Remove(byte spriteId)
     {
         allTexts.Remove(spriteId);
     }

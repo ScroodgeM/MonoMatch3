@@ -24,7 +24,7 @@ internal class MainMenu(
         transform.position = new Vector2(presentationParameters.BackBufferWidth, presentationParameters.BackBufferHeight) * 0.5f;
         transform.layerDepth = RenderLayer.Background.ToLayerDepth();
 
-        ushort spriteId = spriteRenderer.AddSprite(settings.system.mainMenuLogoSpriteId, transform);
+        ushort spriteId = spriteRenderer.Add(settings.system.mainMenuLogoSpriteId, transform);
         spriteRenderer.AddAnimation(spriteId, new PingPongColorChannels(0.5f, 1f, 0.20f, 0.25f, 0.33f));
         spriteRenderer.AddAnimation(spriteId, new PingPongScale(1.0f, 1.1f, 0.16f));
         RegisterSpriteToRemoveOnDeath(spriteId);

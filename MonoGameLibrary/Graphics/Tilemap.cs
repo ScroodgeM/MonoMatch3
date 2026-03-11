@@ -41,7 +41,7 @@ public class Tilemap
             {
                 string spriteId = tiles[y * definition.mapW + x];
                 transform.position = tilemapPosition + new Vector2(x, y) * tileSizeScaled;
-                activeSprites.Add(spriteRenderer.AddSprite(spriteId, transform));
+                activeSprites.Add(spriteRenderer.Add(spriteId, transform));
             }
         }
     }
@@ -50,7 +50,7 @@ public class Tilemap
     {
         foreach (ushort activeSprite in activeSprites)
         {
-            spriteRenderer.RemoveSprite(activeSprite);
+            spriteRenderer.Remove(activeSprite);
         }
 
         activeSprites.Clear();

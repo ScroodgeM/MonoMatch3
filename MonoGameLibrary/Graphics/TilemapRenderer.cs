@@ -6,19 +6,11 @@ using System.Collections.Generic;
 
 namespace MonoGameLibrary.Graphics;
 
-public class TilemapRenderer(SpriteRenderer spriteRenderer)
+internal class TilemapRenderer(SpriteRenderer spriteRenderer)
 {
     private readonly Dictionary<string, Tilemap> allTilemaps = new Dictionary<string, Tilemap>();
 
-    public void Load(ContentManager content, string[] fileNames)
-    {
-        foreach (string fileName in fileNames)
-        {
-            Load(content, fileName);
-        }
-    }
-
-    private void Load(ContentManager content, string fileName)
+    internal void Load(ContentManager content, string fileName)
     {
         fileName = Path.ChangeExtension(fileName, "json");
         string filePath = Path.Combine(content.RootDirectory, fileName);
@@ -32,12 +24,12 @@ public class TilemapRenderer(SpriteRenderer spriteRenderer)
         allTilemaps.Add(definition.tileset.name, tilemap);
     }
 
-    public void Show(string tilemapId, Transform transform)
+    internal void Show(string tilemapId, Transform transform)
     {
         allTilemaps[tilemapId].Show(spriteRenderer, transform);
     }
 
-    public void Hide(string tilemapId)
+    internal void Hide(string tilemapId)
     {
         allTilemaps[tilemapId].Hide(spriteRenderer);
     }
