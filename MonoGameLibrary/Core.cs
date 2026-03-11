@@ -37,7 +37,7 @@ public class Core : Game, IGameEvents
         Content.RootDirectory = "Content";
 
         timer = new Timer(this);
-        renderSystem = new RenderSystem();
+        renderSystem = new RenderSystem(Content);
         inputManager = new InputManager(this, renderSystem);
 
         IsMouseVisible = true;
@@ -49,8 +49,6 @@ public class Core : Game, IGameEvents
 
         renderSystem.Init(new SpriteBatch(GraphicsDevice));
     }
-
-    protected void LoadFont(string fontName) => renderSystem.TextRenderer.SetFont(Content.Load<SpriteFont>(fontName));
 
     protected override void Update(GameTime gameTime)
     {

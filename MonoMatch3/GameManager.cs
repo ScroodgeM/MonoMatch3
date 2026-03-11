@@ -19,6 +19,7 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
 
         AtlasLoader.Load(Content, settings.system.textureAtlases, RenderSystem.SpriteRenderer);
         RenderSystem.TilemapRenderer.Load(Content, settings.system.textureTilemaps);
+        RenderSystem.LoadFont(settings.system.fontName);
 
         base.LoadContent();
     }
@@ -26,8 +27,6 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
     protected override void Initialize()
     {
         base.Initialize();
-
-        LoadFont(settings.system.fontName);
 
         StartNewState(State.MainMenu);
     }

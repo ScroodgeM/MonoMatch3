@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.StatefulEvent;
 
@@ -17,6 +18,7 @@ public class RenderSystem
 
     #endregion refactor this
 
+    private readonly ContentManager contentManager;
     private readonly SpriteRenderer spriteRenderer;
     private readonly TilemapRenderer tilemapRenderer;
     private readonly TextRenderer textRenderer;
@@ -30,11 +32,12 @@ public class RenderSystem
     private const uint textIdMarkerMask = 1 << 26;
     private const uint textIdMask = 0xFF;
 
-    internal RenderSystem()
+    internal RenderSystem(ContentManager contentManager)
     {
-        spriteRenderer = new SpriteRenderer();
-        tilemapRenderer = new TilemapRenderer(spriteRenderer);
-        textRenderer = new TextRenderer();
+        this.contentManager = contentManager;
+        this.spriteRenderer = new SpriteRenderer();
+        this.tilemapRenderer = new TilemapRenderer(spriteRenderer);
+        this.textRenderer = new TextRenderer();
     }
 
     internal void Init(SpriteBatch spriteBatch)
@@ -48,6 +51,8 @@ public class RenderSystem
         spriteRenderer.Draw(gameTime);
         textRenderer.Draw();
     }
+
+    public void LoadFont(string fontName) => textRenderer.SetFont(contentManager.Load<SpriteFont>(fontName));
 
     public uint AddSprite(string spriteId, Transform transform)
     {
