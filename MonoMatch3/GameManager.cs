@@ -17,8 +17,8 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
     {
         settings = Settings.Load(Content);
 
-        AtlasLoader.Load(Content, settings.system.textureAtlases, spriteRenderer);
-        tilemapRenderer.Load(Content, settings.system.textureTilemaps);
+        AtlasLoader.Load(Content, settings.system.textureAtlases, RenderSystem.SpriteRenderer);
+        RenderSystem.TilemapRenderer.Load(Content, settings.system.textureTilemaps);
 
         base.LoadContent();
     }
@@ -53,11 +53,11 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
         switch (state)
         {
             case State.MainMenu:
-                return new MainMenu(spriteRenderer, textRenderer, Input, settings, GraphicsDevice.PresentationParameters);
+                return new MainMenu(RenderSystem.SpriteRenderer, RenderSystem.TextRenderer, Input, settings, GraphicsDevice.PresentationParameters);
             case State.Gameplay:
-                return new Gameplay(spriteRenderer, tilemapRenderer, textRenderer, this, Input, settings, profileState);
+                return new Gameplay(RenderSystem.SpriteRenderer, RenderSystem.TilemapRenderer, RenderSystem.TextRenderer, this, Input, settings, profileState);
             case State.GameOver:
-                return new GameOver(spriteRenderer, textRenderer, Input, settings, profileState, GraphicsDevice.PresentationParameters);
+                return new GameOver(RenderSystem.SpriteRenderer, RenderSystem.TextRenderer, Input, settings, profileState, GraphicsDevice.PresentationParameters);
         }
 
         return null;

@@ -16,15 +16,13 @@ public class Core : Game, IGameEvents
     public ITimer Timer => timer;
 
     protected InputManager Input => inputManager;
-
-    protected readonly SpriteRenderer spriteRenderer;
-    protected readonly TilemapRenderer tilemapRenderer;
-    protected readonly TextRenderer textRenderer;
+    protected RenderSystem RenderSystem => renderSystem;
 
     private readonly StatefulEventInt<TimeSpan> currentTime = new(TimeSpan.Zero, (a, b) => a == b);
 
     private readonly Timer timer;
-    private InputManager inputManager;
+    private readonly RenderSystem renderSystem;
+    private readonly InputManager inputManager;
 
     protected Core(string title, Vector2 screenSize, bool isFullScreen)
     {
@@ -38,11 +36,9 @@ public class Core : Game, IGameEvents
 
         Content.RootDirectory = "Content";
 
-        spriteRenderer = new SpriteRenderer();
-        tilemapRenderer = new TilemapRenderer(spriteRenderer);
-        textRenderer = new TextRenderer();
-
         timer = new Timer(this);
+        renderSystem = new RenderSystem();
+        inputManager = new InputManager(this, renderSystem);
 
         IsMouseVisible = true;
     }
@@ -51,15 +47,10 @@ public class Core : Game, IGameEvents
     {
         base.Initialize();
 
-        SpriteBatch spriteBatch = new SpriteBatch(GraphicsDevice);
-
-        spriteRenderer.Init(spriteBatch);
-        textRenderer.Init(spriteBatch);
-
-        inputManager = new InputManager(this, spriteRenderer, textRenderer);
+        renderSystem.Init(new SpriteBatch(GraphicsDevice));
     }
 
-    protected void LoadFont(string fontName) => textRenderer.SetFont(Content.Load<SpriteFont>(fontName));
+    protected void LoadFont(string fontName) => renderSystem.TextRenderer.SetFont(Content.Load<SpriteFont>(fontName));
 
     protected override void Update(GameTime gameTime)
     {
@@ -73,8 +64,8 @@ public class Core : Game, IGameEvents
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.LightSeaGreen);
-        spriteRenderer.Draw(gameTime);
-        textRenderer.Draw();
+
+        renderSystem.Draw(gameTime);
 
         base.Draw(gameTime);
 

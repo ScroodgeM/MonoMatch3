@@ -2,25 +2,12 @@
 
 namespace MonoGameLibrary.Input;
 
-public class InputManager
+public class InputManager(IGameEvents gameEvents, RenderSystem renderSystem)
 {
-    public MouseInfo Mouse { get; private set; }
-
-    private readonly IGameEvents gameEvents;
-    private readonly SpriteRenderer spriteRenderer;
-    private readonly TextRenderer textRenderer;
-
-    public InputManager(IGameEvents gameEvents, SpriteRenderer spriteRenderer, TextRenderer textRenderer)
-    {
-        this.gameEvents = gameEvents;
-        this.spriteRenderer = spriteRenderer;
-        this.textRenderer = textRenderer;
-
-        Mouse = new MouseInfo(gameEvents);
-    }
+    public MouseInfo Mouse { get; private set; } = new(gameEvents);
 
     public ScreenButton CreateScreenButton(ScreenButton.Transform transform)
     {
-        return new ScreenButton(spriteRenderer, textRenderer, gameEvents, Mouse, transform);
+        return new ScreenButton(renderSystem, gameEvents, Mouse, transform);
     }
 }

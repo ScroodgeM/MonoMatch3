@@ -19,18 +19,17 @@ public class ScreenButton
 
     public event Action OnClick = () => { };
 
-    private readonly SpriteRenderer spriteRenderer;
-    private readonly TextRenderer textRenderer;
+    private readonly RenderSystem renderSystem;
     private readonly IGameEvents gameEvents;
     private readonly MouseInfo mouseInfo;
     private readonly Transform transform;
-    private readonly ushort mySpriteId;
-    private readonly byte myTextId;
+    private readonly uint mySpriteId;
+    private readonly uint myTextId;
 
-    internal ScreenButton(SpriteRenderer spriteRenderer, TextRenderer textRenderer, IGameEvents gameEvents, MouseInfo mouseInfo, Transform transform)
+    internal ScreenButton(RenderSystem renderSystem, IGameEvents gameEvents, MouseInfo mouseInfo, Transform transform)
     {
-        this.spriteRenderer = spriteRenderer;
-        this.textRenderer = textRenderer;
+        this.renderSystem = renderSystem;
+        this.renderSystem = renderSystem;
         this.gameEvents = gameEvents;
         this.mouseInfo = mouseInfo;
         this.transform = transform;
@@ -39,21 +38,21 @@ public class ScreenButton
         spriteTransform.position = transform.position;
         spriteTransform.scale = transform.scale;
         spriteTransform.layerDepth = transform.spriteLayerDepth;
-        mySpriteId = spriteRenderer.AddSprite(transform.spriteId, spriteTransform);
+        mySpriteId = renderSystem.AddSprite(transform.spriteId, spriteTransform);
 
         Graphics.Transform textTransform = Graphics.Transform.Default;
         textTransform.position = transform.position;
         textTransform.scale = transform.scale;
         textTransform.layerDepth = transform.textLayerDepth;
-        myTextId = textRenderer.AddText(StatefulEventInt.Create(transform.text), textTransform);
+        myTextId = renderSystem.AddText(StatefulEventInt.Create(transform.text), textTransform);
 
         gameEvents.OnUpdate += OnUpdate;
     }
 
     public void Die()
     {
-        spriteRenderer.RemoveSprite(mySpriteId);
-        textRenderer.RemoveText(myTextId);
+        renderSystem.RemoveGraphic(mySpriteId);
+        renderSystem.RemoveGraphic(myTextId);
         gameEvents.OnUpdate -= OnUpdate;
     }
 
@@ -61,11 +60,7 @@ public class ScreenButton
     {
         if (mouseInfo.WasButtonJustPressed(MouseButton.Left) == true
             &&
-            spriteRenderer
-                .Pool
-                .Get(transform.spriteId)
-                .GetRectangle(transform.position)
-                .Contains(mouseInfo.Position) == true)
+            renderSystem.GetRectangle(mySpriteId).Contains(mouseInfo.Position) == true)
         {
             OnClick();
         }

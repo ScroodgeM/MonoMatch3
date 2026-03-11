@@ -50,6 +50,13 @@ public class SpriteRenderer
         return spriteIncrementalId;
     }
 
+    internal Rectangle GetRectangle(ushort spriteId)
+    {
+        SpriteData spriteData = allSprites[spriteId];
+
+        return spriteData.sprite.GetRectangle(spriteData.transform.position);
+    }
+
     public void UpdateTransform(ushort spriteId, Transform transform)
     {
         if (allSprites.TryGetValue(spriteId, out SpriteData data) == true)
