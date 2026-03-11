@@ -11,16 +11,14 @@ namespace MonoMatch3.View;
 
 public class Board
 {
-    private readonly SpriteRenderer spriteRenderer;
     private readonly RenderSystem renderSystem;
     private readonly Settings settings;
     private readonly IGameEvents gameEvents;
     private readonly MonoMatch3Core.Board.Board boardCore;
     private readonly Dictionary<TileBase, Tile> tileViews = new Dictionary<TileBase, Tile>();
 
-    public Board(SpriteRenderer spriteRenderer, RenderSystem renderSystem, Settings settings, IGameEvents gameEvents, MonoMatch3Core.Board.Board boardCore)
+    public Board(RenderSystem renderSystem, Settings settings, IGameEvents gameEvents, MonoMatch3Core.Board.Board boardCore)
     {
-        this.spriteRenderer = spriteRenderer;
         this.renderSystem = renderSystem;
         this.settings = settings;
         this.gameEvents = gameEvents;
@@ -55,7 +53,7 @@ public class Board
 
     private void OnTileCreated(TileBase tile)
     {
-        tileViews.Add(tile, new Tile(spriteRenderer, settings, gameEvents, tile));
+        tileViews.Add(tile, new Tile(renderSystem, settings, gameEvents, tile));
     }
 
     private void OnTileRemoved(TileBase tile, TileRemoveReason removeReason)

@@ -8,15 +8,7 @@ namespace MonoGameLibrary.Graphics;
 
 public static class AtlasLoader
 {
-    public static void Load(ContentManager content, string[] fileNames, SpriteRenderer spriteRenderer)
-    {
-        foreach (string fileName in fileNames)
-        {
-            Load(content, fileName, spriteRenderer);
-        }
-    }
-
-    private static void Load(ContentManager content, string fileName, SpriteRenderer spriteRenderer)
+    internal static void Load(ContentManager content, string fileName, SpriteRenderer spriteRenderer)
     {
         fileName = Path.ChangeExtension(fileName, "json");
         string filePath = Path.Combine(content.RootDirectory, fileName);

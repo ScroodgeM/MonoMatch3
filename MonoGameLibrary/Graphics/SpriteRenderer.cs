@@ -6,7 +6,7 @@ using MonoGameLibrary.Graphics.SpriteAnimations;
 
 namespace MonoGameLibrary.Graphics;
 
-public class SpriteRenderer
+internal class SpriteRenderer
 {
     private struct SpriteData
     {
@@ -27,7 +27,7 @@ public class SpriteRenderer
         this.spriteBatch = spriteBatch;
     }
 
-    public ushort Add(string spriteId, Transform transform)
+    internal ushort Add(string spriteId, Transform transform)
     {
         if (allSprites.Count >= ushort.MaxValue)
         {
@@ -57,7 +57,7 @@ public class SpriteRenderer
         return spriteData.sprite.GetRectangle(spriteData.transform.position);
     }
 
-    public void UpdateTransform(ushort spriteId, Transform transform)
+    internal void UpdateTransform(ushort spriteId, Transform transform)
     {
         if (allSprites.TryGetValue(spriteId, out SpriteData data) == true)
         {
@@ -66,7 +66,7 @@ public class SpriteRenderer
         }
     }
 
-    public void AddAnimation(ushort spriteId, SpriteAnimationBase animation)
+    internal void AddAnimation(ushort spriteId, SpriteAnimationBase animation)
     {
         if (allSprites.TryGetValue(spriteId, out SpriteData data) == true)
         {
@@ -82,7 +82,7 @@ public class SpriteRenderer
         allSprites.Remove(spriteId);
     }
 
-    public void Draw(GameTime gameTime)
+    internal void Draw(GameTime gameTime)
     {
         spriteBatch.Begin(sortMode: SpriteSortMode.BackToFront);
 

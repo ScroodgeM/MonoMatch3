@@ -10,13 +10,12 @@ using MonoMatch3Core.Data;
 namespace MonoMatch3.States;
 
 internal class GameOver(
-    SpriteRenderer spriteRenderer,
     RenderSystem renderSystem,
     InputManager inputManager,
     Settings settings,
     ProfileState profileState,
     PresentationParameters presentationParameters)
-    : BaseState(spriteRenderer, renderSystem, settings)
+    : BaseState(renderSystem, settings)
 {
     private ScreenButton screenButton;
 
@@ -26,18 +25,18 @@ internal class GameOver(
         transform.position = new Vector2(presentationParameters.BackBufferWidth, presentationParameters.BackBufferHeight) * 0.5f;
         transform.layerDepth = RenderLayer.Background.ToLayerDepth();
 
-        ushort spriteId = spriteRenderer.Add(settings.system.gameOverLogoSpriteId, transform);
-        spriteRenderer.AddAnimation(spriteId, new PingPongScale(1.0f, 1.1f, 0.16f));
-        RegisterSpriteToRemoveOnDeath(spriteId);
+        uint spriteId = renderSystem.AddSprite(settings.system.gameOverLogoSpriteId, transform);
+        renderSystem.AddSpriteAnimation(spriteId, new PingPongScale(1.0f, 1.1f, 0.16f));
+        RegisterGraphicToRemoveOnDeath(spriteId);
 
         transform.layerDepth = RenderLayer.Text.ToLayerDepth();
-        RegisterTextToRemoveOnDeath(renderSystem.AddText(StatefulEventInt.Create("Game Over"), transform));
+        RegisterGraphicToRemoveOnDeath(renderSystem.AddText(StatefulEventInt.Create("Game Over"), transform));
 
         transform.position = new Vector2(settings.view.gameOverTopScorePositionX, settings.view.gameOverTopScorePositionY);
-        RegisterTextToRemoveOnDeath(renderSystem.AddText(StatefulEventInt.Create($"Top score: {profileState.GetTopScore():#,##0}"), transform));
+        RegisterGraphicToRemoveOnDeath(renderSystem.AddText(StatefulEventInt.Create($"Top score: {profileState.GetTopScore():#,##0}"), transform));
 
         transform.position = new Vector2(settings.view.gameOverLastScorePositionX, settings.view.gameOverLastScorePositionY);
-        RegisterTextToRemoveOnDeath(renderSystem.AddText(StatefulEventInt.Create($"Your score: {profileState.GetLastScore():#,##0}"), transform));
+        RegisterGraphicToRemoveOnDeath(renderSystem.AddText(StatefulEventInt.Create($"Your score: {profileState.GetLastScore():#,##0}"), transform));
 
         ScreenButton.Transform screenButtonTransform;
         screenButtonTransform.position = new Vector2(settings.view.gameOverOKButtonPositionX, settings.view.gameOverOKButtonPositionY);

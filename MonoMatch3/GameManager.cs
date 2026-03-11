@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGameLibrary;
-using MonoGameLibrary.Graphics;
 using MonoMatch3.States;
 using MonoMatch3Core.Data;
 
@@ -17,7 +16,7 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
     {
         settings = Settings.Load(Content);
 
-        AtlasLoader.Load(Content, settings.system.textureAtlases, RenderSystem.SpriteRenderer);
+        RenderSystem.LoadAtlases(settings.system.textureAtlases);
         RenderSystem.LoadTilemaps(settings.system.textureTilemaps);
         RenderSystem.LoadFont(settings.system.fontName);
 
@@ -52,11 +51,11 @@ public class GameManager() : Core("Mono Match 3", new Vector2(1024, 1024), false
         switch (state)
         {
             case State.MainMenu:
-                return new MainMenu(RenderSystem.SpriteRenderer, RenderSystem, Input, settings, GraphicsDevice.PresentationParameters);
+                return new MainMenu(RenderSystem, Input, settings, GraphicsDevice.PresentationParameters);
             case State.Gameplay:
-                return new Gameplay(RenderSystem.SpriteRenderer, RenderSystem, this, Input, settings, profileState);
+                return new Gameplay(RenderSystem, this, Input, settings, profileState);
             case State.GameOver:
-                return new GameOver(RenderSystem.SpriteRenderer, RenderSystem, Input, settings, profileState, GraphicsDevice.PresentationParameters);
+                return new GameOver(RenderSystem, Input, settings, profileState, GraphicsDevice.PresentationParameters);
         }
 
         return null;

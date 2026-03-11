@@ -11,46 +11,46 @@ namespace MonoMatch3.View;
 
 internal static class VfxHelpers
 {
-    internal static IPromise AnimateSimpleTileDestroyByMatch(this SpriteRenderer spriteRenderer, IGameEvents gameEvents, Settings settings, ushort spriteId)
+    internal static IPromise AnimateSimpleTileDestroyByMatch(this RenderSystem renderSystem, IGameEvents gameEvents, Settings settings, uint spriteId)
     {
         TimeSpan fromTime = gameEvents.CurrentTime.Value;
         TimeSpan duration = TimeSpan.FromSeconds(settings.board.timings.successMatchDisappearDuration);
         TimeSpan toTime = fromTime + duration;
 
-        spriteRenderer.AddAnimation(spriteId, new RotateSelf(0f, 10f));
-        spriteRenderer.AddAnimation(spriteId, new ChangeTransparency(1f, 0f, fromTime, toTime));
-        spriteRenderer.AddAnimation(spriteId, new ChangeScale(1f, 2f, fromTime, toTime));
+        renderSystem.AddSpriteAnimation(spriteId, new RotateSelf(0f, 10f));
+        renderSystem.AddSpriteAnimation(spriteId, new ChangeTransparency(1f, 0f, fromTime, toTime));
+        renderSystem.AddSpriteAnimation(spriteId, new ChangeScale(1f, 2f, fromTime, toTime));
 
         return gameEvents.Timer
             .Wait(duration);
     }
 
-    internal static IPromise AnimateSimpleTileDestroyBySpecial(this SpriteRenderer spriteRenderer, IGameEvents gameEvents, Settings settings, ushort spriteId)
+    internal static IPromise AnimateSimpleTileDestroyBySpecial(this RenderSystem renderSystem, IGameEvents gameEvents, Settings settings, uint spriteId)
     {
         TimeSpan fromTime = gameEvents.CurrentTime.Value;
         TimeSpan duration = TimeSpan.FromSeconds(settings.board.timings.destroyBySpecialDisappearDuration);
         TimeSpan toTime = fromTime + duration;
 
-        spriteRenderer.AddAnimation(spriteId, new ChangeScale(1f, 2f, fromTime, toTime));
-        spriteRenderer.AddAnimation(spriteId, new ChangeTransparency(1f, 0f, fromTime, toTime));
+        renderSystem.AddSpriteAnimation(spriteId, new ChangeScale(1f, 2f, fromTime, toTime));
+        renderSystem.AddSpriteAnimation(spriteId, new ChangeTransparency(1f, 0f, fromTime, toTime));
 
         return gameEvents.Timer
             .Wait(duration);
     }
 
-    internal static IPromise AnimateSpecialTileDestroy(this SpriteRenderer spriteRenderer, IGameEvents gameEvents, Settings settings, ushort spriteId)
+    internal static IPromise AnimateSpecialTileDestroy(this RenderSystem renderSystem, IGameEvents gameEvents, Settings settings, uint spriteId)
     {
         TimeSpan fromTime = gameEvents.CurrentTime.Value;
         TimeSpan duration = TimeSpan.FromSeconds(settings.board.timings.destroyBySpecialDisappearDuration);
         TimeSpan toTime = fromTime + duration;
 
-        spriteRenderer.AddAnimation(spriteId, new ChangeTransparency(1f, 0f, fromTime, toTime));
+        renderSystem.AddSpriteAnimation(spriteId, new ChangeTransparency(1f, 0f, fromTime, toTime));
 
         return gameEvents.Timer
             .Wait(duration);
     }
 
-    internal static void PlaySimpleTileDestroyedBySpecialVfx(this SpriteRenderer spriteRenderer, IGameEvents gameEvents, Settings settings, Vector2 position)
+    internal static void PlaySimpleTileDestroyedBySpecialVfx(this RenderSystem renderSystem, IGameEvents gameEvents, Settings settings, Vector2 position)
     {
         TimeSpan fromTime = gameEvents.CurrentTime.Value;
         TimeSpan baseDuration = TimeSpan.FromSeconds(settings.board.timings.destroyBySpecialDisappearDuration);
@@ -61,20 +61,20 @@ internal static class VfxHelpers
 
         for (int i = 0; i <= 3; i++)
         {
-            ushort spriteId = spriteRenderer.Add(settings.view.tileDestroyVfxSpriteId, transform);
+            uint spriteId = renderSystem.AddSprite(settings.view.tileDestroyVfxSpriteId, transform);
 
             TimeSpan duration = baseDuration * (1.0f - i * 0.2f);
             TimeSpan toTime = fromTime + duration;
             float scale = 0.5f + 0.3f * i;
-            spriteRenderer.AddAnimation(spriteId, new ChangeScale(0f, scale, fromTime, toTime));
+            renderSystem.AddSpriteAnimation(spriteId, new ChangeScale(0f, scale, fromTime, toTime));
 
             gameEvents.Timer
                 .Wait(duration)
-                .Done(() => spriteRenderer.Remove(spriteId));
+                .Done(() => renderSystem.RemoveGraphic(spriteId));
         }
     }
 
-    internal static void PlayBombExplodeVfx(this SpriteRenderer spriteRenderer, IGameEvents gameEvents, Settings settings, Vector2 position)
+    internal static void PlayBombExplodeVfx(this RenderSystem renderSystem, IGameEvents gameEvents, Settings settings, Vector2 position)
     {
         TimeSpan fromTime = gameEvents.CurrentTime.Value;
         TimeSpan duration = TimeSpan.FromSeconds(settings.board.timings.bombExplodeDelay);
@@ -86,19 +86,19 @@ internal static class VfxHelpers
 
         for (int i = 0; i <= 3; i++)
         {
-            ushort spriteId = spriteRenderer.Add(settings.view.bombDestroyVfxSpriteId, transform);
+            uint spriteId = renderSystem.AddSprite(settings.view.bombDestroyVfxSpriteId, transform);
 
             float scaleFrom = 0.5f + 0.2f * i;
             float scaleTo = scaleFrom + 1.0f;
-            spriteRenderer.AddAnimation(spriteId, new ChangeScale(scaleFrom, scaleTo, fromTime, toTime));
+            renderSystem.AddSpriteAnimation(spriteId, new ChangeScale(scaleFrom, scaleTo, fromTime, toTime));
 
             gameEvents.Timer
                 .Wait(duration)
-                .Done(() => spriteRenderer.Remove(spriteId));
+                .Done(() => renderSystem.RemoveGraphic(spriteId));
         }
     }
 
-    internal static void PlayLineDestroyerVfx(this SpriteRenderer spriteRenderer, IGameEvents gameEvents, Settings settings, Vector2 position, Direction direction)
+    internal static void PlayLineDestroyerVfx(this RenderSystem renderSystem, IGameEvents gameEvents, Settings settings, Vector2 position, Direction direction)
     {
         Transform transform = Transform.Default;
         transform.position = position;
@@ -133,17 +133,17 @@ internal static class VfxHelpers
                 throw new InvalidOperationException($"direction {direction} not supported");
         }
 
-        ushort spriteId = spriteRenderer.Add(settings.view.rocketDestroyVfxSpriteId, transform);
+        uint spriteId = renderSystem.AddSprite(settings.view.rocketDestroyVfxSpriteId, transform);
 
         TimeSpan fromTime = gameEvents.CurrentTime.Value;
         TimeSpan duration = TimeSpan.FromSeconds(boardSize / settings.board.timings.lineDestroyerFlySpeed);
         TimeSpan toTime = fromTime + duration;
 
         Vector2 awayPosition = MonoMatch3Core.Helpers.BoardToScreen(settings, direction) * boardSize;
-        spriteRenderer.AddAnimation(spriteId, new OffsetOverTime(Vector2.Zero, awayPosition, fromTime, toTime, OffsetOverTime.MoveMode.FromTo));
+        renderSystem.AddSpriteAnimation(spriteId, new OffsetOverTime(Vector2.Zero, awayPosition, fromTime, toTime, OffsetOverTime.MoveMode.FromTo));
 
         gameEvents.Timer
             .Wait(duration)
-            .Done(() => spriteRenderer.Remove(spriteId));
+            .Done(() => renderSystem.RemoveGraphic(spriteId));
     }
 }

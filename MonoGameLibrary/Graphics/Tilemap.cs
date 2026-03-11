@@ -25,7 +25,7 @@ public class Tilemap
         }
     }
 
-    public void Show(SpriteRenderer spriteRenderer, Transform transform)
+    internal void Show(SpriteRenderer spriteRenderer, Transform transform)
     {
         if (activeSprites.Count > 0)
         {
@@ -46,7 +46,7 @@ public class Tilemap
         }
     }
 
-    public void Hide(SpriteRenderer spriteRenderer)
+    internal void Hide(SpriteRenderer spriteRenderer)
     {
         foreach (ushort activeSprite in activeSprites)
         {

@@ -9,12 +9,11 @@ using MonoMatch3Core.Data;
 namespace MonoMatch3.States;
 
 internal class MainMenu(
-    SpriteRenderer spriteRenderer,
     RenderSystem renderSystem,
     InputManager inputManager,
     Settings settings,
     PresentationParameters presentationParameters)
-    : BaseState(spriteRenderer, renderSystem, settings)
+    : BaseState(renderSystem, settings)
 {
     private ScreenButton screenButton;
 
@@ -24,10 +23,10 @@ internal class MainMenu(
         transform.position = new Vector2(presentationParameters.BackBufferWidth, presentationParameters.BackBufferHeight) * 0.5f;
         transform.layerDepth = RenderLayer.Background.ToLayerDepth();
 
-        ushort spriteId = spriteRenderer.Add(settings.system.mainMenuLogoSpriteId, transform);
-        spriteRenderer.AddAnimation(spriteId, new PingPongColorChannels(0.5f, 1f, 0.20f, 0.25f, 0.33f));
-        spriteRenderer.AddAnimation(spriteId, new PingPongScale(1.0f, 1.1f, 0.16f));
-        RegisterSpriteToRemoveOnDeath(spriteId);
+        uint spriteId = renderSystem.AddSprite(settings.system.mainMenuLogoSpriteId, transform);
+        renderSystem.AddSpriteAnimation(spriteId, new PingPongColorChannels(0.5f, 1f, 0.20f, 0.25f, 0.33f));
+        renderSystem.AddSpriteAnimation(spriteId, new PingPongScale(1.0f, 1.1f, 0.16f));
+        RegisterGraphicToRemoveOnDeath(spriteId);
 
         ScreenButton.Transform screenButtonTransform;
         screenButtonTransform.position = new Vector2(settings.view.startButtonPositionX, settings.view.startButtonPositionY);

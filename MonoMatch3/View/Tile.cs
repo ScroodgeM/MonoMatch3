@@ -12,18 +12,18 @@ namespace MonoMatch3.View;
 
 internal class Tile
 {
-    private readonly SpriteRenderer spriteRenderer;
+    private readonly RenderSystem renderSystem;
     private readonly Settings settings;
     private readonly IGameEvents gameEvents;
     private readonly TileBase tileCore;
-    private readonly ushort mySpriteId;
+    private readonly uint mySpriteId;
     private Transform mySpriteTransform;
 
     private SpriteAnimationBase selectedAnimation;
 
-    internal Tile(SpriteRenderer spriteRenderer, Settings settings, IGameEvents gameEvents, TileBase tileCore)
+    internal Tile(RenderSystem renderSystem, Settings settings, IGameEvents gameEvents, TileBase tileCore)
     {
-        this.spriteRenderer = spriteRenderer;
+        this.renderSystem = renderSystem;
         this.settings = settings;
         this.gameEvents = gameEvents;
         this.tileCore = tileCore;
@@ -35,7 +35,7 @@ internal class Tile
         this.mySpriteTransform.position = settings.BoardToScreen(tileCore.Position.Value).ToVector2();
         this.mySpriteTransform.color = tintColor;
 
-        this.mySpriteId = this.spriteRenderer.Add(spriteId, mySpriteTransform);
+        this.mySpriteId = this.renderSystem.AddSprite(spriteId, mySpriteTransform);
 
         Appear();
 
@@ -51,7 +51,7 @@ internal class Tile
         if (selectedAnimation == null)
         {
             selectedAnimation = new PingPongScale(0.8f, 1.2f, 1.5f);
-            spriteRenderer.AddAnimation(mySpriteId, selectedAnimation);
+            renderSystem.AddSpriteAnimation(mySpriteId, selectedAnimation);
         }
 
         selectedAnimation.SetActive(tileIsSelected);
@@ -62,30 +62,30 @@ internal class Tile
         switch (tileCore.Type)
         {
             case TileType.DestroyerHorizontalLine:
-                spriteRenderer
+                renderSystem
                     .AnimateSpecialTileDestroy(gameEvents, settings, mySpriteId)
                     .Done(Die);
-                spriteRenderer
+                renderSystem
                     .PlayLineDestroyerVfx(gameEvents, settings, mySpriteTransform.position, Direction.Left);
-                spriteRenderer
+                renderSystem
                     .PlayLineDestroyerVfx(gameEvents, settings, mySpriteTransform.position, Direction.Right);
                 break;
 
             case TileType.DestroyerVerticalLine:
-                spriteRenderer
+                renderSystem
                     .AnimateSpecialTileDestroy(gameEvents, settings, mySpriteId)
                     .Done(Die);
-                spriteRenderer
+                renderSystem
                     .PlayLineDestroyerVfx(gameEvents, settings, mySpriteTransform.position, Direction.Up);
-                spriteRenderer
+                renderSystem
                     .PlayLineDestroyerVfx(gameEvents, settings, mySpriteTransform.position, Direction.Down);
                 break;
 
             case TileType.DestroyerSquare:
-                spriteRenderer
+                renderSystem
                     .AnimateSpecialTileDestroy(gameEvents, settings, mySpriteId)
                     .Done(Die);
-                spriteRenderer
+                renderSystem
                     .PlayBombExplodeVfx(gameEvents, settings, mySpriteTransform.position);
                 break;
 
@@ -93,16 +93,16 @@ internal class Tile
                 switch (removeReason)
                 {
                     case TileRemoveReason.SuccessMatch:
-                        spriteRenderer
+                        renderSystem
                             .AnimateSimpleTileDestroyByMatch(gameEvents, settings, mySpriteId)
                             .Done(Die);
                         break;
 
                     case TileRemoveReason.DestroyedBySpecial:
-                        spriteRenderer
+                        renderSystem
                             .AnimateSimpleTileDestroyBySpecial(gameEvents, settings, mySpriteId)
                             .Done(Die);
-                        spriteRenderer
+                        renderSystem
                             .PlaySimpleTileDestroyedBySpecialVfx(gameEvents, settings, mySpriteTransform.position);
                         break;
 
@@ -120,13 +120,13 @@ internal class Tile
         tileCore.Position.OnValueChanged -= OnPositionChanged;
         tileCore.State.OnValueChanged -= OnStateChanged;
         tileCore.OnMoveAttemptFailed -= OnMoveAttemptFailed;
-        spriteRenderer.Remove(mySpriteId);
+        renderSystem.RemoveGraphic(mySpriteId);
     }
 
     private void OnPositionChanged(TilePosition newPosition)
     {
         mySpriteTransform.position = settings.BoardToScreen(newPosition).ToVector2();
-        spriteRenderer.UpdateTransform(mySpriteId, mySpriteTransform);
+        renderSystem.UpdateTransform(mySpriteId, mySpriteTransform);
     }
 
     private void OnStateChanged(TileState newState)
@@ -137,7 +137,7 @@ internal class Tile
             Vector2 moveFrom = -settings.BoardToScreen(movement.direction);
 
             OffsetOverTime animation = new OffsetOverTime(moveFrom, Vector2.Zero, movement.startTime, movement.finishTime, OffsetOverTime.MoveMode.FromTo);
-            spriteRenderer.AddAnimation(mySpriteId, animation);
+            renderSystem.AddSpriteAnimation(mySpriteId, animation);
         }
     }
 
@@ -152,13 +152,13 @@ internal class Tile
         TimeSpan endTime = startTime + TimeSpan.FromSeconds(settings.board.timings.swapTilesDuration);
 
         OffsetOverTime animation = new OffsetOverTime(Vector2.Zero, offset, startTime, endTime, OffsetOverTime.MoveMode.FromToFrom);
-        spriteRenderer.AddAnimation(mySpriteId, animation);
+        renderSystem.AddSpriteAnimation(mySpriteId, animation);
     }
 
     private void Appear()
     {
         TimeSpan fromTime = gameEvents.CurrentTime.Value;
         TimeSpan toTime = fromTime + TimeSpan.FromSeconds(settings.board.timings.firstAppearDuration);
-        spriteRenderer.AddAnimation(mySpriteId, new ChangeTransparency(0f, 1f, fromTime, toTime));
+        renderSystem.AddSpriteAnimation(mySpriteId, new ChangeTransparency(0f, 1f, fromTime, toTime));
     }
 }

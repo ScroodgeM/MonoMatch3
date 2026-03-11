@@ -3,19 +3,13 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameLibrary.Graphics.SpriteAnimations;
 using MonoGameLibrary.StatefulEvent;
 
 namespace MonoGameLibrary.Graphics;
 
 public class RenderSystem
 {
-    #region refactor this
-
-#warning REFACTORING-IN-PROGRESS
-    public SpriteRenderer SpriteRenderer => spriteRenderer;
-
-    #endregion refactor this
-
     private readonly ContentManager contentManager;
     private readonly SpriteRenderer spriteRenderer;
     private readonly TilemapRenderer tilemapRenderer;
@@ -47,6 +41,19 @@ public class RenderSystem
         textRenderer.Draw();
     }
 
+    public void LoadAtlases(IEnumerable<string> atlases)
+    {
+        foreach (string atlas in atlases)
+        {
+            LoadAtlas(atlas);
+        }
+    }
+
+    public void LoadAtlas(string atlas)
+    {
+        AtlasLoader.Load(contentManager, atlas, spriteRenderer);
+    }
+
     public void LoadTilemaps(IEnumerable<string> tilemapIds)
     {
         foreach (string tilemapId in tilemapIds)
@@ -62,6 +69,34 @@ public class RenderSystem
     public uint AddSprite(string spriteId, Transform transform) => spriteIdMarkerMask | spriteRenderer.Add(spriteId, transform);
 
     public uint AddText(IStatefulEvent<string> text, Transform transform) => textIdMarkerMask | textRenderer.Add(text, transform);
+
+    public void AddSpriteAnimation(uint graphicId, SpriteAnimationBase animation)
+    {
+        if ((graphicId & spriteIdMarkerMask) == spriteIdMarkerMask)
+        {
+            spriteRenderer.AddAnimation((ushort)(graphicId & spriteIdMask), animation);
+            return;
+        }
+
+        throw new NotSupportedException("only sprites currently supports animation");
+    }
+
+    public void UpdateTransform(uint graphicId, Transform transform)
+    {
+        if ((graphicId & spriteIdMarkerMask) == spriteIdMarkerMask)
+        {
+            spriteRenderer.UpdateTransform((ushort)(graphicId & spriteIdMask), transform);
+            return;
+        }
+
+        if ((graphicId & textIdMarkerMask) == textIdMarkerMask)
+        {
+            textRenderer.UpdateTransform((byte)(graphicId & textIdMask), transform);
+            return;
+        }
+
+        throw new NotSupportedException("only sprites and texts currently supports UpdateTransform method");
+    }
 
     public void ShowTilemap(string tilemapId, Transform transform) => tilemapRenderer.Show(tilemapId, transform);
 
@@ -80,12 +115,16 @@ public class RenderSystem
         if ((graphicId & spriteIdMarkerMask) == spriteIdMarkerMask)
         {
             spriteRenderer.Remove((ushort)(graphicId & spriteIdMask));
+            return;
         }
 
         if ((graphicId & textIdMarkerMask) == textIdMarkerMask)
         {
             textRenderer.Remove((byte)(graphicId & textIdMask));
+            return;
         }
+
+        throw new NotSupportedException("only sprites and texts currently supports Remove method");
     }
 
     internal Rectangle GetRectangle(uint graphicId)
