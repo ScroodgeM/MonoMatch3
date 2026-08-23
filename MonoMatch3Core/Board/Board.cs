@@ -91,6 +91,7 @@ public class Board
     private void Die()
     {
         this.boardInput.OnTileClick -= OnTileClick;
+        this.boardInput.Die();
 
         foreach (TileBase tile in tiles.Values)
         {

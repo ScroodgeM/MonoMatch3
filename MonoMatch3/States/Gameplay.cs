@@ -32,6 +32,8 @@ internal class Gameplay(
 
         board.OnTileRemoved += OnTileRemoved;
 
+        profileState.StartNewGame();
+
         board.RunGame();
 
         gameStartTime = gameEvents.CurrentTime.Value;
